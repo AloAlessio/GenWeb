@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GenWeb | Citas Médicas</title>
+<!-- CSS global -->
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <!-- Header interno / Título de la sección -->
+    <div class="header">
+    <h1>Reservar Cita Médica</h1>
+    <button class="btn-primary" onclick="window.location.href='index.html'">Regresar</button>
+    </div>
+
+    <!-- Sección de búsqueda y filtrado -->
+    <div class="search-section">
+    <h2>Buscar Especialista</h2>
+    <p>Elige tu especialidad, ubicación y/o fecha para encontrar al médico ideal.</p>
+
+    <div class="search-filters">
+        <div>
+        <label for="especialidad">Especialidad</label>
+        <select id="especialidad" name="especialidad">
+            <option value="">-- Todas --</option>
+            <option value="Neurología">Neurología</option>
+            <option value="Pediatría">Pediatría</option>
+            <option value="Cardiología">Cardiología</option>
+            <option value="Dermatología">Dermatología</option>
+            <option value="Infectología">Infectología</option>
+            <option value="Otorrinolaringología">Otorrinolaringología</option>
+            <option value="Anestesiología">Anestesiología</option>
+        </select>
+        </div>
+        <div>
+            <label for="modo">Modalidad</label>
+            <select id="modo" name="modo">
+                <option value="">-- Cualquier modalidad --</option>
+                <option value="Presencial">Presencial</option>
+                <option value="Virtual">En línea</option>
+            </select>
+        </div>
+        <div>
+        <label for="fecha">Fecha</label>
+        <input type="date" id="fecha" name="fecha" />
+        </div>
+    </div>
+
+    <div class="search-actions">
+        <button type="button" id="buscarBtn">Buscar</button>
+    </div>
+    </div>
+
+    <!-- Contenedor donde se mostrarán los doctores -->
+    <div id="results" class="doctor-list"></div>
+</div>
+
+<script src="app.js"></script>
+<script src="citas.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("buscarBtn").addEventListener("click", filtrarResultados);
+    });
+</script>
+
+</body>
+</html>

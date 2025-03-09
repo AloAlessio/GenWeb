@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GenWeb - Inicio</title>
+  <!-- Tu hoja de estilos principal -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="index-page">
+
+  <!-- Barra Lateral (sidebar) -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">
+        <!-- Logo + Texto en la sidebar (SIN toggle) -->
+      </div>
+      <!-- Se elimina el botón toggle de la sidebar -->
+    </div>
+
+    <!-- Menú de navegación -->
+    <ul class="sidebar-nav">
+      <li class="nav-item"><a class="nav-link active" href="index.html">Inicio</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Servicios</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Doctores</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Instalaciones</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+      <li class="nav-item"><a class="nav-link" href="appointments.html">Mis Citas</a></li>
+    </ul>
+  </aside>
+
+  <!-- Contenido principal -->
+  <div class="main-content" id="mainContent">
+
+    <!-- Topbar (barra superior) transparente -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <!-- Botón toggle (hamburguesa) + Logo pequeño -->
+        <button class="sidebar-toggle" id="sidebarToggle">&#9776;</button>
+        <img src="logo.png" alt="GenWeb" class="topbar-logo" />
+      </div>
+
+      <div class="topbar-right">
+        <!-- Botón Agendar Cita -->
+        <button id="btnAgendarCita" class="btn-elegant btn-agendar">Agendar Cita</button>
+
+        <!-- Contenedor de usuario -->
+        <div id="userInfoContainer">
+        <!-- Ejemplo de botón "Cerrar Sesión" si lo tienes dentro del userInfo -->
+        <button class="btn-elegant btn-logout" onclick="logout()">Cerrar Sesión</button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Sección de contenido principal -->
+    <section class="content">
+
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-text">
+          <h1>Bienvenido a <span>GenWeb</span></h1>
+          <p>Tu salud, nuestra prioridad. Ofrecemos servicios médicos de calidad y atención especializada las 24 horas del día.</p>
+          <a href="#" class="btn-primary">Conoce Más</a>
+        </div>
+        <div class="hero-image">
+          <img src="f1.png" alt="Hospitaria Hero Image">
+        </div>
+      </section>
+
+      <!-- Servicios -->
+      <section class="services">
+        <h2>Nuestros Servicios</h2>
+        <div class="service-cards">
+          <div class="card">
+            <img src="f2.png" alt="Servicio 1">
+            <h3>Consulta General</h3>
+            <p>Atención personalizada para cuidar de tu salud.</p>
+          </div>
+          <div class="card">
+            <img src="f3.png" alt="Servicio 2">
+            <h3>Especialidades</h3>
+            <p>Amplia gama de especialidades médicas a tu disposición.</p>
+          </div>
+          <div class="card">
+            <img src="f4.png" alt="Servicio 3">
+            <h3>Urgencias</h3>
+            <p>Atención inmediata las 24 horas, todos los días.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Especialistas -->
+      <section class="specialists doctors">
+        <h2>Nuestros Especialistas</h2>
+        <div class="specialist-cards">
+          <div class="card">
+            <div class="card-image">
+              <img src="doc1.png" alt="Doctor 1">
+            </div>
+            <h3>Dr. Alonso Jimenez</h3>
+            <p>Especialista en Neurología</p>
+          </div>
+          <div class="card">
+            <div class="card-image">
+              <img src="doc3.png" alt="Doctor 2">
+            </div>
+            <h3>Dra. Melissa Lara</h3>
+            <p>Especialista en Pediatría</p>
+          </div>
+          <div class="card">
+            <div class="card-image">
+              <img src="doc2.png" alt="Doctor 3">
+            </div>
+            <h3>Dr. Diego Hernandez</h3>
+            <p>Especialista en Cardiología</p>
+          </div>
+          <div class="card">
+            <div class="card-image">
+              <img src="doc7.png" alt="Doctor 4">
+            </div>
+            <h3>Dra. Kelly Palomares</h3>
+            <p>Especialista en Dermatología</p>
+          </div>
+          <div class="card">
+            <div class="card-image">
+              <img src="doc6.png" alt="Doctor 5">
+            </div>
+            <h3>Dr. Mauricio Rocha</h3>
+            <p>Especialista en Infectología</p>
+          </div>
+          <div class="card">
+            <div class="card-image">
+              <img src="doc5.png" alt="Doctor 6">
+            </div>
+            <h3>Dr. Alexis Hernandez</h3>
+            <p>Especialista en Otorrinolaringología</p>
+          </div>
+          <div class="card">
+            <div class="card-image">
+              <img src="doc4.png" alt="Doctor 7">
+            </div>
+            <h3>Dr. Gonzalo Mendoza</h3>
+            <p>Especialista en Anestesiología</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Instalaciones -->
+      <section class="facilities">
+        <h2>Nuestras Instalaciones</h2>
+        <div class="facility-images">
+          <img src="instalacion1.png" alt="Instalación 1">
+          <img src="instalacion2.jpg" alt="Instalación 2">
+          <img src="instalacion3.webp" alt="Instalación 3">
+        </div>
+      </section>
+
+      <!-- Testimonios -->
+      <section class="testimonials">
+        <h2>Testimonios de Pacientes</h2>
+        <div class="testimonial-cards">
+          <div class="card">
+            <p>"El servicio en Hospitaria es excelente. Me sentí muy bien atendido en todo momento."</p>
+            <h3>- Gloria Hernandez</h3>
+          </div>
+          <div class="card">
+            <p>"Gracias a los especialistas de Hospitaria, ahora tengo una mejor calidad de vida."</p>
+            <h3>- Andy Martinez</h3>
+          </div>
+          <div class="card">
+            <p>"La atención de urgencias fue rápida y eficiente. Los recomiendo ampliamente."</p>
+            <h3>- Juan Picone</h3>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contacto -->
+      <section class="contact">
+        <h2>Contáctanos</h2>
+        <form>
+          <input type="text" placeholder="Nombre" required>
+          <input type="email" placeholder="Correo Electrónico" required>
+          <textarea placeholder="Mensaje" required></textarea>
+          <button type="submit">Enviar</button>
+        </form>
+      </section>
+
+      <!-- Footer -->
+      <footer>
+        <div class="footer-content">
+          <p>&copy; 2025 GenWeb. Todos los derechos reservados.</p>
+          <nav>
+            <ul>
+              <li><a href="#">Política de Privacidad</a></li>
+              <li><a href="#">Términos y Condiciones</a></li>
+            </ul>
+          </nav>
+        </div>
+      </footer>
+
+    </section> <!-- Fin .content -->
+  </div> <!-- Fin .main-content -->
+
+  <!-- Scripts -->
+  <!-- Asegúrate de tener un script para manejar el toggle, por ejemplo: script.js -->
+  <script src="script.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

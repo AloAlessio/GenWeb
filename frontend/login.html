@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>GenWeb - Iniciar Sesión / Registro</title>
+    <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+    <div class="auth-container">
+        <!-- Logo o cabecera GenWeb -->
+        <div class="auth-header">
+        <img src="logo.png" alt="GenWeb Logo" class="logo-img">
+        </div>
+
+        <!-- Contenedor principal de formularios -->
+        <div class="auth-forms">
+        <!-- Pestañas de Login / Registro -->
+        <div class="tabs">
+            <button id="loginTab" class="tab active" onclick="showLogin()">Iniciar Sesión</button>
+            <button id="registerTab" class="tab" onclick="showRegister()">Registro</button>
+        </div>
+
+        <!-- Formulario de Iniciar Sesión -->
+        <form id="loginForm" class="form">
+            <h2>Inicia Sesión</h2>
+            <div class="form-group">
+            <label for="loginEmail">Correo Electrónico o Teléfono</label>
+            <input type="text" id="loginEmail" name="loginEmail" placeholder="usuario@ejemplo.com" required />
+            </div>
+            <div class="form-group">
+            <label for="loginPassword">Contraseña</label>
+            <input type="password" id="loginPassword" name="loginPassword" placeholder="********" required />
+            </div>
+            <div class="form-actions">
+            <button type="submit" class="btn-primary">Ingresar</button>
+            </div>
+            <div class="form-links">
+            <a href="#">¿Olvidaste tu contraseña?</a>
+            </div>
+        </form>
+
+        <!-- Formulario de Registro -->
+        <form id="registerForm" class="form">
+            <h2>Crear Cuenta</h2>
+            <div class="form-group">
+            <label for="nombre">Nombre Completo</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Tu Nombre" required />
+            </div>
+            <div class="form-group">
+            <label for="registerEmail">Correo Electrónico</label>
+            <input type="email" id="registerEmail" name="registerEmail" placeholder="usuario@ejemplo.com" required />
+            </div>
+            <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input type="tel" id="telefono" name="telefono" placeholder=\"(55) 0000 0000\" />
+            </div>
+            <div class="form-group">
+            <label for="registerPassword">Contraseña</label>
+            <input type="password" id="registerPassword" name="registerPassword" placeholder="********" required />
+            </div>
+            <div class="form-group">
+            <label for="confirmPassword">Confirmar Contraseña</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="********" required />
+            </div>
+            <div class="form-actions">
+            <button type="submit" class="btn-primary">Crear Cuenta</button>
+            </div>
+        </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    </body>
+    </html>
