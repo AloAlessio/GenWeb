@@ -5,8 +5,15 @@ const sequelize = require('./db');
 
 const authRoutes = require('./routes/authRoutes');
 const doctorRoutes = require('./routes/doctorRoutes');
-const citaRoutes = require('./routes/citaRoutes'); 
+const citaRoutes = require('./routes/citaRoutes');
 
+const path = require('path');
+
+// 🔹 Nuevo: importamos rss-parser
+const Parser = require('rss-parser');
+const parser = new Parser();
+
+// 🔹 Iniciamos la app
 const app = express();
 app.use(cors());  // 🔹 Permitir solicitudes de otros orígenes
 app.use(express.json());  // 🔹 Permitir recibir JSON
@@ -16,7 +23,24 @@ app.use('/api/auth', authRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/citas', citaRoutes);
 
-const path = require('path');
+// 🔹 Ruta para obtener el feed RSS de biotecnología en México
+app.get('/rss-biotecnologia', async (req, res) => {
+  try {
+    // URL del feed (puedes ajustarla si quieres otra fuente)
+    const feedUrl = 'https://news.google.com/rss/search?q=biotecnolog%C3%ADa%20mexico';
+
+    // Parseamos el RSS con rss-parser
+    const feed = await parser.parseURL(feedUrl);
+
+    // Retornamos el objeto feed en formato JSON
+    res.json(feed);
+  } catch (error) {
+    console.error('Error al obtener el feed RSS:', error);
+    res.status(500).json({ message: 'Error al obtener el feed RSS' });
+  }
+});
+
+// Servir contenido estático (frontend)
 app.use(express.static(path.join(__dirname, '../frontend')));
 
 // 📌 Iniciar Servidor

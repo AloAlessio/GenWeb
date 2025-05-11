@@ -20,13 +20,13 @@
 
     <!-- Menú de navegación -->
     <ul class="sidebar-nav">
-      <li class="nav-item"><a class="nav-link active" href="index.html">Inicio</a></li>
-      <li class="nav-item"><a class="nav-link" href="#">Servicios</a></li>
-      <li class="nav-item"><a class="nav-link" href="#">Doctores</a></li>
-      <li class="nav-item"><a class="nav-link" href="#">Instalaciones</a></li>
-      <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+      <li class="nav-item"><a class="nav-link active" href="index.html#Inicio">Inicio</a></li>
+      <li class="nav-item"><a class="nav-link" href="index.html#Servicios">Servicios</a></li>
+      <li class="nav-item"><a class="nav-link" href="index.html#Doctores">Doctores</a></li>
+      <li class="nav-item"><a class="nav-link" href="index.html#Instalaciones">Instalaciones</a></li>
+      <li class="nav-item"><a class="nav-link" href="index.html#Contacto">Contacto</a></li>
       <li class="nav-item"><a class="nav-link" href="appointments.html">Mis Citas</a></li>
-    </ul>
+    </ul>    
   </aside>
 
   <!-- Contenido principal -->
@@ -46,10 +46,9 @@
 
         <!-- Contenedor de usuario -->
         <div id="userInfoContainer">
-        <!-- Ejemplo de botón "Cerrar Sesión" si lo tienes dentro del userInfo -->
-        <button class="btn-elegant btn-logout" onclick="logout()">Cerrar Sesión</button>
+          <!-- Ejemplo de botón "Cerrar Sesión" si lo tienes dentro del userInfo -->
+          <button class="btn-elegant btn-logout" onclick="logout()">Cerrar Sesión</button>
         </div>
-
       </div>
     </header>
 
@@ -57,19 +56,26 @@
     <section class="content">
 
       <!-- Hero Section -->
-      <section class="hero">
+      <section class="hero" id="Inicio">
         <div class="hero-text">
           <h1>Bienvenido a <span>GenWeb</span></h1>
           <p>Tu salud, nuestra prioridad. Ofrecemos servicios médicos de calidad y atención especializada las 24 horas del día.</p>
-          <a href="#" class="btn-primary">Conoce Más</a>
+          <!-- Botón "Conoce Más" que despliega el apartado de noticias RSS -->
+          <button id="conoceMasBtn" class="btn-primary">Conoce Más</button>
         </div>
         <div class="hero-image">
           <img src="f1.png" alt="Hospitaria Hero Image">
         </div>
       </section>
 
+      <!-- Sección de Noticias RSS (inicialmente oculta) -->
+      <section id="newsSection" class="news-section" style="display:none;">
+        <h2>Noticias de Biotecnología en México</h2>
+        <div id="newsContainer"></div>
+      </section>
+
       <!-- Servicios -->
-      <section class="services">
+      <section id="Servicios" class="services">
         <h2>Nuestros Servicios</h2>
         <div class="service-cards">
           <div class="card">
@@ -91,7 +97,7 @@
       </section>
 
       <!-- Especialistas -->
-      <section class="specialists doctors">
+      <section id="Doctores" class="specialists doctors">
         <h2>Nuestros Especialistas</h2>
         <div class="specialist-cards">
           <div class="card">
@@ -147,7 +153,7 @@
       </section>
 
       <!-- Instalaciones -->
-      <section class="facilities">
+      <section id="Instalaciones" class="facilities">
         <h2>Nuestras Instalaciones</h2>
         <div class="facility-images">
           <img src="instalacion1.png" alt="Instalación 1">
@@ -176,7 +182,7 @@
       </section>
 
       <!-- Contacto -->
-      <section class="contact">
+      <section id="Contacto" class="contact">
         <h2>Contáctanos</h2>
         <form>
           <input type="text" placeholder="Nombre" required>
@@ -203,8 +209,52 @@
   </div> <!-- Fin .main-content -->
 
   <!-- Scripts -->
-  <!-- Asegúrate de tener un script para manejar el toggle, por ejemplo: script.js -->
   <script src="script.js"></script>
   <script src="app.js"></script>
+  <script>
+    document.getElementById("conoceMasBtn").addEventListener("click", () => {
+      const newsSection = document.getElementById("newsSection");
+      if (newsSection.style.display === "none" || newsSection.style.display === "") {
+        newsSection.style.display = "block";
+        loadNews();
+      } else {
+        newsSection.style.display = "none";
+      }
+    });
+  
+    async function loadNews() {
+      const newsContainer = document.getElementById("newsContainer");
+      newsContainer.innerHTML = "";
+  
+      try {
+        // Llamamos a nuestro backend Node
+        const response = await fetch("http://localhost:5000/rss-biotecnologia");
+        if (!response.ok) {
+          throw new Error("Respuesta no OK");
+        }
+        // feed es un objeto con { title, items, etc. }
+        const feed = await response.json();
+  
+        if (feed.items && feed.items.length > 0) {
+          feed.items.forEach(item => {
+            const newsItem = document.createElement("div");
+            newsItem.className = "news-item";
+            // Reemplaza item.contentSnippet, item.link, etc. según lo que devuelva rss-parser
+            newsItem.innerHTML = `
+              <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
+              <p>${item.pubDate ? new Date(item.pubDate).toLocaleDateString() : ""}</p>
+              <p>${item.contentSnippet || ""}</p>
+            `;
+            newsContainer.appendChild(newsItem);
+          });
+        } else {
+          newsContainer.innerHTML = "<p>No se encontraron noticias.</p>";
+        }
+      } catch (error) {
+        console.error("Error al cargar las noticias:", error);
+        newsContainer.innerHTML = "<p>Error al cargar las noticias.</p>";
+      }
+    }
+  </script>
 </body>
 </html>

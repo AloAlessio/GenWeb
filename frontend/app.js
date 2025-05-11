@@ -101,35 +101,62 @@ async function handleRegister(event) {
     const confirmPassword = document.getElementById('confirmPassword').value.trim();
 
     if (!nombre || !email || !password || !confirmPassword) {
-        alert('Por favor, completa todos los campos.');
+        Swal.fire({
+          title: "Advertencia",
+          text: "Por favor, completa todos los campos.",
+          icon: "warning",
+          confirmButtonText: "Aceptar"
+        });
         return;
     }
 
     if (password !== confirmPassword) {
-        alert('Las contraseñas no coinciden.');
+        Swal.fire({
+          title: "Advertencia",
+          text: "Las contraseñas no coinciden.",
+          icon: "warning",
+          confirmButtonText: "Aceptar"
+        });
         return;
     }
 
     try {
         const response = await fetch(`${API_URL}/auth/register`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ nombre, email, password })
         });
 
         const data = await response.json();
         if (response.ok) {
-            alert(data.message);
-            document.getElementById('registerForm').reset();
-            showLogin();
+            Swal.fire({
+              title: "¡Registro Exitoso!",
+              text: "Usuario registrado correctamente",
+              icon: "success",
+              confirmButtonText: "Iniciar Sesión"
+            }).then(() => {
+              // Redirige al login o cambia la vista
+              window.location.href = "login.html";
+            });
         } else {
-            alert(data.message);
+            Swal.fire({
+              title: "Error",
+              text: data.message || "Error en el registro.",
+              icon: "error",
+              confirmButtonText: "Aceptar"
+            });
         }
     } catch (error) {
-        alert("Error al registrar. Inténtalo más tarde.");
         console.error("Error en el registro:", error);
+        Swal.fire({
+          title: "Error",
+          text: "Error inesperado. Inténtalo de nuevo.",
+          icon: "error",
+          confirmButtonText: "Aceptar"
+        });
     }
 }
+
 
 // 🟢 FUNCIÓN PARA INICIAR SESIÓN
 async function handleLogin(event) {
@@ -146,16 +173,34 @@ async function handleLogin(event) {
 
         const data = await response.json();
         if (response.ok) {
+            // Guardar token o usuario, etc.
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
-            alert("Inicio de sesión exitoso.");
-            window.location.href = "index.html";
+            // Mostrar alerta de éxito con SweetAlert
+            Swal.fire({
+              title: "¡Bienvenido!",
+              text: "Inicio de sesión exitoso",
+              icon: "success",
+              confirmButtonText: "Aceptar"
+            }).then(() => {
+              window.location.href = "index.html";
+            });
         } else {
-            alert(data.message || "Error en el inicio de sesión.");
+            Swal.fire({
+              title: "Error",
+              text: data.message || "Error en el inicio de sesión.",
+              icon: "error",
+              confirmButtonText: "Aceptar"
+            });
         }
     } catch (error) {
         console.error("Error en el inicio de sesión:", error);
-        alert("Error inesperado. Inténtalo de nuevo.");
+        Swal.fire({
+          title: "Error",
+          text: "Error inesperado. Inténtalo de nuevo.",
+          icon: "error",
+          confirmButtonText: "Aceptar"
+        });
     }
 }
 
@@ -344,14 +389,34 @@ async function guardarCita(event) {
 
         const data = await response.json();
         if (response.ok) {
-            alert("✅ Cita agendada correctamente.");
-            window.location.href = "index.html";
+            /* alert("✅ Cita agendada correctamente.");
+            window.location.href = "index.html"; */
+            Swal.fire({
+                title: "✅ Cita agendada correctamente",
+                text: "Tu cita ha sido registrada con éxito.",
+                icon: "success",
+                confirmButtonText: "Aceptar"
+            }).then(() => {
+                window.location.href = "index.html";
+            });
         } else {
-            alert(`❌ Error al agendar cita: ${data.message}`);
+            /* alert(`❌ Error al agendar cita: ${data.message}`); */
+            Swal.fire({
+                title: "❌ Error al agendar cita",
+                text: data.message,
+                icon: "error",
+                confirmButtonText: "Intentar de nuevo"
+            });
         }
     } catch (error) {
         console.error("❌ Error en la solicitud:", error);
-        alert("❌ Hubo un error al enviar la cita. Intenta nuevamente.");
+        /* alert("❌ Hubo un error al enviar la cita. Intenta nuevamente."); */
+        Swal.fire({
+            title: "❌ Error en la solicitud",
+            text: "Hubo un error al enviar la cita. Intenta nuevamente.",
+            icon: "error",
+            confirmButtonText: "Aceptar"
+        });
     }
 }
 

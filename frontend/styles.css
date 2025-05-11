@@ -983,3 +983,34 @@ footer nav ul li a:hover {
     background: linear-gradient(to right, #ff4b2b, #ff416c);
   }
   
+/* Sección de noticias RSS */
+.news-section {
+    background-color: #fff;
+    padding: 30px;
+    margin: 30px auto;
+    max-width: 800px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .news-section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #003366;
+  }
+  .news-item {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 10px;
+  }
+  .news-item:last-child {
+    border-bottom: none;
+  }
+  .news-item a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 600;
+  }
+  .news-item a:hover {
+    text-decoration: underline;
+  }
+  

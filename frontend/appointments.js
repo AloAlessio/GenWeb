@@ -31,6 +31,12 @@ async function loadCitas() {
         });
     } catch (error) {
         console.error("Error al cargar las citas:", error);
+        Swal.fire({
+            title: "Error",
+            text: "No se pudieron cargar las citas. Intenta más tarde.",
+            icon: "error",
+            confirmButtonText: "Aceptar"
+        });
     }
 }
 
@@ -54,6 +60,12 @@ async function openEditModal(id) {
         document.getElementById("citaModal").style.display = "flex";
     } catch (error) {
         console.error("Error al obtener la cita:", error);
+        Swal.fire({
+            title: "Error",
+            text: "No se pudieron cargar los datos de la cita.",
+            icon: "error",
+            confirmButtonText: "Aceptar"
+        });
     }
 }
 
@@ -83,34 +95,78 @@ document.getElementById("editCitaForm").addEventListener("submit", async (e) => 
         });
         const data = await response.json();
         if (response.ok) {
-            alert(data.message);
-            document.getElementById("citaModal").style.display = "none";
-            loadCitas();
+            Swal.fire({
+                title: "¡Actualizado!",
+                text: data.message || "La cita ha sido actualizada con éxito.",
+                icon: "success",
+                confirmButtonText: "Aceptar"
+            }).then(() => {
+                document.getElementById("citaModal").style.display = "none";
+                loadCitas();
+            });
         } else {
-            alert(data.message || "Error al actualizar la cita.");
+            Swal.fire({
+                title: "Error",
+                text: data.message || "Error al actualizar la cita.",
+                icon: "error",
+                confirmButtonText: "Aceptar"
+            });
         }
     } catch (error) {
         console.error("Error al actualizar la cita:", error);
+        Swal.fire({
+            title: "Error",
+            text: "Error inesperado. Inténtalo de nuevo.",
+            icon: "error",
+            confirmButtonText: "Aceptar"
+        });
     }
 });
 
 // Función para eliminar una cita
 async function deleteCita(id) {
-    if (!confirm("¿Estás seguro de eliminar esta cita?")) return;
-    try {
-        const response = await fetch(`${API_URL}/citas/${id}`, {
-            method: "DELETE"
-        });
-        const data = await response.json();
-        if (response.ok) {
-            alert(data.message);
-            loadCitas();
-        } else {
-            alert(data.message || "Error al eliminar la cita.");
+    Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Esta acción no se puede deshacer.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            try {
+                const response = await fetch(`${API_URL}/citas/${id}`, {
+                    method: "DELETE"
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    Swal.fire({
+                        title: "¡Eliminada!",
+                        text: data.message || "La cita ha sido eliminada.",
+                        icon: "success",
+                        confirmButtonText: "Aceptar"
+                    }).then(() => {
+                        loadCitas();
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Error",
+                        text: data.message || "Error al eliminar la cita.",
+                        icon: "error",
+                        confirmButtonText: "Aceptar"
+                    });
+                }
+            } catch (error) {
+                console.error("Error al eliminar la cita:", error);
+                Swal.fire({
+                    title: "Error",
+                    text: "Error inesperado. Inténtalo de nuevo.",
+                    icon: "error",
+                    confirmButtonText: "Aceptar"
+                });
+            }
         }
-    } catch (error) {
-        console.error("Error al eliminar la cita:", error);
-    }
+    });
 }
 
 // Cargar citas al iniciar la página
