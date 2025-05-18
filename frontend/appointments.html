@@ -1,102 +1,94 @@
-<!DOCTYPE html>
+<!-- appointments.html -->
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GenWeb | Mis Citas</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+  <!-- FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.css" rel="stylesheet">
+  <!-- Custom Calendar Styles -->
+  <style>
+    #calendar {
+      max-width: 1000px;
+      margin: 40px auto;
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .fc .fc-toolbar-title {
+      font-size: 1.75rem;
+      color: #2C3E50;
+    }
+    /* Ensure day numbers and headers are visible */
+    .fc .fc-daygrid-day-number,
+    .fc .fc-col-header-cell-cushion {
+      color: #2C3E50 !important;
+    }
+    .fc .fc-daygrid-day-frame {
+      min-height: 100px;
+    }
+    /* Base event styling: white background, dark text, custom border */
+    .fc .fc-event {
+      background: #ffffff !important;
+      color: #2C3E50 !important;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      border: none !important;
+      padding: 0;
+    }
+    /* Container inside event for padding/layout */
+    .fc .fc-event .fc-event-main {
+      padding: 4px 6px;
+    }
+    .fc .fc-event .fc-event-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
 </head>
 <body class="appointments-page">
 
-  <!-- Barra lateral (sidebar) -->
+  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
-    <!-- Menú de navegación -->
     <ul class="sidebar-nav">
-      <li class="nav-item"><a class="nav-link active" class="nav-link" href="index.html">Inicio</a></li>
+      <li class="nav-item"><a class="nav-link active" href="index.html">Inicio</a></li>
       <li class="nav-item"><a class="nav-link" href="citas.html">Agendar Cita</a></li>
-      <!-- Agrega otros enlaces si lo deseas -->
     </ul>
   </aside>
 
-  <!-- Contenido principal -->
+  <!-- Main Content -->
   <div class="main-content" id="mainContent">
-    <!-- Topbar (barra superior) -->
     <header class="topbar">
-        <div class="topbar-left">
-          <button class="sidebar-toggle" id="sidebarToggle">&#9776;</button>
-          <img href="index.html" src="logo.png" alt="GenWeb" class="topbar-logo">
-        </div>
-      <div class="topbar-right">
-    
+      <div class="topbar-left">
+        <button class="sidebar-toggle" id="sidebarToggle">&#9776;</button>
+        <img src="logo.png" alt="GenWeb" class="topbar-logo">
       </div>
     </header>
 
-    <!-- Sección de contenido principal -->
     <section class="content">
       <h2>Mis Citas</h2>
-      <div id="citasList" class="results">
-        <!-- Aquí se inyectan las tarjetas con loadCitas() -->
-      </div>
+      <div id="calendar"></div>
     </section>
   </div>
 
-  <!-- Modal para ver/editar cita (oculto por defecto) -->
+  <!-- Edit Modal -->
   <div id="citaModal" class="modal">
     <div class="modal-content">
-      <!-- Botón para cerrar el modal -->
       <span class="close">&times;</span>
       <h3>Detalle de la Cita</h3>
       <form id="editCitaForm">
         <input type="hidden" id="editCitaId">
-        
-        <div class="form-group">
-          <label for="editNombre">Nombre Completo</label>
-          <input type="text" id="editNombre" required>
-        </div>
-        <div class="form-group">
-          <label for="editCorreo">Correo Electrónico</label>
-          <input type="email" id="editCorreo" required>
-        </div>
-        <div class="form-group">
-          <label for="editTelefono">Teléfono</label>
-          <input type="text" id="editTelefono" required>
-        </div>
-        <div class="form-group">
-          <label for="editDoctorId">Doctor ID</label>
-          <input type="text" id="editDoctorId" readonly>
-        </div>
-        <div class="form-group">
-          <label for="editEspecialidad">Especialidad</label>
-          <input type="text" id="editEspecialidad" readonly>
-        </div>
-        <div class="form-group">
-          <label for="editModalidad">Modalidad</label>
-          <input type="text" id="editModalidad" readonly>
-        </div>
-        <div class="form-group">
-          <label for="editFecha">Fecha</label>
-          <input type="date" id="editFecha" required>
-        </div>
-        <div class="form-group">
-          <label for="editHora">Hora</label>
-          <input type="time" id="editHora" required>
-        </div>
-        <div class="form-group">
-          <label for="editNotas">Notas</label>
-          <textarea id="editNotas"></textarea>
-        </div>
-        <div class="form-actions">
-          <button type="submit" class="btn-primary">Guardar Cambios</button>
-        </div>
+        <!-- Campos de formulario... -->
       </form>
     </div>
   </div>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="appointments.js"></script>
-  <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js"></script>
+  <!-- Código separado en calendar.js -->
+  <script src="calendar.js"></script>
 </body>
 </html>
