@@ -364,24 +364,79 @@ footer nav ul li a:hover {
 #userInfoContainer {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
     margin-left: 20px;
 }
-.user-name {
-    color: #003366;
+
+/* Contenedor de información del usuario */
+.user-info-display {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 8px 16px;
+    border-radius: 20px;
+    box-shadow: 0 3px 12px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+}
+
+.user-info-display:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
     font-weight: bold;
+    color: #333;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
+
+.user-name {
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Botón de cerrar sesión mejorado */
 .btn-logout {
-    background-color: #ff4d4d;
-    color: #fff;
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    color: white;
     border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 8px 16px;
+    border-radius: 20px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 12px rgba(238, 90, 36, 0.3);
+    font-family: 'Montserrat', sans-serif;
 }
+
 .btn-logout:hover {
-    background-color: #e60000;
+    background: linear-gradient(135deg, #ee5a24 0%, #ff3838 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 20px rgba(238, 90, 36, 0.4);
+}
+
+.btn-logout::before {
+    content: "👋";
+    font-size: 14px;
+}
+
+.btn-logout:active {
+    transform: translateY(0);
 }
 
 /* ========================= */
@@ -1032,3 +1087,144 @@ footer nav ul li a:hover {
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     padding: 1rem;
     }
+
+/* ========================= */
+/*      Responsive Design    */
+/* ========================= */
+@media (max-width: 768px) {
+    /* Topbar responsive */
+    .topbar {
+        padding: 0 15px;
+    }
+    
+    .topbar-left .topbar-logo {
+        width: 100px;
+    }
+    
+    .topbar-right {
+        gap: 0.5rem;
+    }
+    
+    /* User info responsive */
+    .user-info-display {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    .user-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+        margin-right: 8px;
+    }
+    
+    .user-name {
+        font-size: 12px;
+        display: none; /* Ocultar nombre en móviles */
+    }
+    
+    .btn-logout {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+    
+    .btn-logout::before {
+        font-size: 12px;
+    }
+    
+    /* Botón agendar cita responsive */
+    .btn-agendar {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-info-display {
+        padding: 4px 8px;
+    }
+    
+    .user-avatar {
+        width: 24px;
+        height: 24px;
+        font-size: 11px;
+        margin-right: 6px;
+    }
+    
+    .btn-logout {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+    
+    .btn-agendar {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+}
+
+/* ========================= */
+/*     Animation Effects     */
+/* ========================= */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.user-info-display {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+.btn-logout {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-logout::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+}
+
+.btn-logout:active::after {
+    width: 120%;
+    height: 120%;
+}
+
+/* ========================= */
+/*     Accessibility         */
+/* ========================= */
+.user-info-display:focus-within {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+.btn-logout:focus {
+    outline: 2px solid #ff6b6b;
+    outline-offset: 2px;
+}
+
+/* Para lectores de pantalla */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

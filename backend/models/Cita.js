@@ -11,7 +11,12 @@ const Cita = db.define('Cita', {
     modalidad: { type: DataTypes.STRING, allowNull: false },
     fecha: { type: DataTypes.DATEONLY, allowNull: false },
     hora: { type: DataTypes.TIME, allowNull: false },
-    notas: { type: DataTypes.TEXT, allowNull: true }
+    notas: { type: DataTypes.TEXT, allowNull: true },
+    estado: { 
+        type: DataTypes.ENUM('pendiente', 'confirmada', 'cancelada'),
+        allowNull: false,
+        defaultValue: 'pendiente'
+    }
 });
 
 module.exports = Cita;

@@ -23,8 +23,17 @@ exports.crearCita = async (req, res) => {
 
 // Obtener todas las citas
 exports.getAllCitas = async (req, res) => {
-    try {
-        const citas = await Cita.findAll();
+    try {        const { fecha, modalidad } = req.query;
+
+        const whereClause = {};
+        if (fecha) {
+            whereClause.fecha = fecha;
+        }
+        if (modalidad) {
+            whereClause.modalidad = modalidad;
+        }
+
+        const citas = await Cita.findAll({ where: whereClause });
         res.json(citas);
     } catch (error) {
         res.status(500).json({ message: "Error al obtener las citas", error });
@@ -66,5 +75,61 @@ exports.deleteCita = async (req, res) => {
         res.json({ message: "Cita eliminada exitosamente" });
     } catch (error) {
         res.status(500).json({ message: "Error al eliminar la cita", error });
+    }
+};
+
+// Confirmar una cita
+exports.confirmarCita = async (req, res) => {
+    try {
+        const { id } = req.params;
+        console.log('Confirmando cita con ID:', id); // Debug
+        
+        const cita = await Cita.findByPk(id);
+        
+        if (!cita) {
+            return res.status(404).json({ message: 'Cita no encontrada' });
+        }
+        
+        await cita.update({ estado: 'confirmada' });
+        console.log('Cita confirmada exitosamente'); // Debug
+        
+        res.json({ 
+            message: 'Cita confirmada exitosamente', 
+            cita: cita 
+        });
+    } catch (error) {
+        console.error('Error al confirmar la cita:', error);
+        res.status(500).json({ 
+            message: 'Error interno del servidor', 
+            error: error.message 
+        });
+    }
+};
+
+// Cancelar una cita
+exports.cancelarCita = async (req, res) => {
+    try {
+        const { id } = req.params;
+        console.log('Cancelando cita con ID:', id); // Debug
+        
+        const cita = await Cita.findByPk(id);
+        
+        if (!cita) {
+            return res.status(404).json({ message: 'Cita no encontrada' });
+        }
+        
+        await cita.update({ estado: 'cancelada' });
+        console.log('Cita cancelada exitosamente'); // Debug
+        
+        res.json({ 
+            message: 'Cita cancelada exitosamente', 
+            cita: cita 
+        });
+    } catch (error) {
+        console.error('Error al cancelar la cita:', error);
+        res.status(500).json({ 
+            message: 'Error interno del servidor', 
+            error: error.message 
+        });
     }
 };

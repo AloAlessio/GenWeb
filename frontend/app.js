@@ -64,14 +64,36 @@ function updateNavbarUser() {
     if (checkSession() && userInfoContainer) {
         const currentUser = JSON.parse(localStorage.getItem('user'));
         if (currentUser) {
-            userInfoContainer.innerHTML = `
-                <div class="user-info">
-                    <span class="user-name">👤 ${currentUser.nombre}</span>
-                    <button onclick="logout()" class="btn-logout">Cerrar Sesión</button>
-                </div>
-            `;
+            // Crear contenedor de información del usuario
+            const userDisplay = document.createElement('div');
+            userDisplay.className = 'user-info-display';
+            
+            // Crear avatar con la primera letra del nombre
+            const avatar = document.createElement('div');
+            avatar.className = 'user-avatar';
+            avatar.textContent = currentUser.nombre.charAt(0).toUpperCase();
+            
+            // Crear nombre del usuario
+            const userName = document.createElement('span');
+            userName.className = 'user-name';
+            userName.textContent = currentUser.nombre;
+            
+            // Agregar elementos al display
+            userDisplay.appendChild(avatar);
+            userDisplay.appendChild(userName);
+            
+            // Crear botón de logout
+            const logoutBtn = document.createElement('button');
+            logoutBtn.className = 'btn-logout';
+            logoutBtn.onclick = logout;
+            logoutBtn.innerHTML = 'Cerrar Sesión';
+            
+            // Limpiar contenedor y agregar elementos
+            userInfoContainer.innerHTML = '';
+            userInfoContainer.appendChild(userDisplay);
+            userInfoContainer.appendChild(logoutBtn);
         }
-    } else {
+    } else if (userInfoContainer) {
         userInfoContainer.innerHTML = '';
     }
 }

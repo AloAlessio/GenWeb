@@ -7,46 +7,10 @@
   <link rel="stylesheet" href="styles.css">
   <!-- FullCalendar CSS -->
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.css" rel="stylesheet">
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Custom Calendar Styles -->
-  <style>
-    #calendar {
-      max-width: 1000px;
-      margin: 40px auto;
-      background: #ffffff;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .fc .fc-toolbar-title {
-      font-size: 1.75rem;
-      color: #2C3E50;
-    }
-    /* Ensure day numbers and headers are visible */
-    .fc .fc-daygrid-day-number,
-    .fc .fc-col-header-cell-cushion {
-      color: #2C3E50 !important;
-    }
-    .fc .fc-daygrid-day-frame {
-      min-height: 100px;
-    }
-    /* Base event styling: white background, dark text, custom border */
-    .fc .fc-event {
-      background: #ffffff !important;
-      color: #2C3E50 !important;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      border: none !important;
-      padding: 0;
-    }
-    /* Container inside event for padding/layout */
-    .fc .fc-event .fc-event-main {
-      padding: 4px 6px;
-    }
-    .fc .fc-event .fc-event-title {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  </style>
+  <link rel="stylesheet" href="appointments.css">
 </head>
 <body class="appointments-page">
 
@@ -69,26 +33,163 @@
 
     <section class="content">
       <h2>Mis Citas</h2>
+      
+      <!-- Filtros de búsqueda -->
+      <div class="search-filters">
+        <h3><i class="fa fa-search"></i> Buscar Citas</h3>
+        <div class="filter-grid">
+          <div class="filter-item">
+            <label for="filtroFecha"><i class="fa fa-calendar"></i> Fecha:</label>
+            <input type="date" id="filtroFecha" class="form-control">
+          </div>
+          <div class="filter-item">
+            <label for="filtroTipo"><i class="fa fa-laptop-medical"></i> Tipo:</label>
+            <select id="filtroTipo" class="form-control">
+              <option value="">Todas</option>
+              <option value="Virtual">Virtual</option>
+              <option value="Presencial">Presencial</option>
+            </select>
+          </div>          <div class="filter-actions">
+            <button id="btnLimpiar" class="btn-clear"><i class="fa fa-times"></i> Limpiar</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Lista de citas -->
+      <div id="citasList" class="result-card"></div>
       <div id="calendar"></div>
     </section>
   </div>
-
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js"></script>
+  <!-- Scripts de la aplicación -->
+  <script src="calendar.js"></script>
+  <script src="appointments.js"></script>
   <!-- Edit Modal -->
   <div id="citaModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <h3>Detalle de la Cita</h3>
+      <h3>Detalle de la Cita</h3>      <!-- Estado de la cita -->
+      <div id="estadoCitaContainer" style="margin-bottom: 20px; text-align: center;">
+        <span id="estadoBadgeModal" class="estado-badge">Pendiente</span>
+      </div>
+      
       <form id="editCitaForm">
         <input type="hidden" id="editCitaId">
-        <!-- Campos de formulario... -->
+        <input type="hidden" id="editEstado">
+        <ul class="cita-details-list">
+          <li><i class="fa fa-user"></i><input type="text" id="editNombre" class="form-control" placeholder="Nombre"></li>
+          <li><i class="fa fa-envelope"></i><input type="email" id="editCorreo" class="form-control" placeholder="Correo"></li>
+          <li><i class="fa fa-phone"></i><input type="text" id="editTelefono" class="form-control" placeholder="Teléfono"></li>          <li><i class="fa fa-user-md"></i>
+            <select id="editDoctorId" class="form-control">
+              <option value="">Seleccionar Doctor</option>
+              <option value="Dr. Alonso Jimenez">Dr. Alonso Jimenez - Neurología</option>
+              <option value="Dra. Melissa Lara">Dra. Melissa Lara - Pediatría</option>
+              <option value="Dr. Diego Hernandez">Dr. Diego Hernandez - Cardiología</option>
+              <option value="Dra. Kelly Palomares">Dra. Kelly Palomares - Dermatología</option>
+              <option value="Dr. Mauricio Rocha">Dr. Mauricio Rocha - Infectología</option>
+              <option value="Dr. Alexis Hernandez">Dr. Alexis Hernandez - Otorrinolaringología</option>
+              <option value="Dr. Gonzalo Mendoza">Dr. Gonzalo Mendoza - Anestesiología</option>
+            </select>
+          </li>
+          <li><i class="fa fa-stethoscope"></i>
+            <select id="editEspecialidad" class="form-control">
+              <option value="">Seleccionar Especialidad</option>
+              <option value="Neurología">Neurología</option>
+              <option value="Pediatría">Pediatría</option>
+              <option value="Cardiología">Cardiología</option>
+              <option value="Dermatología">Dermatología</option>
+              <option value="Infectología">Infectología</option>
+              <option value="Otorrinolaringología">Otorrinolaringología</option>
+              <option value="Anestesiología">Anestesiología</option>
+            </select>
+          </li>
+          <li><i class="fa fa-laptop-medical"></i><input type="text" id="editModalidad" class="form-control" placeholder="Modalidad"></li>
+          <li><i class="fa fa-calendar"></i><input type="date" id="editFecha" class="form-control" placeholder="Fecha"></li>
+          <li><i class="fa fa-clock"></i><input type="time" id="editHora" class="form-control" placeholder="Hora"></li>
+          <li><i class="fa fa-sticky-note"></i><textarea id="editNotas" class="form-control" rows="2" placeholder="Notas"></textarea></li>
+        </ul>
+        
+        <!-- Botones de acción según el estado -->
+        <div id="botonesAccionModal" style="margin: 15px 0; display: flex; gap: 10px; justify-content: center;">
+          <button type="button" id="btnConfirmarModal" class="btn-confirmar" style="display: none;">
+            <i class="fa fa-check"></i> Confirmar Cita
+          </button>
+          <button type="button" id="btnCancelarModal" class="btn-cancelar" style="display: none;">
+            <i class="fa fa-times"></i> Cancelar Cita
+          </button>
+        </div>
+        
+        <button type="submit" class="btn-cta" style="width:100%;margin-top:10px;"><i class="fa fa-save"></i> Guardar Cambios</button>
       </form>
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js"></script>
-  <!-- Código separado en calendar.js -->
-  <script src="calendar.js"></script>
+  <!-- Modal para crear nueva cita -->
+  <div id="nuevaCitaModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeNuevaCita">&times;</span>
+      <h3>📅 Nueva Cita</h3>
+      
+      <form id="nuevaCitaForm">
+        <ul class="cita-details-list">
+          <li><i class="fa fa-user"></i><input type="text" id="nuevoNombre" class="form-control" placeholder="Nombre completo" required></li>
+          <li><i class="fa fa-envelope"></i><input type="email" id="nuevoCorreo" class="form-control" placeholder="Correo electrónico" required></li>
+          <li><i class="fa fa-phone"></i><input type="text" id="nuevoTelefono" class="form-control" placeholder="Teléfono" required></li>          <li><i class="fa fa-user-md"></i>
+            <select id="nuevoDoctorId" class="form-control" required>
+              <option value="">Seleccionar Doctor</option>
+              <option value="Dr. Alonso Jimenez">Dr. Alonso Jimenez - Neurología</option>
+              <option value="Dra. Melissa Lara">Dra. Melissa Lara - Pediatría</option>
+              <option value="Dr. Diego Hernandez">Dr. Diego Hernandez - Cardiología</option>
+              <option value="Dra. Kelly Palomares">Dra. Kelly Palomares - Dermatología</option>
+              <option value="Dr. Mauricio Rocha">Dr. Mauricio Rocha - Infectología</option>
+              <option value="Dr. Alexis Hernandez">Dr. Alexis Hernandez - Otorrinolaringología</option>
+              <option value="Dr. Gonzalo Mendoza">Dr. Gonzalo Mendoza - Anestesiología</option>
+            </select>
+          </li>
+          <li><i class="fa fa-stethoscope"></i>
+            <select id="nuevaEspecialidad" class="form-control" required>
+              <option value="">Seleccionar Especialidad</option>
+              <option value="Neurología">Neurología</option>
+              <option value="Pediatría">Pediatría</option>
+              <option value="Cardiología">Cardiología</option>
+              <option value="Dermatología">Dermatología</option>
+              <option value="Infectología">Infectología</option>
+              <option value="Otorrinolaringología">Otorrinolaringología</option>
+              <option value="Anestesiología">Anestesiología</option>
+            </select>
+          </li>
+          <li><i class="fa fa-laptop-medical"></i>
+            <select id="nuevaModalidad" class="form-control" required>
+              <option value="">Tipo de consulta</option>
+              <option value="Presencial">Presencial</option>
+              <option value="Virtual">Virtual</option>
+            </select>
+          </li>
+          <li><i class="fa fa-calendar"></i><input type="date" id="nuevaFecha" class="form-control" required readonly></li>
+          <li><i class="fa fa-clock"></i>
+            <select id="nuevaHora" class="form-control" required>
+              <option value="">Seleccionar hora</option>
+              <option value="08:00">08:00 AM</option>
+              <option value="09:00">09:00 AM</option>
+              <option value="10:00">10:00 AM</option>
+              <option value="11:00">11:00 AM</option>
+              <option value="12:00">12:00 PM</option>
+              <option value="14:00">02:00 PM</option>
+              <option value="15:00">03:00 PM</option>
+              <option value="16:00">04:00 PM</option>
+              <option value="17:00">05:00 PM</option>
+            </select>
+          </li>
+          <li><i class="fa fa-sticky-note"></i><textarea id="nuevasNotas" class="form-control" rows="2" placeholder="Notas adicionales (opcional)"></textarea></li>
+        </ul>
+        
+        <button type="submit" class="btn-cta" style="width:100%;margin-top:10px;">
+          <i class="fa fa-save"></i> Crear Cita
+        </button>
+      </form>
+    </div>
+  </div>
 </body>
 </html>
