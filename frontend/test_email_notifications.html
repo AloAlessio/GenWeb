@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenWeb - Prueba de Notificaciones de Email</title>
+    <style>        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        .test-section h3 {
+            color: #28a745;
+            margin-top: 0;
+            font-size: 22px;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+            transition: background-color 0.3s;
+            min-height: 44px; /* Tamaño táctil mínimo */
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-success {
+            background-color: #28a745;
+        }
+        .btn-success:hover {
+            background-color: #1e7e34;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+        .test-results {
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        .instructions {
+            background-color: #e7f3ff;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .step {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-left: 3px solid #28a745;
+            background-color: #f8fff9;
+        }
+        .step h4 {
+            margin: 0 0 10px 0;
+            color: #155724;
+        }
+        .code {
+            background-color: #f1f3f4;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+            
+            .test-section {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .test-section h3 {
+                font-size: 20px;
+            }
+            
+            .btn {
+                width: 100%;
+                margin: 5px 0;
+                padding: 15px;
+                font-size: 16px;
+            }
+            
+            .form-group {
+                margin-bottom: 12px;
+            }
+            
+            input, select, textarea {
+                padding: 12px;
+                font-size: 16px; /* Evita zoom en iOS */
+            }
+            
+            .instructions {
+                padding: 12px;
+                margin: 15px 0;
+            }
+            
+            .step {
+                padding: 12px;
+                margin-bottom: 15px;
+            }
+            
+            .code {
+                padding: 8px;
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            .test-section {
+                padding: 10px;
+            }
+            
+            .test-section h3 {
+                font-size: 18px;
+            }
+            
+            .btn {
+                padding: 12px;
+                font-size: 14px;
+            }
+            
+            input, select, textarea {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            .status {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            .instructions,
+            .step {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏥 GenWeb - Prueba de Notificaciones de Email</h1>
+        
+        <div class="instructions">
+            <h3>📋 Instrucciones de Prueba</h3>
+            <p>Esta página te permite probar completamente el sistema de notificaciones por email cuando se generan recetas médicas.</p>
+        </div>
+
+        <div class="test-section">
+            <h3>📧 1. Verificación del Sistema de Email</h3>
+            <p>Primero verificaremos si el sistema de email está configurado correctamente:</p>
+            <button class="btn" onclick="verificarSistemaEmail()">🔍 Verificar Sistema</button>
+            <div id="emailStatus" class="test-results"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>📝 2. Crear Cita de Prueba</h3>
+            <p>Creamos una cita de prueba para poder generar una receta:</p>
+            
+            <div class="form-group">
+                <label for="nombrePaciente">Nombre del Paciente:</label>
+                <input type="text" id="nombrePaciente" value="Juan Pérez García" placeholder="Nombre completo">
+            </div>
+            
+            <div class="form-group">
+                <label for="emailPaciente">Email del Paciente:</label>
+                <input type="email" id="emailPaciente" placeholder="tu-email@ejemplo.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="telefonoPaciente">Teléfono:</label>
+                <input type="tel" id="telefonoPaciente" value="555-123-4567" placeholder="Teléfono">
+            </div>
+            
+            <button class="btn btn-success" onclick="crearCitaPrueba()">👥 Crear Cita de Prueba</button>
+            <div id="citaStatus" class="test-results"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>💊 3. Generar Receta con Notificación</h3>
+            <p>Generamos una receta médica que enviará automáticamente un email al paciente:</p>
+            
+            <div class="form-group">
+                <label for="medicamentoPrueba">Medicamento:</label>
+                <input type="text" id="medicamentoPrueba" value="Amoxicilina 500mg" placeholder="Nombre del medicamento">
+            </div>
+            
+            <div class="form-group">
+                <label for="dosisPrueba">Dosis:</label>
+                <input type="text" id="dosisPrueba" value="1 tableta" placeholder="Dosis">
+            </div>
+            
+            <div class="form-group">
+                <label for="frecuenciaPrueba">Frecuencia:</label>
+                <select id="frecuenciaPrueba">
+                    <option value="Una vez al día">Una vez al día</option>
+                    <option value="Dos veces al día" selected>Dos veces al día</option>
+                    <option value="Tres veces al día">Tres veces al día</option>
+                    <option value="Cada 4 horas">Cada 4 horas</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="duracionPrueba">Duración:</label>
+                <input type="text" id="duracionPrueba" value="7 días" placeholder="Duración del tratamiento">
+            </div>
+            
+            <div class="form-group">
+                <label for="indicacionesPrueba">Indicaciones (opcional):</label>
+                <textarea id="indicacionesPrueba" rows="3" placeholder="Indicaciones especiales...">Tomar con alimentos. No suspender el tratamiento aunque se sienta mejor.</textarea>
+            </div>
+            
+            <button class="btn btn-success" onclick="generarRecetaPrueba()" id="btnReceta" disabled>💊 Generar Receta con Email</button>
+            <div id="recetaStatus" class="test-results"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>📈 4. Resultados de la Prueba</h3>
+            <div id="resumenPrueba">
+                <div class="info">
+                    ℹ️ Los resultados aparecerán aquí después de completar las pruebas.
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>⚙️ 5. Configuración de Email</h3>
+            
+            <div class="step">
+                <h4>🔧 Paso 1: Configurar Variables de Entorno</h4>
+                <p>En el archivo <code>.env</code> del backend, configura:</p>
+                <div class="code">
+EMAIL_USER=tu-email@gmail.com
+EMAIL_PASSWORD=tu-app-password
+                </div>
+            </div>
+            
+            <div class="step">
+                <h4>📧 Paso 2: Configurar Gmail (si usas Gmail)</h4>
+                <ol>
+                    <li>Habilita la verificación en 2 pasos en tu cuenta de Google</li>
+                    <li>Ve a "Contraseñas de aplicaciones" en tu cuenta</li>
+                    <li>Genera una nueva contraseña para "GenWeb"</li>
+                    <li>Usa esa contraseña en EMAIL_PASSWORD</li>
+                </ol>
+            </div>
+            
+            <div class="step">
+                <h4>🔄 Paso 3: Reiniciar el Servidor</h4>
+                <p>Después de configurar las variables, reinicia el servidor backend.</p>
+            </div>
+            
+            <button class="btn btn-warning" onclick="window.open('email_config.html', '_blank')">⚙️ Abrir Panel de Configuración</button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        let citaCreada = null;
+
+        async function verificarSistemaEmail() {
+            const statusDiv = document.getElementById('emailStatus');
+            statusDiv.innerHTML = '<div class="info">🔄 Verificando sistema de email...</div>';
+            
+            try {
+                const response = await fetch(`${API_URL}/email/verificar`);
+                const data = await response.json();
+                
+                if (data.configurado) {
+                    statusDiv.innerHTML = `
+                        <div class="success">
+                            ✅ Sistema de email configurado correctamente
+                            <br>📧 Proveedor: ${data.proveedor}
+                            <br>👤 Usuario: ${data.usuario}
+                        </div>
+                    `;
+                } else {
+                    statusDiv.innerHTML = `
+                        <div class="warning">
+                            ⚠️ Sistema de email no configurado
+                            <br>Error: ${data.error}
+                            <br><small>Las recetas se generarán pero no se enviarán emails.</small>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `
+                    <div class="error">
+                        ❌ Error al verificar sistema: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        async function crearCitaPrueba() {
+            const statusDiv = document.getElementById('citaStatus');
+            const nombre = document.getElementById('nombrePaciente').value;
+            const email = document.getElementById('emailPaciente').value;
+            const telefono = document.getElementById('telefonoPaciente').value;
+            
+            if (!nombre || !email || !telefono) {
+                statusDiv.innerHTML = '<div class="error">❌ Por favor completa todos los campos</div>';
+                return;
+            }
+            
+            statusDiv.innerHTML = '<div class="info">🔄 Creando cita de prueba...</div>';
+            
+            try {
+                const citaData = {
+                    nombre,
+                    correo: email,
+                    telefono,
+                    doctorId: 1,
+                    especialidad: 'Medicina General',
+                    modalidad: 'Presencial',
+                    fecha: new Date().toISOString().split('T')[0],
+                    hora: '10:00',
+                    notas: 'Cita de prueba para sistema de email',
+                    estado: 'confirmada'
+                };
+                
+                const response = await fetch(`${API_URL}/citas`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(citaData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    citaCreada = data.cita;
+                    document.getElementById('btnReceta').disabled = false;
+                    statusDiv.innerHTML = `
+                        <div class="success">
+                            ✅ Cita creada exitosamente
+                            <br>🆔 ID de Cita: ${citaCreada.id}
+                            <br>👤 Paciente: ${citaCreada.nombre}
+                            <br>📧 Email: ${citaCreada.correo}
+                        </div>
+                    `;
+                } else {
+                    throw new Error(data.message || 'Error al crear cita');
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `
+                    <div class="error">
+                        ❌ Error al crear cita: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        async function generarRecetaPrueba() {
+            if (!citaCreada) {
+                document.getElementById('recetaStatus').innerHTML = '<div class="error">❌ Primero debes crear una cita</div>';
+                return;
+            }
+            
+            const statusDiv = document.getElementById('recetaStatus');
+            statusDiv.innerHTML = '<div class="info">🔄 Generando receta y enviando email...</div>';
+            
+            try {
+                const recetaData = {
+                    citaId: citaCreada.id,
+                    nombrePaciente: citaCreada.nombre,
+                    doctorId: 1,
+                    medicamento: document.getElementById('medicamentoPrueba').value,
+                    dosis: document.getElementById('dosisPrueba').value,
+                    frecuencia: document.getElementById('frecuenciaPrueba').value,
+                    duracion: document.getElementById('duracionPrueba').value,
+                    indicaciones: document.getElementById('indicacionesPrueba').value
+                };
+                
+                const response = await fetch(`${API_URL}/recetas`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(recetaData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    const emailEnviado = data.emailEnviado;
+                    statusDiv.innerHTML = `
+                        <div class="success">
+                            ✅ Receta generada exitosamente
+                            <br>🆔 ID de Receta: ${data.receta.id}
+                            <br>💊 Medicamento: ${data.receta.medicamento}
+                            <br>📧 Email enviado: ${emailEnviado ? 'Sí' : 'No'}
+                            ${emailEnviado ? '<br><small>Revisa la bandeja de entrada del email proporcionado</small>' : ''}
+                        </div>
+                    `;
+                    
+                    mostrarResumen(data.receta, emailEnviado);
+                } else {
+                    throw new Error(data.error || 'Error al generar receta');
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `
+                    <div class="error">
+                        ❌ Error al generar receta: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        function mostrarResumen(receta, emailEnviado) {
+            const resumenDiv = document.getElementById('resumenPrueba');
+            resumenDiv.innerHTML = `
+                <div class="success">
+                    <h4>🎉 Prueba Completada Exitosamente</h4>
+                    <p><strong>📊 Resumen de la Prueba:</strong></p>
+                    <ul>
+                        <li>✅ Cita creada: ID ${citaCreada.id}</li>
+                        <li>✅ Receta generada: ID ${receta.id}</li>
+                        <li>${emailEnviado ? '✅' : '⚠️'} Email ${emailEnviado ? 'enviado correctamente' : 'no enviado (configuración pendiente)'}</li>
+                    </ul>
+                    <p><strong>📧 Detalles del Email:</strong></p>
+                    <ul>
+                        <li>Destinatario: ${citaCreada.correo}</li>
+                        <li>Medicamento: ${receta.medicamento}</li>
+                        <li>Estado: ${emailEnviado ? 'Enviado' : 'No enviado'}</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        // Verificar sistema al cargar la página
+        window.addEventListener('DOMContentLoaded', verificarSistemaEmail);
+    </script>
+</body>
+</html>

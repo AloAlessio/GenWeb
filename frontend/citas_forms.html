@@ -8,6 +8,100 @@
     <link rel="stylesheet" href="styles.css">
     <!-- Fuente profesional -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos responsivos para formulario de citas */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 10px;
+            }
+            
+            .form-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .form-header h1 {
+                font-size: 22px;
+                margin: 0;
+            }
+            
+            .form-header button {
+                width: 100%;
+            }
+            
+            .appointment-form {
+                padding: 20px;
+                margin: 10px 0;
+            }
+            
+            .appointment-form h2 {
+                font-size: 20px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .form-row .form-group {
+                flex: 1 1 100%;
+            }
+            
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 12px;
+                font-size: 16px; /* Evita zoom en iOS */
+            }
+            
+            .form-actions {
+                margin-top: 15px;
+            }
+            
+            .form-actions button {
+                width: 100%;
+                padding: 15px;
+                font-size: 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+                margin: 5px;
+            }
+            
+            .form-header h1 {
+                font-size: 20px;
+            }
+            
+            .appointment-form {
+                padding: 15px;
+            }
+            
+            .appointment-form h2 {
+                font-size: 18px;
+            }
+            
+            .form-group {
+                margin-bottom: 12px;
+            }
+            
+            .form-group label {
+                font-size: 14px;
+                margin-bottom: 6px;
+            }
+            
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">

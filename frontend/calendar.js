@@ -2,12 +2,11 @@ window.API_URL = "http://localhost:5000/api";
 window.calendar = null; // Variable global para el calendario
 
 document.addEventListener('DOMContentLoaded', () => {
-      const calendarEl = document.getElementById('calendar');
-      window.calendar = new FullCalendar.Calendar(calendarEl, {
+      const calendarEl = document.getElementById('calendar');      window.calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         locale: 'es',
         headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay' },
-        editable: true,
+        editable: false, // Deshabilitar edición por drag and drop
         selectable: true,
         eventTimeFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
         dateClick: function(info) {
@@ -33,8 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const el = info.el;
           const estado = info.event.extendedProps.estado || 'pendiente';
           el.style.borderLeft = `4px solid ${getEventColor(estado)}`;
-        },
-        eventClick: info => {
+        },        eventClick: info => {
           const d = info.event.extendedProps;
           const cita = {
             id: info.event.id,
@@ -46,9 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
             modalidad: d.modalidad,
             fecha: info.event.startStr.slice(0,10),
             hora: info.event.startStr.slice(11,16),
-            notas: d.notas
+            notas: d.notas,
+            estado: d.estado
           };
-          openEditModal(cita);
+          // Llamar a la función de appointments.js con modo solo lectura
+          if (typeof openEditModal === 'function') {
+            openEditModal(cita, true); // true = solo lectura
+          }
         },
         eventDrop: info => {
           updateDateTime(info.event.id, info.event.startStr.slice(0,10), info.event.startStr.slice(11,16));
@@ -84,23 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         } catch (err) { console.error(err); }
       });
-    });
-
-    function openEditModal(cita) {
-      document.getElementById('editCitaId').value = cita.id;
-      document.getElementById('editNombre').value = cita.nombre;
-      document.getElementById('editCorreo').value = cita.correo;
-      document.getElementById('editTelefono').value = cita.telefono;
-      document.getElementById('editDoctorId').value = cita.doctorId;
-      document.getElementById('editEspecialidad').value = cita.especialidad;
-      document.getElementById('editModalidad').value = cita.modalidad;
-      document.getElementById('editFecha').value = cita.fecha;
-      document.getElementById('editHora').value = cita.hora;
-      document.getElementById('editNotas').value = cita.notas;
-      document.getElementById('citaModal').style.display = 'flex';
-    }
-
-    async function updateDateTime(id, fecha, hora) {
+    });    async function updateDateTime(id, fecha, hora) {
       try {
         await fetch(`${API_URL}/citas/${id}`, { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ fecha, hora }) });
         Swal.fire('Reprogramada','Cita reprogramada','success');

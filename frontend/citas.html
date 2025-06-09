@@ -6,6 +6,76 @@
 <title>GenWeb | Citas Médicas</title>
 <!-- CSS global -->
 <link rel="stylesheet" href="styles.css">
+<style>
+  /* Estilos adicionales responsivos para citas */
+  @media (max-width: 768px) {
+    .container {
+      padding: 10px;
+    }
+    
+    .header {
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .header h1 {
+      font-size: 22px;
+      text-align: center;
+    }
+    
+    .header button {
+      width: 100%;
+      margin: 0;
+    }
+    
+    .search-section {
+      padding: 20px 15px;
+    }
+    
+    .search-section h2 {
+      font-size: 20px;
+    }
+    
+    .search-filters {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+    
+    .search-actions {
+      text-align: center;
+    }
+    
+    .search-actions button {
+      width: 100%;
+      padding: 15px;
+      font-size: 16px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .header h1 {
+      font-size: 18px;
+    }
+    
+    .search-section {
+      padding: 15px 10px;
+    }
+    
+    .search-section h2 {
+      font-size: 18px;
+    }
+    
+    .search-section p {
+      font-size: 14px;
+    }
+    
+    .search-filters input,
+    .search-filters select {
+      padding: 12px;
+      font-size: 16px; /* Evita zoom en iOS */
+    }
+  }
+</style>
 </head>
 <body>
 <div class="container">

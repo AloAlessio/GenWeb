@@ -91,17 +91,109 @@ a {
     font-size: 18px;
     margin: 20px 0;
 }
-.btn-primary {
-    background-color: #003366;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
+/* ========================= */
+/*    UNIFIED BUTTON SYSTEM  */
+/* ========================= */
+
+/* Base button styles - applied to all buttons */
+.btn-primary,
+.btn-elegant,
+.contact button,
+button[type="submit"],
+form button {
+    /* Uniform sizing */
+    min-width: 160px !important;
+    height: 48px !important;
+    padding: 12px 28px !important;
+    
+    /* Typography */
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    
+    /* Appearance */
+    border: none !important;
+    border-radius: 25px !important;
+    cursor: pointer !important;
+    
+    /* Positioning and display */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    
+    /* Effects */
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
+
+/* Primary button styling (Hero section - "Conoce Más") */
+.btn-primary {
+    background: linear-gradient(135deg, #003366, #004d99) !important;
+    color: #fff !important;
+}
+
 .btn-primary:hover {
-    background-color: #001f33;
+    background: linear-gradient(135deg, #001a33, #003366) !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Elegant button base (Topbar - "Agendar Cita") */
+.btn-elegant {
+    color: #fff !important;
+}
+
+.btn-elegant:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Agendar button specific styling */
+.btn-agendar {
+    background: linear-gradient(135deg, #00b4db, #0083b0) !important;
+}
+
+.btn-agendar:hover {
+    background: linear-gradient(135deg, #0083b0, #005c7a) !important;
+}
+
+/* Contact form button styling */
+.contact button,
+form button,
+button[type="submit"] {
+    background: linear-gradient(135deg, #003366, #004d99) !important;
+    color: #fff !important;
+}
+
+.contact button:hover,
+form button:hover,
+button[type="submit"]:hover {
+    background: linear-gradient(135deg, #001a33, #003366) !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Ensure all buttons have consistent focus states */
+.btn-primary:focus,
+.btn-elegant:focus,
+.contact button:focus,
+form button:focus,
+button[type="submit"]:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(0, 180, 255, 0.3) !important;
+}
+
+/* Active state for all buttons */
+.btn-primary:active,
+.btn-elegant:active,
+.contact button:active,
+form button:active,
+button[type="submit"]:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
 }
 .hero-image img {
     width: 100%;
@@ -241,22 +333,39 @@ a {
     flex-direction: column;
     gap: 15px;
 }
+/* Contact form styling */
 .contact input,
 .contact textarea,
 .contact button {
-    padding: 10px;
-    font-size: 16px;
+    padding: 12px 24px;
+    font-size: 14px;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 25px;
+    font-family: 'Montserrat', sans-serif;
 }
+
 .contact button {
-    background-color: #003366;
+    min-width: 140px;
+    height: 45px;
+    background: linear-gradient(135deg, #003366, #004080);
     color: #fff;
     border: none;
-    transition: background-color 0.3s;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
+
 .contact button:hover {
-    background-color: #001f33;
+    background: linear-gradient(135deg, #001f33, #002d5a);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 /* ========================= */
@@ -1011,22 +1120,40 @@ footer nav ul li a:hover {
   
 /* Estilo base para ambos botones elegantes */
 .btn-elegant {
-    border: none;
-    border-radius: 25px;          /* Bordes redondeados */
-    padding: 8px 20px;
+    /* Uniform sizing */
+    min-width: 140px;
+    height: 45px;
+    padding: 12px 24px;
+    
+    /* Typography */
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     color: #fff;
+    
+    /* Appearance */
+    border: none;
+    border-radius: 25px;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    font-family: 'Montserrat', sans-serif;   /* Asegura la misma fuente */
-  }
-  
-  /* Efecto hover */
-  .btn-elegant:hover {
+    
+    /* Transitions and effects */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+    /* Center content */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Efecto hover */
+.btn-elegant:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  }
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
   
   /* Botón "Agendar Cita" (Gradiente azul) */
   .btn-agendar {
@@ -1091,10 +1218,13 @@ footer nav ul li a:hover {
 /* ========================= */
 /*      Responsive Design    */
 /* ========================= */
+
+/* Tablet (768px y abajo) */
 @media (max-width: 768px) {
     /* Topbar responsive */
     .topbar {
         padding: 0 15px;
+        height: 55px;
     }
     
     .topbar-left .topbar-logo {
@@ -1103,6 +1233,16 @@ footer nav ul li a:hover {
     
     .topbar-right {
         gap: 0.5rem;
+    }
+    
+    /* Sidebar responsive - Se oculta en tablets */
+    .sidebar {
+        transform: translateX(-250px);
+    }
+    
+    .main-content {
+        margin-left: 0;
+        margin-top: 55px;
     }
     
     /* User info responsive */
@@ -1120,7 +1260,6 @@ footer nav ul li a:hover {
     
     .user-name {
         font-size: 12px;
-        display: none; /* Ocultar nombre en móviles */
     }
     
     .btn-logout {
@@ -1137,9 +1276,96 @@ footer nav ul li a:hover {
         padding: 6px 12px;
         font-size: 12px;
     }
+    
+    /* Container responsive */
+    .container {
+        padding: 15px;
+    }
+    
+    /* Cards responsive */
+    .service-cards,
+    .specialist-cards,
+    .testimonial-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .card {
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    /* Form responsive */
+    .form-row {
+        flex-direction: column;
+    }
+    
+    .form-row .form-group {
+        flex: 1 1 100%;
+    }
+    
+    /* Search filters responsive */
+    .search-filters {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    /* Calendar responsive */
+    .split-view {
+        flex-direction: column;
+    }
+    
+    .mini-calendar-container {
+        flex: none;
+        order: 2;
+    }
+    
+    .full-calendar-container {
+        order: 1;
+    }
+    
+    /* Modal responsive */
+    .modal-content {
+        width: 95%;
+        margin: 10px;
+        padding: 15px;
+    }
+    
+    /* Results responsive */
+    .result-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 15px;
+    }
+    
+    .doctor-photo {
+        margin: 0 auto 15px;
+    }
+    
+    /* Footer responsive */
+    footer nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
 }
 
+/* Mobile (480px y abajo) */
 @media (max-width: 480px) {
+    /* Topbar mobile */
+    .topbar {
+        padding: 0 10px;
+        height: 50px;
+    }
+    
+    .main-content {
+        margin-top: 50px;
+    }
+    
+    .topbar-left .topbar-logo {
+        width: 80px;
+    }
+    
+    /* User info mobile */
     .user-info-display {
         padding: 4px 8px;
     }
@@ -1147,7 +1373,177 @@ footer nav ul li a:hover {
     .user-avatar {
         width: 24px;
         height: 24px;
-        font-size: 11px;
+        font-size: 10px;
+        margin-right: 6px;
+    }
+    
+    .user-name {
+        display: none; /* Ocultar nombre en móviles pequeños */
+    }
+    
+    .btn-logout {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+    
+    .btn-agendar {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+    
+    /* Container mobile */
+    .container {
+        padding: 10px;
+    }
+    
+    /* Typography mobile */
+    h1 {
+        font-size: 24px;
+    }
+    
+    h2 {
+        font-size: 20px;
+        margin-top: 20px;
+        margin-bottom: 15px;
+    }
+    
+    h3 {
+        font-size: 18px;
+    }
+    
+    /* Cards mobile */
+    .card {
+        padding: 15px;
+    }
+    
+    .card-image img {
+        height: 200px;
+    }
+    
+    /* Forms mobile */
+    .appointment-form {
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 12px;
+        font-size: 16px; /* Evita zoom en iOS */
+    }
+    
+    /* Buttons mobile */
+    .btn-primary,
+    .btn,
+    button {
+        padding: 12px 20px;
+        font-size: 16px;
+        min-height: 44px; /* Tamaño mínimo táctil */
+    }
+    
+    /* Modal mobile */
+    .modal-content {
+        width: 98%;
+        margin: 5px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    
+    .modal-content .close {
+        font-size: 28px;
+        top: 5px;
+        right: 10px;
+    }
+    
+    /* Search section mobile */
+    .search-section {
+        padding: 20px 15px;
+    }
+    
+    .search-actions {
+        text-align: center;
+    }
+    
+    /* Doctor cards mobile */
+    .doctor-list {
+        padding: 10px;
+    }
+    
+    .doctor-card {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    
+    /* Facilities mobile */
+    .facility-images {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .facility-images img {
+        max-width: 90%;
+        margin-bottom: 15px;
+    }
+    
+    /* Sections padding mobile */
+    .services,
+    .specialists,
+    .facilities,
+    .testimonials,
+    .contact {
+        padding: 30px 15px;
+    }
+    
+    /* Contact form mobile */
+    .contact form {
+        padding: 0 10px;
+    }
+    
+    /* News section mobile */
+    .news-section {
+        margin: 15px;
+        padding: 20px 15px;
+    }
+}
+
+/* Mobile muy pequeño (320px y abajo) */
+@media (max-width: 320px) {
+    .topbar {
+        padding: 0 5px;
+    }
+    
+    .topbar-left .topbar-logo {
+        width: 70px;
+    }
+    
+    .container {
+        padding: 5px;
+    }
+    
+    .appointment-form,
+    .search-section,
+    .news-section {
+        margin: 5px;
+        padding: 15px 10px;
+    }
+    
+    h1 {
+        font-size: 20px;
+    }
+    
+    h2 {
+        font-size: 18px;
+    }
+    
+    .card {
+        padding: 10px;
+    }
+    
+    .btn-agendar {
+        display: none; /* Ocultar en pantallas muy pequeñas */
+    }
+}
         margin-right: 6px;
     }
     
@@ -1227,4 +1623,109 @@ footer nav ul li a:hover {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+}
+
+/* ============================================= */
+/*          UNIFIED BUTTON SYSTEM               */
+/* ============================================= */
+
+/* Override all button styles for consistency */
+.btn-primary,
+.btn-elegant,
+.contact button,
+button[type="submit"],
+form button {
+    /* Uniform sizing */
+    min-width: 160px !important;
+    height: 48px !important;
+    padding: 12px 28px !important;
+    
+    /* Typography */
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    
+    /* Appearance */
+    border: none !important;
+    border-radius: 25px !important;
+    cursor: pointer !important;
+    
+    /* Positioning and display */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    
+    /* Effects */
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Primary button styling (Hero section - "Conoce Más") */
+.btn-primary {
+    background: linear-gradient(135deg, #003366, #004d99) !important;
+    color: #fff !important;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #001a33, #003366) !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Elegant button base (Topbar - "Agendar Cita") */
+.btn-elegant {
+    color: #fff !important;
+}
+
+.btn-elegant:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Agendar button specific styling */
+.btn-agendar {
+    background: linear-gradient(135deg, #00b4db, #0083b0) !important;
+}
+
+.btn-agendar:hover {
+    background: linear-gradient(135deg, #0083b0, #005c7a) !important;
+}
+
+/* Contact form button styling */
+.contact button,
+form button,
+button[type="submit"] {
+    background: linear-gradient(135deg, #003366, #004d99) !important;
+    color: #fff !important;
+}
+
+.contact button:hover,
+form button:hover,
+button[type="submit"]:hover {
+    background: linear-gradient(135deg, #001a33, #003366) !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Ensure all buttons have consistent focus states */
+.btn-primary:focus,
+.btn-elegant:focus,
+.contact button:focus,
+form button:focus,
+button[type="submit"]:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(0, 180, 255, 0.3) !important;
+}
+
+/* Active state for all buttons */
+.btn-primary:active,
+.btn-elegant:active,
+.contact button:active,
+form button:active,
+button[type="submit"]:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
 }

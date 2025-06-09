@@ -6,8 +6,91 @@
     <title>GenWeb - Iniciar Sesión / Registro</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    </head>
-    <body>
+    <style>
+        /* Estilos responsivos para login */
+        @media (max-width: 768px) {
+            .auth-container {
+                margin: 20px auto;
+                padding: 20px;
+                max-width: 95%;
+                border-radius: 8px;
+            }
+            
+            .auth-header .logo-img {
+                width: 100px;
+            }
+            
+            .tabs {
+                margin-bottom: 15px;
+            }
+            
+            .tab {
+                padding: 12px 0;
+                font-size: 14px;
+            }
+            
+            .form h2 {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+            
+            .form-group {
+                margin-bottom: 12px;
+            }
+            
+            .form-group label {
+                font-size: 14px;
+                margin-bottom: 6px;
+            }
+            
+            .form-group input {
+                padding: 12px;
+                font-size: 16px; /* Evita zoom en iOS */
+            }
+            
+            .btn-primary {
+                width: 100%;
+                padding: 15px;
+                font-size: 16px;
+            }
+            
+            .form-links {
+                text-align: center;
+                margin-top: 15px;
+            }
+            
+            .form-links a {
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .auth-container {
+                margin: 10px auto;
+                padding: 15px;
+            }
+            
+            .auth-header .logo-img {
+                width: 80px;
+            }
+            
+            .form h2 {
+                font-size: 18px;
+            }
+            
+            .form-group input {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            .btn-primary {
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
     <div class="auth-container">
         <!-- Logo o cabecera GenWeb -->
         <div class="auth-header">

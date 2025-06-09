@@ -11,6 +11,61 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Custom Calendar Styles -->
   <link rel="stylesheet" href="appointments.css">
+  <style>
+    /* Estilos responsivos específicos para appointments */
+    @media (max-width: 768px) {
+      .topbar {
+        height: 50px;
+        padding: 0 10px;
+      }
+      
+      .main-content {
+        margin-top: 50px;
+        margin-left: 0;
+      }
+      
+      .sidebar {
+        transform: translateX(-250px);
+      }
+      
+      .topbar-logo {
+        width: 80px;
+      }
+      
+      .content {
+        padding: 10px;
+      }
+      
+      .content h2 {
+        font-size: 20px;
+        margin: 15px 0;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .topbar {
+        height: 45px;
+        padding: 0 5px;
+      }
+      
+      .main-content {
+        margin-top: 45px;
+      }
+      
+      .topbar-logo {
+        width: 70px;
+      }
+      
+      .content {
+        padding: 5px;
+      }
+      
+      .content h2 {
+        font-size: 18px;
+        margin: 10px 0;
+      }
+    }
+  </style>
 </head>
 <body class="appointments-page">
 
@@ -191,5 +246,77 @@
       </form>
     </div>
   </div>
-</body>
+
+  <!-- Modal para recetar medicamentos -->
+  <div id="recetaModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="cerrarModalReceta()">&times;</span>
+      <h3><i class="fa fa-prescription-bottle-medical"></i> Generar Receta Médica</h3>
+      
+      <form id="recetaForm" onsubmit="generarReceta(event)">
+        <input type="hidden" id="recetaCitaId">
+        <ul class="cita-details-list">
+          <li>
+            <i class="fa fa-user"></i>
+            <input type="text" id="recetaNombrePaciente" class="form-control" placeholder="Nombre del paciente" readonly>
+          </li>
+          <li>
+            <i class="fa fa-user-md"></i>
+            <input type="text" id="recetaDoctorId" class="form-control" placeholder="Doctor" readonly>
+          </li>
+          <li>
+            <i class="fa fa-pills"></i>
+            <input type="text" id="recetaMedicamento" class="form-control" placeholder="Medicamento" required>
+          </li>
+          <li>
+            <i class="fa fa-dosage-form"></i>
+            <input type="text" id="recetaDosis" class="form-control" placeholder="Dosis (ej: 500mg)" required>
+          </li>
+          <li>
+            <i class="fa fa-clock"></i>
+            <select id="recetaFrecuencia" class="form-control" required>
+              <option value="">Frecuencia</option>
+              <option value="Una vez al día">Una vez al día</option>
+              <option value="Dos veces al día">Dos veces al día</option>
+              <option value="Tres veces al día">Tres veces al día</option>
+              <option value="Cada 4 horas">Cada 4 horas</option>
+              <option value="Cada 6 horas">Cada 6 horas</option>
+              <option value="Cada 8 horas">Cada 8 horas</option>
+              <option value="Cada 12 horas">Cada 12 horas</option>
+              <option value="Según sea necesario">Según sea necesario</option>
+            </select>
+          </li>
+          <li>
+            <i class="fa fa-calendar-days"></i>
+            <select id="recetaDuracion" class="form-control" required>
+              <option value="">Duración del tratamiento</option>
+              <option value="3 días">3 días</option>
+              <option value="5 días">5 días</option>
+              <option value="7 días">7 días</option>
+              <option value="10 días">10 días</option>
+              <option value="14 días">14 días</option>
+              <option value="21 días">21 días</option>
+              <option value="30 días">30 días</option>
+              <option value="Hasta agotar">Hasta agotar</option>
+              <option value="Tratamiento continuo">Tratamiento continuo</option>
+            </select>
+          </li>
+          <li>
+            <i class="fa fa-sticky-note"></i>
+            <textarea id="recetaIndicaciones" class="form-control" rows="3" placeholder="Indicaciones especiales (opcional)"></textarea>
+          </li>
+        </ul>
+        
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+          <button type="submit" class="btn-cta" style="flex: 1;">
+            <i class="fa fa-file-medical"></i> Generar Receta
+          </button>
+          <button type="button" class="btn-cancelar" onclick="cerrarModalReceta()" style="flex: 1;">
+            <i class="fa fa-times"></i> Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body> 
 </html>

@@ -1,11 +1,51 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+<head>  
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GenWeb - Inicio</title>
-  <!-- Tu hoja de estilos principal -->zz
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  <title>GenWeb - Inicio</title>
+  <!-- Tu hoja de estilos principal -->
   <link rel="stylesheet" href="styles.css" />
+  <!-- Responsive mobile styles -->
+  <link rel="stylesheet" href="mobile.css" />
+  <style>
+    /* Estilos adicionales para responsive */
+    @media (max-width: 768px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .hero-text {
+        margin-bottom: 20px;
+      }
+      
+      .hero-text h1 {
+        font-size: 24px;
+      }
+      
+      .hero-text p {
+        font-size: 16px;
+      }
+      
+      .hero-image img {
+        max-width: 300px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .hero-text h1 {
+        font-size: 20px;
+      }
+      
+      .hero-text p {
+        font-size: 14px;
+      }
+      
+      .hero-image img {
+        max-width: 250px;
+      }
+    }
+  </style>
 </head>
 <body class="index-page">
 
@@ -34,11 +74,11 @@
 
     <!-- Topbar (barra superior) transparente -->
     <header class="topbar">
-      <div class="topbar-left">
-        <!-- Botón toggle (hamburguesa) + Logo pequeño -->
+      <div class="topbar-left">        <!-- Botón toggle (hamburguesa) + Logo pequeño -->
         <button class="sidebar-toggle" id="sidebarToggle">&#9776;</button>
         <img src="logo.png" alt="GenWeb" class="topbar-logo" />
-      </div>      <div class="topbar-right">
+      </div>
+      <div class="topbar-right">
         <!-- Botón Agendar Cita -->
         <button id="btnAgendarCita" class="btn-elegant btn-agendar">Agendar Cita</button>
 

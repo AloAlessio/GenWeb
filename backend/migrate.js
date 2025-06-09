@@ -1,6 +1,7 @@
 // Archivo para migrar la base de datos y agregar el campo 'estado'
 const db = require('./db');
 const Cita = require('./models/Cita');
+const createRecetasTable = require('./migrations/create_recetas_table');
 
 async function migrateDatabase() {
     try {
@@ -8,6 +9,9 @@ async function migrateDatabase() {
         
         // Sincronizar la base de datos (esto agregará el campo 'estado' si no existe)
         await db.sync({ alter: true });
+        
+        // Crear tabla de recetas
+        await createRecetasTable();
         
         console.log('✅ Migración completada exitosamente');
         

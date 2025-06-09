@@ -501,4 +501,389 @@
 
     .btn-cancelar:hover {
       background: #c82333;
-    }
+    }/* Estilos para el botón de recetar */
+.btn-recetar {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  min-width: 100px;
+  justify-content: center;
+}
+
+.btn-recetar:hover {
+  background: linear-gradient(135deg, #218838, #1ba882);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.btn-recetar:active {
+  transform: translateY(0);
+}
+
+.btn-recetar i {
+  font-size: 13px;
+}
+
+/* Estilos para el botón de ver receta */
+.btn-ver-receta {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  min-width: 100px;
+  justify-content: center;
+}
+
+.btn-ver-receta:hover {
+  background: linear-gradient(135deg, #0056b3, #004085);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+.btn-ver-receta:active {
+  transform: translateY(0);
+}
+
+.btn-ver-receta i {
+  font-size: 13px;
+}
+
+/* Estilos específicos para el modal de receta */
+#recetaModal .modal-content {
+  max-width: 600px;
+  margin: 5% auto;
+}
+
+#recetaModal h3 {
+  color: #28a745;
+  text-align: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+#recetaModal h3 i {
+  margin-right: 10px;
+  font-size: 1.2em;
+}
+
+/* Estilos para los campos de receta */
+#recetaModal .cita-details-list li input[readonly] {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+#recetaModal .form-control {
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+#recetaModal .form-control:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+  outline: none;
+}
+
+#recetaModal .form-control:required:invalid {
+  border-color: #dc3545;
+}
+
+#recetaModal textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Responsive para dispositivos móviles */
+@media (max-width: 768px) {
+  /* Calendar responsive */
+  #calendar {
+    max-width: 100%;
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  /* Carousel responsive */
+  .carousel-container {
+    padding: 0 20px;
+    margin: 15px auto;
+  }
+  
+  .carousel-wrapper {
+    gap: 15px;
+    padding: 8px 0 15px 0;
+  }
+  
+  /* Appointment cards responsive */
+  .appointment-card {
+    min-width: 280px;
+    padding: 15px;
+  }
+  
+  .appointment-card h4 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  
+  .appointment-card p {
+    font-size: 14px;
+    margin: 4px 0;
+  }
+  
+  /* Buttons responsive */
+  .btn-recetar {
+    font-size: 11px;
+    padding: 6px 8px;
+    min-width: 80px;
+  }
+  
+  .btn-ver-receta {
+    font-size: 11px;
+    padding: 6px 8px;
+    min-width: 80px;
+  }
+  
+  .btn-confirmar,
+  .btn-cancelar {
+    font-size: 12px;
+    padding: 8px 12px;
+    margin: 2px;
+  }
+  
+  /* Modal responsive */
+  #recetaModal .modal-content {
+    margin: 2% auto;
+    max-width: 95%;
+    padding: 15px;
+  }
+  
+  #recetaModal .modal-header h4 {
+    font-size: 18px;
+  }
+  
+  #recetaModal .form-group {
+    margin-bottom: 12px;
+  }
+  
+  #recetaModal .form-group label {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  
+  #recetaModal .form-control {
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  /* Header responsive */
+  .appointment-header {
+    padding: 15px;
+    text-align: center;
+  }
+  
+  .appointment-header h2 {
+    font-size: 20px;
+  }
+  
+  /* Status badges responsive */
+  .status-badge {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+  
+  /* Actions responsive */
+  .appointment-actions {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+  
+  .appointment-actions button {
+    width: 100%;
+    margin: 2px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Calendar mobile */
+  #calendar {
+    margin: 10px auto;
+    padding: 8px;
+  }
+  
+  /* Carousel mobile */
+  .carousel-container {
+    padding: 0 10px;
+    margin: 10px auto;
+  }
+  
+  .carousel-wrapper {
+    gap: 10px;
+    padding: 5px 0 10px 0;
+  }
+  
+  /* Appointment cards mobile */
+  .appointment-card {
+    min-width: 250px;
+    padding: 12px;
+    border-radius: 6px;
+  }
+  
+  .appointment-card h4 {
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  
+  .appointment-card p {
+    font-size: 13px;
+    margin: 3px 0;
+  }
+  
+  /* Buttons mobile */
+  .btn-recetar,
+  .btn-ver-receta {
+    font-size: 10px;
+    padding: 5px 6px;
+    min-width: 70px;
+  }
+  
+  .btn-confirmar,
+  .btn-cancelar {
+    font-size: 11px;
+    padding: 6px 10px;
+    margin: 1px;
+  }
+  
+  /* Modal mobile */
+  #recetaModal .modal-content {
+    margin: 1% auto;
+    max-width: 98%;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  #recetaModal .modal-header {
+    padding: 10px 0;
+  }
+  
+  #recetaModal .modal-header h4 {
+    font-size: 16px;
+  }
+  
+  #recetaModal .modal-body {
+    padding: 10px 0;
+  }
+  
+  #recetaModal .modal-footer {
+    padding: 10px 0;
+  }
+  
+  #recetaModal .form-group {
+    margin-bottom: 10px;
+  }
+  
+  #recetaModal .form-control {
+    padding: 10px;
+    font-size: 16px; /* Evita zoom en iOS */
+    border-radius: 5px;
+  }
+  
+  #recetaModal textarea.form-control {
+    min-height: 60px;
+  }
+  
+  /* Header mobile */
+  .appointment-header {
+    padding: 10px;
+  }
+  
+  .appointment-header h2 {
+    font-size: 18px;
+  }
+  
+  /* Status badges mobile */
+  .status-badge {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+  
+  /* Overlay mobile */
+  .carousel-container::before,
+  .carousel-container::after {
+    width: 15px;
+  }
+}
+
+@media (max-width: 320px) {
+  /* Calendar very small mobile */
+  #calendar {
+    margin: 5px auto;
+    padding: 5px;
+  }
+  
+  /* Carousel very small mobile */
+  .carousel-container {
+    padding: 0 5px;
+    margin: 5px auto;
+  }
+  
+  /* Appointment cards very small mobile */
+  .appointment-card {
+    min-width: 220px;
+    padding: 10px;
+  }
+  
+  .appointment-card h4 {
+    font-size: 14px;
+  }
+  
+  .appointment-card p {
+    font-size: 12px;
+  }
+  
+  /* Buttons very small mobile */
+  .btn-recetar,
+  .btn-ver-receta {
+    font-size: 9px;
+    padding: 4px 5px;
+    min-width: 60px;
+  }
+  
+  /* Modal very small mobile */
+  #recetaModal .modal-content {
+    max-width: 99%;
+    padding: 8px;
+  }
+  
+  #recetaModal .modal-header h4 {
+    font-size: 14px;
+  }
+  
+  #recetaModal .form-control {
+    padding: 8px;
+    font-size: 14px;
+  }
+}

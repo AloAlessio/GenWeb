@@ -1,3 +1,25 @@
+// Mapeo de IDs de doctores a nombres
+function obtenerNombreDoctor(doctorId) {
+    const doctores = {
+        0: "Dr. Gonzalo Mendoza",
+        1: "Dr. Alonso Jimenez", 
+        2: "Dra. Melissa Lara",
+        3: "Dr. Diego Hernandez",
+        4: "Dra. Kelly Palomares", 
+        5: "Dr. Mauricio Rocha",
+        6: "Dr. Alexis Hernandez",
+        "Dr. Alonso Jimenez": "Dr. Alonso Jimenez",
+        "Dra. Melissa Lara": "Dra. Melissa Lara",
+        "Dr. Diego Hernandez": "Dr. Diego Hernandez", 
+        "Dra. Kelly Palomares": "Dra. Kelly Palomares",
+        "Dr. Mauricio Rocha": "Dr. Mauricio Rocha",
+        "Dr. Alexis Hernandez": "Dr. Alexis Hernandez",
+        "Dr. Gonzalo Mendoza": "Dr. Gonzalo Mendoza"
+    };
+    
+    return doctores[doctorId] || `Doctor ID: ${doctorId}`;
+}
+
 // Función para cargar y renderizar las citas
 async function loadCitas(filtros = {}) {
     try {
@@ -54,9 +76,7 @@ async function loadCitas(filtros = {}) {
 
         const nextButton = document.createElement("button");
         nextButton.innerHTML = "<i class='fas fa-chevron-right'></i>";
-        nextButton.className = "carousel-button next";
-
-        citas.forEach(cita => {
+        nextButton.className = "carousel-button next";        citas.forEach(async cita => {
             const card = document.createElement("div");
             card.className = "carousel-card";
             
@@ -86,14 +106,42 @@ async function loadCitas(filtros = {}) {
                 `;
             }
 
+            // Verificar si existe receta para esta cita
+            let botonReceta = '';
+            try {
+                const responseReceta = await fetch(`${window.API_URL}/recetas/existe/${cita.id}`);
+                const dataReceta = await responseReceta.json();
+                
+                if (dataReceta.existe) {
+                    botonReceta = `
+                        <button class="btn-ver-receta" onclick="verReceta(${cita.id})">
+                            <i class="fa fa-eye"></i> Ver Receta
+                        </button>
+                    `;
+                } else {
+                    botonReceta = `
+                        <button class="btn-recetar" onclick="abrirModalReceta(${cita.id}, '${cita.nombre}', '${cita.doctorId}')">
+                            <i class="fa fa-prescription-bottle-medical"></i> Recetar
+                        </button>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error al verificar receta:', error);
+                // Si hay error, mostrar botón de recetar por defecto
+                botonReceta = `
+                    <button class="btn-recetar" onclick="abrirModalReceta(${cita.id}, '${cita.nombre}', '${cita.doctorId}')">
+                        <i class="fa fa-prescription-bottle-medical"></i> Recetar
+                    </button>
+                `;
+            }
+
             card.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                     <h3 style="margin: 0; color: #2C3E50;">${cita.nombre}</h3>
                     ${estadoBadge}
-                </div>
-                <p><i class="fa fa-envelope" style="color: #1e90ff; margin-right: 8px;"></i>${cita.correo}</p>
+                </div>                <p><i class="fa fa-envelope" style="color: #1e90ff; margin-right: 8px;"></i>${cita.correo}</p>
                 <p><i class="fa fa-phone" style="color: #1e90ff; margin-right: 8px;"></i>${cita.telefono}</p>
-                <p><i class="fa fa-user-md" style="color: #1e90ff; margin-right: 8px;"></i>${cita.doctorId}</p>
+                <p><i class="fa fa-user-md" style="color: #1e90ff; margin-right: 8px;"></i>${obtenerNombreDoctor(cita.doctorId)}</p>
                 <p><i class="fa fa-stethoscope" style="color: #1e90ff; margin-right: 8px;"></i>${cita.especialidad}</p>
                 <p><i class="fa fa-laptop-medical" style="color: #1e90ff; margin-right: 8px;"></i>${cita.modalidad}</p>
                 <p><i class="fa fa-calendar" style="color: #1e90ff; margin-right: 8px;"></i>${cita.fecha}</p>
@@ -104,6 +152,7 @@ async function loadCitas(filtros = {}) {
                     <button class="btn-cta" onclick="openEditModal(${JSON.stringify(cita).replace(/"/g, '&quot;')})">
                         <i class="fa fa-edit"></i> Ver/Editar
                     </button>
+                    ${botonReceta}
                     <button class="btn-cta btn-delete" onclick="deleteCita(${cita.id})">
                         <i class="fa fa-trash"></i> Eliminar
                     </button>
@@ -657,3 +706,291 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }, 100);
 });
+
+// Función para abrir el modal de receta
+function abrirModalReceta(citaId, nombrePaciente, doctorId) {
+    document.getElementById('recetaCitaId').value = citaId;
+    document.getElementById('recetaNombrePaciente').value = nombrePaciente;
+    document.getElementById('recetaDoctorId').value = obtenerNombreDoctor(doctorId);
+    document.getElementById('recetaModal').style.display = 'block';
+}
+
+// Función para cerrar el modal de receta
+function cerrarModalReceta() {
+    // Restaurar el título original del modal
+    const tituloModal = document.querySelector('#recetaModal h3');
+    if (tituloModal) {
+        tituloModal.innerHTML = '<i class="fa fa-prescription-bottle-medical"></i> Generar Receta Médica';
+    }
+    
+    // Restaurar los botones originales
+    const formReceta = document.getElementById('recetaForm');
+    const botonesContainer = formReceta.querySelector('div[style*="display: flex"]');
+    if (botonesContainer) {
+        botonesContainer.innerHTML = `
+            <button type="submit" class="btn-cta" style="flex: 1;">
+                <i class="fa fa-file-medical"></i> Generar Receta
+            </button>
+            <button type="button" class="btn-cancelar" onclick="cerrarModalReceta()" style="flex: 1;">
+                <i class="fa fa-times"></i> Cancelar
+            </button>
+        `;
+    }
+    
+    // Restaurar campos editables
+    const campos = [
+        'recetaMedicamento',
+        'recetaDosis', 
+        'recetaFrecuencia',
+        'recetaDuracion',
+        'recetaIndicaciones'
+    ];
+    
+    campos.forEach(campoId => {
+        const elemento = document.getElementById(campoId);
+        if (elemento) {
+            elemento.removeAttribute('readonly');
+            elemento.style.backgroundColor = '';
+            elemento.style.cursor = '';
+        }
+    });
+    
+    // Ocultar modal y limpiar formulario
+    document.getElementById('recetaModal').style.display = 'none';
+    document.getElementById('recetaForm').reset();
+}
+
+// Función para generar receta médica
+async function generarReceta(event) {
+    event.preventDefault();
+    
+    const citaId = document.getElementById('recetaCitaId').value;
+    const nombrePaciente = document.getElementById('recetaNombrePaciente').value;
+    const doctorId = document.getElementById('recetaDoctorId').value;
+    const medicamento = document.getElementById('recetaMedicamento').value;
+    const dosis = document.getElementById('recetaDosis').value;
+    const frecuencia = document.getElementById('recetaFrecuencia').value;
+    const duracion = document.getElementById('recetaDuracion').value;
+    const indicaciones = document.getElementById('recetaIndicaciones').value;
+    
+    const recetaData = {
+        citaId: parseInt(citaId),
+        nombrePaciente,
+        doctorId,
+        medicamento,
+        dosis,
+        frecuencia,
+        duracion,
+        indicaciones
+    };
+    
+    try {
+        // Enviar la receta al backend
+        const response = await fetch(`${window.API_URL}/recetas`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(recetaData)
+        });
+        
+        const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.error || 'Error al crear la receta');
+        }
+        
+        // Mostrar mensaje de éxito con información sobre el email
+        const mensaje = data.emailEnviado ? 
+            `Receta médica generada exitosamente para ${nombrePaciente}.\n\n📧 Se ha enviado una copia por correo electrónico.` :
+            `Receta médica generada exitosamente para ${nombrePaciente}.`;
+            
+        Swal.fire({
+            title: 'Receta generada',
+            text: mensaje,
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            // Recargar las citas para actualizar los botones
+            loadCitas();
+            
+            // También actualizar el calendario si está disponible
+            if (window.calendar && typeof window.calendar.refetchEvents === 'function') {
+                window.calendar.refetchEvents();
+            }
+        });
+        
+        // Generar PDF de la receta
+        const recetaConFecha = {
+            ...recetaData,
+            fecha: new Date().toISOString().split('T')[0]
+        };
+        generarPDFReceta(recetaConFecha);
+          cerrarModalReceta();
+        
+    } catch (error) {
+        console.error('Error al generar receta:', error);
+        Swal.fire({
+            title: 'Error',
+            text: error.message || 'No se pudo generar la receta médica',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    }
+}
+
+// Función para ver receta existente
+async function verReceta(citaId) {
+    try {
+        const response = await fetch(`${window.API_URL}/recetas/cita/${citaId}`);
+        
+        if (!response.ok) {
+            if (response.status === 404) {
+                Swal.fire({
+                    title: 'No encontrada',
+                    text: 'No se encontró receta para esta cita',
+                    icon: 'info',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+            throw new Error('Error al obtener la receta');
+        }
+        
+        const receta = await response.json();
+          // Abrir el modal con los datos de la receta (solo lectura)
+        document.getElementById('recetaCitaId').value = receta.citaId;
+        document.getElementById('recetaNombrePaciente').value = receta.nombrePaciente;
+        document.getElementById('recetaDoctorId').value = obtenerNombreDoctor(receta.doctorId);
+        document.getElementById('recetaMedicamento').value = receta.medicamento;
+        document.getElementById('recetaDosis').value = receta.dosis;
+        document.getElementById('recetaFrecuencia').value = receta.frecuencia;
+        document.getElementById('recetaDuracion').value = receta.duracion;
+        document.getElementById('recetaIndicaciones').value = receta.indicaciones || '';
+        
+        // Hacer todos los campos de solo lectura
+        const campos = [
+            'recetaMedicamento',
+            'recetaDosis', 
+            'recetaFrecuencia',
+            'recetaDuracion',
+            'recetaIndicaciones'
+        ];
+        
+        campos.forEach(campoId => {
+            const elemento = document.getElementById(campoId);
+            if (elemento) {
+                elemento.setAttribute('readonly', true);
+                elemento.style.backgroundColor = '#f8f9fa';
+                elemento.style.cursor = 'not-allowed';
+            }
+        });
+        
+        // Cambiar el título del modal
+        const tituloModal = document.querySelector('#recetaModal h3');
+        if (tituloModal) {
+            tituloModal.innerHTML = '<i class="fa fa-eye"></i> Ver Receta Médica';
+        }
+        
+        // Cambiar los botones del modal
+        const formReceta = document.getElementById('recetaForm');
+        const botonesContainer = formReceta.querySelector('div[style*="display: flex"]');
+        if (botonesContainer) {
+            botonesContainer.innerHTML = `
+                <button type="button" class="btn-cta" onclick="imprimirReceta()" style="flex: 1;">
+                    <i class="fa fa-print"></i> Imprimir
+                </button>
+                <button type="button" class="btn-cancelar" onclick="cerrarModalReceta()" style="flex: 1;">
+                    <i class="fa fa-times"></i> Cerrar
+                </button>
+            `;
+        }
+        
+        // Mostrar el modal
+        document.getElementById('recetaModal').style.display = 'block';
+        
+    } catch (error) {
+        console.error('Error al obtener receta:', error);
+        Swal.fire({
+            title: 'Error',
+            text: 'No se pudo obtener la receta médica',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    }
+}
+
+// Función para imprimir receta desde el modal de visualización
+function imprimirReceta() {
+    const recetaData = {
+        citaId: document.getElementById('recetaCitaId').value,
+        nombrePaciente: document.getElementById('recetaNombrePaciente').value,
+        doctorId: document.getElementById('recetaDoctorId').value,
+        medicamento: document.getElementById('recetaMedicamento').value,
+        dosis: document.getElementById('recetaDosis').value,
+        frecuencia: document.getElementById('recetaFrecuencia').value,
+        duracion: document.getElementById('recetaDuracion').value,
+        indicaciones: document.getElementById('recetaIndicaciones').value,
+        fecha: new Date().toISOString().split('T')[0]
+    };
+    
+    generarPDFReceta(recetaData);
+}
+
+// Función para generar PDF de la receta (básica)
+function generarPDFReceta(recetaData) {
+    const ventanaReceta = window.open('', '_blank');
+    ventanaReceta.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Receta Médica</title>
+            <style>
+                body { font-family: Arial, sans-serif; padding: 20px; }
+                .header { text-align: center; border-bottom: 2px solid #2C3E50; padding-bottom: 20px; margin-bottom: 30px; }
+                .info { margin-bottom: 15px; }
+                .medicamento { background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 20px 0; }
+                .footer { margin-top: 40px; border-top: 1px solid #ccc; padding-top: 20px; }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h1>GenWeb - Hospital</h1>
+                <h2>Receta Médica</h2>
+            </div>
+            
+            <div class="info">
+                <strong>Paciente:</strong> ${recetaData.nombrePaciente}
+            </div>            <div class="info">
+                <strong>Doctor:</strong> ${obtenerNombreDoctor(recetaData.doctorId)}
+            </div>
+            <div class="info">
+                <strong>Fecha:</strong> ${recetaData.fecha}
+            </div>
+            <div class="info">
+                <strong>Cita ID:</strong> ${recetaData.citaId}
+            </div>
+            
+            <div class="medicamento">
+                <h3>Prescripción</h3>
+                <p><strong>Medicamento:</strong> ${recetaData.medicamento}</p>
+                <p><strong>Dosis:</strong> ${recetaData.dosis}</p>
+                <p><strong>Frecuencia:</strong> ${recetaData.frecuencia}</p>
+                <p><strong>Duración:</strong> ${recetaData.duracion}</p>
+                ${recetaData.indicaciones ? `<p><strong>Indicaciones especiales:</strong> ${recetaData.indicaciones}</p>` : ''}
+            </div>
+            
+            <div class="footer">
+                <p>Esta receta médica es válida únicamente con la firma y sello del médico tratante.</p>
+                <p><strong>Firma del Médico:</strong> _________________________</p>
+            </div>
+            
+            <script>
+                window.onload = function() {
+                    window.print();
+                }
+            </script>
+        </body>
+        </html>
+    `);
+    ventanaReceta.document.close();
+}

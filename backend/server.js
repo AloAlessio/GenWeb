@@ -6,6 +6,14 @@ const sequelize = require('./db');
 const authRoutes = require('./routes/authRoutes');
 const doctorRoutes = require('./routes/doctorRoutes');
 const citaRoutes = require('./routes/citaRoutes');
+const recetaRoutes = require('./routes/recetaRoutes');
+const emailRoutes = require('./routes/emailRoutes');
+
+// Import models to register them with Sequelize
+require('./models/User');
+require('./models/Doctor');
+require('./models/Cita');
+require('./models/Receta');
 
 const path = require('path');
 
@@ -22,6 +30,8 @@ app.use(express.json());  // 🔹 Permitir recibir JSON
 app.use('/api/auth', authRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/citas', citaRoutes);
+app.use('/api/recetas', recetaRoutes);
+app.use('/api/email', emailRoutes);
 
 // 🔹 Ruta para obtener el feed RSS de biotecnología en México
 app.get('/rss-biotecnologia', async (req, res) => {
