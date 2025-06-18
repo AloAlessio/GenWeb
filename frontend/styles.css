@@ -1539,22 +1539,8 @@ footer nav ul li a:hover {
     .card {
         padding: 10px;
     }
-    
-    .btn-agendar {
+      .btn-agendar {
         display: none; /* Ocultar en pantallas muy pequeñas */
-    }
-}
-        margin-right: 6px;
-    }
-    
-    .btn-logout {
-        padding: 4px 8px;
-        font-size: 10px;
-    }
-    
-    .btn-agendar {
-        padding: 4px 8px;
-        font-size: 10px;
     }
 }
 

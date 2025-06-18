@@ -1,89 +1,125 @@
 <!DOCTYPE html>
+<!-- Declaración del tipo de documento HTML5 -->
 <html lang="es">
+<!-- Elemento raíz HTML con idioma español para accesibilidad y SEO -->
 <head>
+    <!-- Configuración de metadatos y recursos del documento -->
+    
     <meta charset="UTF-8" />
+    <!-- Codificación de caracteres UTF-8 para soporte de caracteres especiales -->
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- Configuración responsive para dispositivos móviles -->
+    
     <title>GenWeb - Iniciar Sesión / Registro</title>
+    <!-- Título específico para la página de autenticación -->
+    
     <link rel="stylesheet" href="styles.css">
+    <!-- Enlace a la hoja de estilos principal del sitio -->
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- CDN de SweetAlert2 para mostrar alertas elegantes y personalizadas -->
+    
     <style>
-        /* Estilos responsivos para login */
+        /* Estilos CSS embebidos específicos para la página de login */
+        
+        /* Media Query para tablets y pantallas de tamaño medio (768px y menos) */
         @media (max-width: 768px) {
             .auth-container {
+                /* Reduce márgenes y padding para pantallas más pequeñas */
                 margin: 20px auto;
                 padding: 20px;
+                /* Limita el ancho máximo al 95% del viewport */
                 max-width: 95%;
+                /* Reduce el radio de borde para mejor apariencia en móviles */
                 border-radius: 8px;
             }
             
             .auth-header .logo-img {
+                /* Reduce el tamaño del logo en tablets */
                 width: 100px;
             }
             
             .tabs {
+                /* Reduce el margen inferior de las pestañas */
                 margin-bottom: 15px;
             }
             
             .tab {
+                /* Ajusta padding y tamaño de fuente de las pestañas */
                 padding: 12px 0;
                 font-size: 14px;
             }
             
             .form h2 {
+                /* Reduce el tamaño del título del formulario */
                 font-size: 20px;
                 margin-bottom: 15px;
             }
             
             .form-group {
+                /* Reduce el espaciado entre grupos de formulario */
                 margin-bottom: 12px;
             }
             
             .form-group label {
+                /* Ajusta el tamaño de fuente y margen de las etiquetas */
                 font-size: 14px;
                 margin-bottom: 6px;
             }
             
             .form-group input {
+                /* Aumenta el padding para mejor usabilidad táctil */
                 padding: 12px;
-                font-size: 16px; /* Evita zoom en iOS */
+                /* Font-size 16px evita el zoom automático en iOS */
+                font-size: 16px;
             }
             
             .btn-primary {
+                /* Botón a ancho completo en móviles */
                 width: 100%;
                 padding: 15px;
                 font-size: 16px;
             }
             
             .form-links {
+                /* Centra los enlaces del formulario */
                 text-align: center;
                 margin-top: 15px;
             }
             
             .form-links a {
+                /* Reduce el tamaño de fuente de los enlaces */
                 font-size: 14px;
             }
         }
         
+        /* Media Query para dispositivos móviles pequeños (480px y menos) */
         @media (max-width: 480px) {
             .auth-container {
+                /* Reduce aún más márgenes y padding para móviles pequeños */
                 margin: 10px auto;
                 padding: 15px;
             }
             
             .auth-header .logo-img {
+                /* Logo más pequeño para móviles pequeños */
                 width: 80px;
             }
             
             .form h2 {
+                /* Título aún más pequeño para móviles pequeños */
                 font-size: 18px;
             }
             
             .form-group input {
+                /* Reduce padding y tamaño de fuente para pantallas muy pequeñas */
                 padding: 10px;
                 font-size: 14px;
             }
             
             .btn-primary {
+                /* Ajusta el padding del botón principal */
                 padding: 12px;
                 font-size: 14px;
             }
@@ -91,69 +127,151 @@
     </style>
 </head>
 <body>
+    <!-- Cuerpo de la página de autenticación -->
+    
     <div class="auth-container">
+        <!-- Contenedor principal para el sistema de autenticación -->
+        <!-- Clase auth-container para estilo específico de login/registro -->
+        
         <!-- Logo o cabecera GenWeb -->
         <div class="auth-header">
-        <img src="logo.png" alt="GenWeb Logo" class="logo-img">
+            <!-- Cabecera del formulario de autenticación -->
+            <img src="logo.png" alt="GenWeb Logo" class="logo-img">
+            <!-- Logo de la aplicación en el formulario de login -->
         </div>
 
         <!-- Contenedor principal de formularios -->
         <div class="auth-forms">
-        <!-- Pestañas de Login / Registro -->
-        <div class="tabs">
-            <button id="loginTab" class="tab active" onclick="showLogin()">Iniciar Sesión</button>
-            <button id="registerTab" class="tab" onclick="showRegister()">Registro</button>
-        </div>
+            <!-- Contenedor que agrupa las pestañas y formularios -->
+            
+            <!-- Pestañas de Login / Registro -->
+            <div class="tabs">
+                <!-- Contenedor para las pestañas de navegación entre formularios -->
+                
+                <button id="loginTab" class="tab active" onclick="showLogin()">Iniciar Sesión</button>
+                <!-- Pestaña de login - marcada como activa por defecto -->
+                <!-- onclick="showLogin()" llama a función JavaScript para mostrar formulario de login -->
+                
+                <button id="registerTab" class="tab" onclick="showRegister()">Registro</button>
+                <!-- Pestaña de registro -->
+                <!-- onclick="showRegister()" llama a función JavaScript para mostrar formulario de registro -->
+            </div>
 
-        <!-- Formulario de Iniciar Sesión -->
-        <form id="loginForm" class="form">
-            <h2>Inicia Sesión</h2>
-            <div class="form-group">
-            <label for="loginEmail">Correo Electrónico o Teléfono</label>
-            <input type="text" id="loginEmail" name="loginEmail" placeholder="usuario@ejemplo.com" required />
-            </div>
-            <div class="form-group">
-            <label for="loginPassword">Contraseña</label>
-            <input type="password" id="loginPassword" name="loginPassword" placeholder="********" required />
-            </div>
-            <div class="form-actions">
-            <button type="submit" class="btn-primary">Ingresar</button>
-            </div>
-            <div class="form-links">
-            <a href="#">¿Olvidaste tu contraseña?</a>
-            </div>
-        </form>
+            <!-- Formulario de Iniciar Sesión -->
+            <form id="loginForm" class="form">
+                <!-- Formulario de login con ID específico para manejo por JavaScript -->
+                <!-- Clase "form" para estilo común de formularios -->
+                
+                <h2>Inicia Sesión</h2>
+                <!-- Título del formulario de login -->
+                
+                <div class="form-group">
+                    <!-- Grupo para el campo de email/teléfono -->
+                    <label for="loginEmail">Correo Electrónico o Teléfono</label>
+                    <!-- Etiqueta descriptiva del campo, asociada con "for" al input -->
+                    
+                    <input type="text" id="loginEmail" name="loginEmail" placeholder="usuario@ejemplo.com" required />
+                    <!-- Campo de texto que acepta email o teléfono -->
+                    <!-- type="text" permite flexibilidad para email o teléfono -->
+                    <!-- required: validación HTML5 que hace el campo obligatorio -->
+                </div>
+                
+                <div class="form-group">
+                    <!-- Grupo para el campo de contraseña -->
+                    <label for="loginPassword">Contraseña</label>
+                    <!-- Etiqueta descriptiva del campo de contraseña -->
+                    
+                    <input type="password" id="loginPassword" name="loginPassword" placeholder="********" required />
+                    <!-- Campo de contraseña con ocultación automática de caracteres -->
+                    <!-- type="password" oculta los caracteres ingresados -->
+                </div>
+                
+                <div class="form-actions">
+                    <!-- Contenedor para los botones de acción del formulario -->
+                    <button type="submit" class="btn-primary">Ingresar</button>
+                    <!-- Botón de envío del formulario de login -->
+                    <!-- type="submit" hace que dispare el evento submit del form -->
+                </div>
+                
+                <div class="form-links">
+                    <!-- Contenedor para enlaces adicionales del formulario -->
+                    <a href="#">¿Olvidaste tu contraseña?</a>
+                    <!-- Enlace para recuperación de contraseña (actualmente placeholder) -->
+                </div>
+            </form>
 
-        <!-- Formulario de Registro -->
-        <form id="registerForm" class="form">
-            <h2>Crear Cuenta</h2>
-            <div class="form-group">
-            <label for="nombre">Nombre Completo</label>
-            <input type="text" id="nombre" name="nombre" placeholder="Tu Nombre" required />
-            </div>
-            <div class="form-group">
-            <label for="registerEmail">Correo Electrónico</label>
-            <input type="email" id="registerEmail" name="registerEmail" placeholder="usuario@ejemplo.com" required />
-            </div>
-            <div class="form-group">
-            <label for="telefono">Teléfono</label>
-            <input type="tel" id="telefono" name="telefono" placeholder=\"(55) 0000 0000\" />
-            </div>
-            <div class="form-group">
-            <label for="registerPassword">Contraseña</label>
-            <input type="password" id="registerPassword" name="registerPassword" placeholder="********" required />
-            </div>
-            <div class="form-group">
-            <label for="confirmPassword">Confirmar Contraseña</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="********" required />
-            </div>
-            <div class="form-actions">
-            <button type="submit" class="btn-primary">Crear Cuenta</button>
-            </div>
-        </form>
+            <!-- Formulario de Registro -->
+            <form id="registerForm" class="form">
+                <!-- Formulario de registro con ID específico para manejo por JavaScript -->
+                <!-- Inicialmente oculto, se muestra al cambiar de pestaña -->
+                
+                <h2>Crear Cuenta</h2>
+                <!-- Título del formulario de registro -->
+                
+                <div class="form-group">
+                    <!-- Grupo para el campo de nombre completo -->
+                    <label for="nombre">Nombre Completo</label>
+                    <!-- Etiqueta descriptiva del campo de nombre -->
+                    
+                    <input type="text" id="nombre" name="nombre" placeholder="Tu Nombre" required />
+                    <!-- Campo de texto para nombre completo -->
+                    <!-- required: campo obligatorio para el registro -->
+                </div>
+                
+                <div class="form-group">
+                    <!-- Grupo para el campo de correo electrónico -->
+                    <label for="registerEmail">Correo Electrónico</label>
+                    <!-- Etiqueta descriptiva del campo de email -->
+                    
+                    <input type="email" id="registerEmail" name="registerEmail" placeholder="usuario@ejemplo.com" required />
+                    <!-- Campo de email con validación automática HTML5 -->
+                    <!-- type="email" proporciona validación de formato de email -->
+                </div>
+                
+                <div class="form-group">
+                    <!-- Grupo para el campo de teléfono -->
+                    <label for="telefono">Teléfono</label>
+                    <!-- Etiqueta descriptiva del campo de teléfono -->
+                    
+                    <input type="tel" id="telefono" name="telefono" placeholder="(55) 0000 0000" />
+                    <!-- Campo de teléfono (opcional, sin required) -->
+                    <!-- type="tel" optimiza el teclado en dispositivos móviles -->
+                    <!-- Placeholder muestra formato esperado de teléfono mexicano -->
+                </div>
+                
+                <div class="form-group">
+                    <!-- Grupo para el campo de contraseña nueva -->
+                    <label for="registerPassword">Contraseña</label>
+                    <!-- Etiqueta descriptiva del campo de contraseña -->
+                    
+                    <input type="password" id="registerPassword" name="registerPassword" placeholder="********" required />
+                    <!-- Campo de contraseña para el registro -->
+                    <!-- required: campo obligatorio para crear cuenta -->
+                </div>
+                
+                <div class="form-group">
+                    <!-- Grupo para confirmación de contraseña -->
+                    <label for="confirmPassword">Confirmar Contraseña</label>
+                    <!-- Etiqueta para campo de confirmación de contraseña -->
+                    
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="********" required />
+                    <!-- Campo para confirmar la contraseña ingresada -->
+                    <!-- Se validará por JavaScript que coincida con registerPassword -->
+                </div>
+                
+                <div class="form-actions">
+                    <!-- Contenedor para los botones de acción del formulario -->
+                    <button type="submit" class="btn-primary">Crear Cuenta</button>
+                    <!-- Botón de envío del formulario de registro -->
+                    <!-- type="submit" dispara el evento submit del form -->
+                </div>
+            </form>
         </div>
     </div>
 
     <script src="app.js"></script>
-    </body>
-    </html>
+    <!-- Script principal que maneja la lógica de autenticación y API calls -->
+    <!-- Incluye funciones showLogin(), showRegister() y manejo de formularios -->
+    
+</body>
+</html>

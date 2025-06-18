@@ -1,66 +1,99 @@
-<!-- appointments.html -->
+<!-- appointments.html - Página principal para gestionar citas médicas -->
+<!DOCTYPE html>
+<!-- Declaración del tipo de documento HTML5 -->
 <html lang="es">
+<!-- Elemento raíz HTML con idioma español para accesibilidad y SEO -->
 <head>
+  <!-- Configuración de metadatos y recursos del documento -->
+  
   <meta charset="UTF-8">
+  <!-- Codificación de caracteres UTF-8 para soporte de caracteres especiales -->
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Configuración responsive para dispositivos móviles -->
+  
   <title>GenWeb | Mis Citas</title>
+  <!-- Título específico para la página de gestión de citas -->
+  
   <link rel="stylesheet" href="styles.css">
+  <!-- Enlace a la hoja de estilos principal del sitio -->
+  
   <!-- FullCalendar CSS -->
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.css" rel="stylesheet">
+  <!-- CDN de FullCalendar v6.1.5 para el componente de calendario interactivo -->
+  
   <!-- Font Awesome para iconos -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- CDN de Font Awesome v6.4.0 para iconos vectoriales -->
+  
   <!-- Custom Calendar Styles -->
   <link rel="stylesheet" href="appointments.css">
+  <!-- Hoja de estilos específica para la página de citas -->
+  
   <style>
-    /* Estilos responsivos específicos para appointments */
+    /* Estilos CSS embebidos específicos para responsive design de appointments */
+    
+    /* Media Query para tablets y pantallas de tamaño medio (768px y menos) */
     @media (max-width: 768px) {
       .topbar {
+        /* Reduce la altura de la barra superior en tablets */
         height: 50px;
         padding: 0 10px;
       }
       
       .main-content {
+        /* Ajusta el margen superior y elimina margen izquierdo en tablets */
         margin-top: 50px;
         margin-left: 0;
       }
       
       .sidebar {
+        /* Oculta la sidebar deslizándola hacia la izquierda */
         transform: translateX(-250px);
       }
       
       .topbar-logo {
+        /* Reduce el tamaño del logo en tablets */
         width: 80px;
       }
       
       .content {
+        /* Reduce el padding del contenido principal */
         padding: 10px;
       }
       
       .content h2 {
+        /* Ajusta el tamaño de fuente del título */
         font-size: 20px;
         margin: 15px 0;
       }
     }
     
+    /* Media Query para dispositivos móviles pequeños (480px y menos) */
     @media (max-width: 480px) {
       .topbar {
+        /* Altura aún menor para móviles pequeños */
         height: 45px;
         padding: 0 5px;
       }
       
       .main-content {
+        /* Ajusta el margen superior correspondiente */
         margin-top: 45px;
       }
       
       .topbar-logo {
+        /* Logo más pequeño para móviles pequeños */
         width: 70px;
       }
       
       .content {
+        /* Padding mínimo para móviles pequeños */
         padding: 5px;
       }
       
       .content h2 {
+        /* Título más pequeño para móviles pequeños */
         font-size: 18px;
         margin: 10px 0;
       }
@@ -68,252 +101,484 @@
   </style>
 </head>
 <body class="appointments-page">
+  <!-- Cuerpo de la página con clase específica para identificar la página de citas -->
 
-  <!-- Sidebar -->
+  <!-- Sidebar - Barra lateral de navegación -->
   <aside class="sidebar" id="sidebar">
+    <!-- aside: elemento semántico HTML5 para contenido complementario -->
+    <!-- ID sidebar para manejo por JavaScript -->
+    
     <ul class="sidebar-nav">
+      <!-- Lista de navegación de la sidebar -->
+      
       <li class="nav-item"><a class="nav-link active" href="index.html">Inicio</a></li>
+      <!-- Enlace al inicio - marcado como activo -->
+      
       <li class="nav-item"><a class="nav-link" href="citas.html">Agendar Cita</a></li>
+      <!-- Enlace para agendar nuevas citas -->
     </ul>
   </aside>
 
-  <!-- Main Content -->
+  <!-- Main Content - Contenido principal -->
   <div class="main-content" id="mainContent">
+    <!-- Contenedor principal que ocupa el área excluyendo la sidebar -->
+    
     <header class="topbar">
+      <!-- header: elemento semántico HTML5 para el encabezado de la página -->
+      
       <div class="topbar-left">
+        <!-- Sección izquierda de la topbar -->
+        
         <button class="sidebar-toggle" id="sidebarToggle">&#9776;</button>
+        <!-- Botón hamburguesa para mostrar/ocultar la sidebar -->
+        <!-- &#9776; es el código HTML entity para el símbolo de hamburguesa ≡ -->
+        
         <img src="logo.png" alt="GenWeb" class="topbar-logo">
+        <!-- Logo de la aplicación en la topbar -->
       </div>
     </header>
 
     <section class="content">
+      <!-- section: elemento semántico HTML5 para secciones de contenido -->
+      
       <h2>Mis Citas</h2>
+      <!-- Título principal de la página de gestión de citas -->
       
       <!-- Filtros de búsqueda -->
       <div class="search-filters">
+        <!-- Contenedor para los filtros de búsqueda y selección de citas -->
+        
         <h3><i class="fa fa-search"></i> Buscar Citas</h3>
+        <!-- Título de la sección de filtros con icono de búsqueda -->
+        
         <div class="filter-grid">
+          <!-- Grid contenedor para organizar los filtros -->
+          
           <div class="filter-item">
+            <!-- Elemento de filtro por fecha -->
             <label for="filtroFecha"><i class="fa fa-calendar"></i> Fecha:</label>
+            <!-- Etiqueta con icono de calendario -->
+            
             <input type="date" id="filtroFecha" class="form-control">
+            <!-- Campo de fecha HTML5 para filtrar citas por fecha específica -->
           </div>
+          
           <div class="filter-item">
+            <!-- Elemento de filtro por tipo de consulta -->
             <label for="filtroTipo"><i class="fa fa-laptop-medical"></i> Tipo:</label>
+            <!-- Etiqueta con icono médico -->
+            
             <select id="filtroTipo" class="form-control">
+              <!-- Select para filtrar por tipo de consulta -->
               <option value="">Todas</option>
+              <!-- Opción por defecto que muestra todas las citas -->
               <option value="Virtual">Virtual</option>
+              <!-- Filtro para consultas virtuales/telemedicina -->
               <option value="Presencial">Presencial</option>
+              <!-- Filtro para consultas presenciales -->
             </select>
-          </div>          <div class="filter-actions">
+          </div>
+          
+          <div class="filter-actions">
+            <!-- Contenedor para botones de acción de filtros -->
             <button id="btnLimpiar" class="btn-clear"><i class="fa fa-times"></i> Limpiar</button>
+            <!-- Botón para limpiar/resetear todos los filtros aplicados -->
           </div>
         </div>
       </div>
       
       <!-- Lista de citas -->
       <div id="citasList" class="result-card"></div>
+      <!-- Contenedor donde se mostrarán dinámicamente las citas filtradas -->
+      
       <div id="calendar"></div>
+      <!-- Contenedor para el calendario interactivo de FullCalendar -->
     </section>
-  </div>
-  <!-- Scripts -->
+  </div>  <!-- Scripts - Librerías y archivos JavaScript necesarios -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- CDN de SweetAlert2 para mostrar alertas elegantes y personalizadas -->
+  
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js"></script>
+  <!-- CDN de FullCalendar v6.1.5 JavaScript para funcionalidad del calendario -->
+  
   <!-- Scripts de la aplicación -->
   <script src="calendar.js"></script>
+  <!-- Script específico para la configuración y manejo del calendario -->
+  
   <script src="appointments.js"></script>
-  <!-- Edit Modal -->
+  <!-- Script principal para la gestión de citas (CRUD, filtros, eventos) -->
+  
+  <!-- Edit Modal - Modal para editar citas existentes -->
   <div id="citaModal" class="modal">
+    <!-- Modal con ID específico para edición de citas -->
+    <!-- Clase "modal" para estilo de ventana emergente -->
+    
     <div class="modal-content">
+      <!-- Contenedor del contenido del modal -->
+      
       <span class="close">&times;</span>
-      <h3>Detalle de la Cita</h3>      <!-- Estado de la cita -->
+      <!-- Botón de cierre del modal (símbolo × usando entity) -->
+      
+      <h3>Detalle de la Cita</h3>
+      <!-- Título del modal de edición -->
+      
+      <!-- Estado de la cita -->
       <div id="estadoCitaContainer" style="margin-bottom: 20px; text-align: center;">
+        <!-- Contenedor para mostrar el estado actual de la cita -->
+        
         <span id="estadoBadgeModal" class="estado-badge">Pendiente</span>
+        <!-- Badge/etiqueta que muestra el estado de la cita (Pendiente/Confirmada/Cancelada) -->
       </div>
       
       <form id="editCitaForm">
+        <!-- Formulario para editar los datos de la cita -->
+        
         <input type="hidden" id="editCitaId">
+        <!-- Campo oculto que almacena el ID de la cita a editar -->
+        
         <input type="hidden" id="editEstado">
+        <!-- Campo oculto que almacena el estado actual de la cita -->
+        
         <ul class="cita-details-list">
+          <!-- Lista estilizada para mostrar los campos de edición -->
+          
           <li><i class="fa fa-user"></i><input type="text" id="editNombre" class="form-control" placeholder="Nombre"></li>
+          <!-- Campo de texto para editar el nombre del paciente con icono de usuario -->
+          
           <li><i class="fa fa-envelope"></i><input type="email" id="editCorreo" class="form-control" placeholder="Correo"></li>
-          <li><i class="fa fa-phone"></i><input type="text" id="editTelefono" class="form-control" placeholder="Teléfono"></li>          <li><i class="fa fa-user-md"></i>
+          <!-- Campo de email para editar el correo del paciente con icono de sobre -->
+          
+          <li><i class="fa fa-phone"></i><input type="text" id="editTelefono" class="form-control" placeholder="Teléfono"></li>
+          <!-- Campo de texto para editar el teléfono del paciente con icono de teléfono -->          <li><i class="fa fa-user-md"></i>
+            <!-- Icono de doctor/médico -->
             <select id="editDoctorId" class="form-control">
+              <!-- Select para cambiar el doctor asignado a la cita -->
               <option value="">Seleccionar Doctor</option>
+              <!-- Opción por defecto -->
               <option value="Dr. Alonso Jimenez">Dr. Alonso Jimenez - Neurología</option>
+              <!-- Doctor especialista en neurología -->
               <option value="Dra. Melissa Lara">Dra. Melissa Lara - Pediatría</option>
+              <!-- Doctora especialista en pediatría -->
               <option value="Dr. Diego Hernandez">Dr. Diego Hernandez - Cardiología</option>
+              <!-- Doctor especialista en cardiología -->
               <option value="Dra. Kelly Palomares">Dra. Kelly Palomares - Dermatología</option>
+              <!-- Doctora especialista en dermatología -->
               <option value="Dr. Mauricio Rocha">Dr. Mauricio Rocha - Infectología</option>
+              <!-- Doctor especialista en infectología -->
               <option value="Dr. Alexis Hernandez">Dr. Alexis Hernandez - Otorrinolaringología</option>
+              <!-- Doctor especialista en otorrinolaringología -->
               <option value="Dr. Gonzalo Mendoza">Dr. Gonzalo Mendoza - Anestesiología</option>
+              <!-- Doctor especialista en anestesiología -->
             </select>
           </li>
+          
           <li><i class="fa fa-stethoscope"></i>
+            <!-- Icono de estetoscopio para especialidad médica -->
             <select id="editEspecialidad" class="form-control">
+              <!-- Select para cambiar la especialidad médica de la cita -->
               <option value="">Seleccionar Especialidad</option>
+              <!-- Opción por defecto -->
               <option value="Neurología">Neurología</option>
+              <!-- Especialidad: sistema nervioso -->
               <option value="Pediatría">Pediatría</option>
+              <!-- Especialidad: medicina infantil -->
               <option value="Cardiología">Cardiología</option>
+              <!-- Especialidad: sistema cardiovascular -->
               <option value="Dermatología">Dermatología</option>
+              <!-- Especialidad: piel y anexos -->
               <option value="Infectología">Infectología</option>
+              <!-- Especialidad: enfermedades infecciosas -->
               <option value="Otorrinolaringología">Otorrinolaringología</option>
+              <!-- Especialidad: oído, nariz y garganta -->
               <option value="Anestesiología">Anestesiología</option>
+              <!-- Especialidad: anestesia y dolor -->
             </select>
           </li>
+          
           <li><i class="fa fa-laptop-medical"></i><input type="text" id="editModalidad" class="form-control" placeholder="Modalidad"></li>
+          <!-- Campo para editar la modalidad de la consulta (Presencial/Virtual) con icono médico -->
+          
           <li><i class="fa fa-calendar"></i><input type="date" id="editFecha" class="form-control" placeholder="Fecha"></li>
+          <!-- Campo de fecha para cambiar la fecha de la cita con icono de calendario -->
+          
           <li><i class="fa fa-clock"></i><input type="time" id="editHora" class="form-control" placeholder="Hora"></li>
+          <!-- Campo de hora para cambiar la hora de la cita con icono de reloj -->
+          
           <li><i class="fa fa-sticky-note"></i><textarea id="editNotas" class="form-control" rows="2" placeholder="Notas"></textarea></li>
+          <!-- Área de texto para agregar/editar notas de la cita con icono de nota -->
         </ul>
         
         <!-- Botones de acción según el estado -->
         <div id="botonesAccionModal" style="margin: 15px 0; display: flex; gap: 10px; justify-content: center;">
+          <!-- Contenedor para botones de cambio de estado de la cita -->
+          
           <button type="button" id="btnConfirmarModal" class="btn-confirmar" style="display: none;">
             <i class="fa fa-check"></i> Confirmar Cita
           </button>
+          <!-- Botón para confirmar una cita pendiente (oculto por defecto) -->
+          
           <button type="button" id="btnCancelarModal" class="btn-cancelar" style="display: none;">
             <i class="fa fa-times"></i> Cancelar Cita
           </button>
+          <!-- Botón para cancelar una cita (oculto por defecto) -->
         </div>
         
         <button type="submit" class="btn-cta" style="width:100%;margin-top:10px;"><i class="fa fa-save"></i> Guardar Cambios</button>
+        <!-- Botón principal para guardar los cambios realizados en la cita -->
       </form>
     </div>
   </div>
-
   <!-- Modal para crear nueva cita -->
   <div id="nuevaCitaModal" class="modal">
+    <!-- Modal específico para crear citas nuevas desde el calendario -->
+    
     <div class="modal-content">
+      <!-- Contenedor del contenido del modal -->
+      
       <span class="close" id="closeNuevaCita">&times;</span>
+      <!-- Botón de cierre con ID específico para este modal -->
+      
       <h3>📅 Nueva Cita</h3>
+      <!-- Título del modal con emoji de calendario -->
       
       <form id="nuevaCitaForm">
+        <!-- Formulario para crear una nueva cita médica -->
+        
         <ul class="cita-details-list">
+          <!-- Lista estilizada para los campos del formulario -->
+          
           <li><i class="fa fa-user"></i><input type="text" id="nuevoNombre" class="form-control" placeholder="Nombre completo" required></li>
+          <!-- Campo obligatorio para el nombre completo del paciente -->
+          
           <li><i class="fa fa-envelope"></i><input type="email" id="nuevoCorreo" class="form-control" placeholder="Correo electrónico" required></li>
-          <li><i class="fa fa-phone"></i><input type="text" id="nuevoTelefono" class="form-control" placeholder="Teléfono" required></li>          <li><i class="fa fa-user-md"></i>
+          <!-- Campo obligatorio de email con validación HTML5 -->
+          
+          <li><i class="fa fa-phone"></i><input type="text" id="nuevoTelefono" class="form-control" placeholder="Teléfono" required></li>
+          <!-- Campo obligatorio para el número de teléfono -->
+          
+          <li><i class="fa fa-user-md"></i>
+            <!-- Icono de doctor/médico -->
             <select id="nuevoDoctorId" class="form-control" required>
+              <!-- Select obligatorio para seleccionar el doctor -->
               <option value="">Seleccionar Doctor</option>
+              <!-- Opción por defecto -->
               <option value="Dr. Alonso Jimenez">Dr. Alonso Jimenez - Neurología</option>
+              <!-- Doctor especialista en neurología -->
               <option value="Dra. Melissa Lara">Dra. Melissa Lara - Pediatría</option>
+              <!-- Doctora especialista en pediatría -->
               <option value="Dr. Diego Hernandez">Dr. Diego Hernandez - Cardiología</option>
+              <!-- Doctor especialista en cardiología -->
               <option value="Dra. Kelly Palomares">Dra. Kelly Palomares - Dermatología</option>
-              <option value="Dr. Mauricio Rocha">Dr. Mauricio Rocha - Infectología</option>
+              <!-- Doctora especialista en dermatología -->              <option value="Dr. Mauricio Rocha">Dr. Mauricio Rocha - Infectología</option>
+              <!-- Doctor especialista en infectología -->
               <option value="Dr. Alexis Hernandez">Dr. Alexis Hernandez - Otorrinolaringología</option>
+              <!-- Doctor especialista en otorrinolaringología -->
               <option value="Dr. Gonzalo Mendoza">Dr. Gonzalo Mendoza - Anestesiología</option>
+              <!-- Doctor especialista en anestesiología -->
             </select>
           </li>
+          
           <li><i class="fa fa-stethoscope"></i>
+            <!-- Icono de estetoscopio para especialidad -->
             <select id="nuevaEspecialidad" class="form-control" required>
+              <!-- Select obligatorio para la especialidad médica -->
               <option value="">Seleccionar Especialidad</option>
+              <!-- Opción por defecto -->
               <option value="Neurología">Neurología</option>
+              <!-- Especialidad: sistema nervioso -->
               <option value="Pediatría">Pediatría</option>
+              <!-- Especialidad: medicina infantil -->
               <option value="Cardiología">Cardiología</option>
+              <!-- Especialidad: sistema cardiovascular -->
               <option value="Dermatología">Dermatología</option>
+              <!-- Especialidad: piel y anexos -->
               <option value="Infectología">Infectología</option>
+              <!-- Especialidad: enfermedades infecciosas -->
               <option value="Otorrinolaringología">Otorrinolaringología</option>
+              <!-- Especialidad: oído, nariz y garganta -->
               <option value="Anestesiología">Anestesiología</option>
+              <!-- Especialidad: anestesia y dolor -->
             </select>
           </li>
+          
           <li><i class="fa fa-laptop-medical"></i>
+            <!-- Icono médico para modalidad -->
             <select id="nuevaModalidad" class="form-control" required>
+              <!-- Select obligatorio para el tipo de consulta -->
               <option value="">Tipo de consulta</option>
+              <!-- Opción por defecto -->
               <option value="Presencial">Presencial</option>
+              <!-- Consulta física en las instalaciones -->
               <option value="Virtual">Virtual</option>
+              <!-- Consulta por videollamada/telemedicina -->
             </select>
           </li>
+          
           <li><i class="fa fa-calendar"></i><input type="date" id="nuevaFecha" class="form-control" required readonly></li>
+          <!-- Campo de fecha obligatorio y de solo lectura (se llena automáticamente desde el calendario) -->
+          
           <li><i class="fa fa-clock"></i>
+            <!-- Icono de reloj para horario -->
             <select id="nuevaHora" class="form-control" required>
+              <!-- Select obligatorio para seleccionar la hora de la cita -->
               <option value="">Seleccionar hora</option>
+              <!-- Opción por defecto -->
               <option value="08:00">08:00 AM</option>
+              <!-- Horario matutino de apertura -->
               <option value="09:00">09:00 AM</option>
+              <!-- Horario matutino -->
               <option value="10:00">10:00 AM</option>
+              <!-- Horario matutino -->
               <option value="11:00">11:00 AM</option>
+              <!-- Horario matutino -->
               <option value="12:00">12:00 PM</option>
+              <!-- Horario de mediodía -->
               <option value="14:00">02:00 PM</option>
+              <!-- Horario vespertino (después del almuerzo) -->
               <option value="15:00">03:00 PM</option>
+              <!-- Horario vespertino -->
               <option value="16:00">04:00 PM</option>
+              <!-- Horario vespertino -->
               <option value="17:00">05:00 PM</option>
+              <!-- Horario vespertino de cierre -->
             </select>
           </li>
+          
           <li><i class="fa fa-sticky-note"></i><textarea id="nuevasNotas" class="form-control" rows="2" placeholder="Notas adicionales (opcional)"></textarea></li>
+          <!-- Área de texto opcional para notas adicionales sobre la cita -->
         </ul>
         
         <button type="submit" class="btn-cta" style="width:100%;margin-top:10px;">
           <i class="fa fa-save"></i> Crear Cita
         </button>
+        <!-- Botón principal para crear la nueva cita médica -->
       </form>
     </div>
   </div>
-
   <!-- Modal para recetar medicamentos -->
   <div id="recetaModal" class="modal">
+    <!-- Modal específico para generar recetas médicas -->
+    
     <div class="modal-content">
+      <!-- Contenedor del contenido del modal -->
+      
       <span class="close" onclick="cerrarModalReceta()">&times;</span>
+      <!-- Botón de cierre que llama a la función cerrarModalReceta() -->
+      
       <h3><i class="fa fa-prescription-bottle-medical"></i> Generar Receta Médica</h3>
+      <!-- Título del modal con icono de frasco de medicina -->
       
       <form id="recetaForm" onsubmit="generarReceta(event)">
+        <!-- Formulario que llama a generarReceta() al enviarse -->
+        
         <input type="hidden" id="recetaCitaId">
+        <!-- Campo oculto para almacenar el ID de la cita asociada -->
+        
         <ul class="cita-details-list">
+          <!-- Lista estilizada para los campos de la receta -->
+          
           <li>
             <i class="fa fa-user"></i>
+            <!-- Icono de usuario para el paciente -->
             <input type="text" id="recetaNombrePaciente" class="form-control" placeholder="Nombre del paciente" readonly>
+            <!-- Campo de solo lectura con el nombre del paciente (se llena automáticamente) -->
           </li>
+          
           <li>
             <i class="fa fa-user-md"></i>
+            <!-- Icono de médico -->
             <input type="text" id="recetaDoctorId" class="form-control" placeholder="Doctor" readonly>
+            <!-- Campo de solo lectura con el nombre del doctor (se llena automáticamente) -->
           </li>
+          
           <li>
             <i class="fa fa-pills"></i>
+            <!-- Icono de pastillas/medicamento -->
             <input type="text" id="recetaMedicamento" class="form-control" placeholder="Medicamento" required>
+            <!-- Campo obligatorio para el nombre del medicamento -->
           </li>
+          
           <li>
             <i class="fa fa-dosage-form"></i>
+            <!-- Icono de dosificación -->
             <input type="text" id="recetaDosis" class="form-control" placeholder="Dosis (ej: 500mg)" required>
+            <!-- Campo obligatorio para especificar la dosis del medicamento -->
           </li>
+          
           <li>
             <i class="fa fa-clock"></i>
+            <!-- Icono de reloj para frecuencia -->
             <select id="recetaFrecuencia" class="form-control" required>
+              <!-- Select obligatorio para la frecuencia de administración -->
               <option value="">Frecuencia</option>
+              <!-- Opción por defecto -->
               <option value="Una vez al día">Una vez al día</option>
+              <!-- Frecuencia: cada 24 horas -->
               <option value="Dos veces al día">Dos veces al día</option>
+              <!-- Frecuencia: cada 12 horas -->
               <option value="Tres veces al día">Tres veces al día</option>
+              <!-- Frecuencia: cada 8 horas -->
               <option value="Cada 4 horas">Cada 4 horas</option>
+              <!-- Frecuencia: cada 4 horas -->
               <option value="Cada 6 horas">Cada 6 horas</option>
+              <!-- Frecuencia: cada 6 horas -->
               <option value="Cada 8 horas">Cada 8 horas</option>
+              <!-- Frecuencia: cada 8 horas -->
               <option value="Cada 12 horas">Cada 12 horas</option>
+              <!-- Frecuencia: cada 12 horas -->
               <option value="Según sea necesario">Según sea necesario</option>
+              <!-- Frecuencia: a demanda del paciente -->
             </select>
           </li>
+          
           <li>
             <i class="fa fa-calendar-days"></i>
+            <!-- Icono de calendario para duración -->
             <select id="recetaDuracion" class="form-control" required>
+              <!-- Select obligatorio para la duración del tratamiento -->
               <option value="">Duración del tratamiento</option>
+              <!-- Opción por defecto -->
               <option value="3 días">3 días</option>
+              <!-- Tratamiento corto de 3 días -->
               <option value="5 días">5 días</option>
+              <!-- Tratamiento corto de 5 días -->
               <option value="7 días">7 días</option>
+              <!-- Tratamiento de una semana -->
               <option value="10 días">10 días</option>
+              <!-- Tratamiento de 10 días -->
               <option value="14 días">14 días</option>
+              <!-- Tratamiento de dos semanas -->
               <option value="21 días">21 días</option>
+              <!-- Tratamiento de tres semanas -->
               <option value="30 días">30 días</option>
+              <!-- Tratamiento de un mes -->
               <option value="Hasta agotar">Hasta agotar</option>
+              <!-- Tratamiento hasta terminar el medicamento -->
               <option value="Tratamiento continuo">Tratamiento continuo</option>
+              <!-- Tratamiento a largo plazo -->
             </select>
           </li>
+          
           <li>
             <i class="fa fa-sticky-note"></i>
+            <!-- Icono de nota para indicaciones -->
             <textarea id="recetaIndicaciones" class="form-control" rows="3" placeholder="Indicaciones especiales (opcional)"></textarea>
+            <!-- Área de texto opcional para indicaciones especiales del tratamiento -->
           </li>
         </ul>
         
         <div style="display: flex; gap: 10px; margin-top: 15px;">
+          <!-- Contenedor flexbox para los botones de acción -->
+          
           <button type="submit" class="btn-cta" style="flex: 1;">
             <i class="fa fa-file-medical"></i> Generar Receta
           </button>
+          <!-- Botón principal para generar la receta médica -->
+          
           <button type="button" class="btn-cancelar" onclick="cerrarModalReceta()" style="flex: 1;">
             <i class="fa fa-times"></i> Cancelar
           </button>
+          <!-- Botón secundario para cancelar y cerrar el modal -->
         </div>
       </form>
     </div>

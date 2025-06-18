@@ -1,293 +1,518 @@
 <!DOCTYPE html>
+<!-- Declaración del tipo de documento HTML5 -->
 <html lang="es">
+<!-- Elemento raíz HTML con idioma español para accesibilidad y SEO -->
 <head>  
+  <!-- Configuración de metadatos y recursos del documento -->
+  
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  <title>GenWeb - Inicio</title>
+  <!-- Codificación de caracteres UTF-8 para soporte de caracteres especiales -->
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- Configuración responsive para dispositivos móviles -->
+  
+  <title>GenWeb - Inicio</title>
+  <!-- Título de la página que aparece en la pestaña del navegador -->
+  
   <!-- Tu hoja de estilos principal -->
   <link rel="stylesheet" href="styles.css" />
+  <!-- Enlace a la hoja de estilos principal del sitio -->
+  
   <!-- Responsive mobile styles -->
   <link rel="stylesheet" href="mobile.css" />
+  <!-- Enlace a la hoja de estilos específica para dispositivos móviles -->
+  
   <style>
-    /* Estilos adicionales para responsive */
+    /* Estilos CSS embebidos específicos para la página de inicio */    /* Media Query para tablets y pantallas de tamaño medio (768px y menos) */
     @media (max-width: 768px) {
       .hero {
+        /* Cambia la dirección del flexbox de horizontal a vertical */
         flex-direction: column;
+        /* Centra el contenido horizontalmente */
         text-align: center;
       }
       
       .hero-text {
+        /* Espaciado inferior para separar del contenido siguiente */
         margin-bottom: 20px;
       }
       
       .hero-text h1 {
+        /* Reduce el tamaño del título principal en tablets */
         font-size: 24px;
       }
       
       .hero-text p {
+        /* Reduce el tamaño del párrafo en tablets */
         font-size: 16px;
       }
       
       .hero-image img {
+        /* Limita el tamaño máximo de la imagen en tablets */
         max-width: 300px;
       }
     }
     
+    /* Media Query para dispositivos móviles pequeños (480px y menos) */
     @media (max-width: 480px) {
       .hero-text h1 {
+        /* Reduce aún más el tamaño del título en móviles */
         font-size: 20px;
       }
       
       .hero-text p {
+        /* Reduce aún más el tamaño del párrafo en móviles */
         font-size: 14px;
       }
       
       .hero-image img {
+        /* Limita el tamaño máximo de la imagen en móviles */
         max-width: 250px;
       }
-    }
-  </style>
+    }  </style>
 </head>
 <body class="index-page">
+<!-- Clase CSS para identificar que esta es la página de inicio -->
 
-  <!-- Barra Lateral (sidebar) -->
+  <!-- Barra Lateral (sidebar) - Menú de navegación principal -->
   <aside class="sidebar" id="sidebar">
+    <!-- aside: elemento semántico HTML5 para contenido complementario -->
+    
     <div class="sidebar-brand">
+      <!-- Contenedor para el logo y marca de la barra lateral -->
       <div class="brand-logo">
         <!-- Logo + Texto en la sidebar (SIN toggle) -->
+        <!-- Aquí iría el logo de la marca, actualmente vacío -->
       </div>
       <!-- Se elimina el botón toggle de la sidebar -->
+      <!-- Nota: El toggle se maneja desde la topbar -->
     </div>
 
     <!-- Menú de navegación -->
     <ul class="sidebar-nav">
+      <!-- Lista no ordenada que contiene los elementos de navegación -->
+      
       <li class="nav-item"><a class="nav-link active" href="index.html#Inicio">Inicio</a></li>
+      <!-- Enlace a la sección de inicio, marcado como activo -->
+      
       <li class="nav-item"><a class="nav-link" href="index.html#Servicios">Servicios</a></li>
+      <!-- Enlace a la sección de servicios usando ancla (#) -->
+      
       <li class="nav-item"><a class="nav-link" href="index.html#Doctores">Doctores</a></li>
+      <!-- Enlace a la sección de doctores usando ancla (#) -->
+      
       <li class="nav-item"><a class="nav-link" href="index.html#Instalaciones">Instalaciones</a></li>
+      <!-- Enlace a la sección de instalaciones usando ancla (#) -->
+      
       <li class="nav-item"><a class="nav-link" href="index.html#Contacto">Contacto</a></li>
+      <!-- Enlace a la sección de contacto usando ancla (#) -->
+      
       <li class="nav-item"><a class="nav-link" href="appointments.html">Mis Citas</a></li>
+      <!-- Enlace a la página externa de citas (appointments.html) -->
     </ul>    
   </aside>
-
-  <!-- Contenido principal -->
+  <!-- Contenido principal de la página -->
   <div class="main-content" id="mainContent">
+    <!-- Contenedor principal que ocupa el área de contenido excluyendo la sidebar -->
 
     <!-- Topbar (barra superior) transparente -->
     <header class="topbar">
-      <div class="topbar-left">        <!-- Botón toggle (hamburguesa) + Logo pequeño -->
+      <!-- header: elemento semántico HTML5 para el encabezado de la página -->
+      
+      <div class="topbar-left">        
+        <!-- Sección izquierda de la topbar -->
+        
+        <!-- Botón toggle (hamburguesa) + Logo pequeño -->
         <button class="sidebar-toggle" id="sidebarToggle">&#9776;</button>
+        <!-- Botón hamburguesa para mostrar/ocultar la sidebar en móviles -->
+        <!-- &#9776; es el código HTML entity para el símbolo de hamburguesa ≡ -->
+        
         <img src="logo.png" alt="GenWeb" class="topbar-logo" />
+        <!-- Logo pequeño de la aplicación en la topbar -->
       </div>
+      
       <div class="topbar-right">
+        <!-- Sección derecha de la topbar -->
+        
         <!-- Botón Agendar Cita -->
         <button id="btnAgendarCita" class="btn-elegant btn-agendar">Agendar Cita</button>
+        <!-- Botón principal para agendar citas, controlado por JavaScript -->
 
         <!-- Contenedor de usuario -->
         <div id="userInfoContainer">
           <!-- Aquí se cargará dinámicamente la información del usuario -->
+          <!-- Este contenido se genera desde app.js basado en el estado de autenticación -->
         </div>
       </div>
-    </header>
-
-    <!-- Sección de contenido principal -->
+    </header>    <!-- Sección de contenido principal -->
     <section class="content">
+      <!-- section: elemento semántico HTML5 para secciones de contenido -->
 
-      <!-- Hero Section -->
+      <!-- Hero Section - Sección principal de bienvenida -->
       <section class="hero" id="Inicio">
+        <!-- Sección hero con ID "Inicio" para navegación por anclas -->
+        
         <div class="hero-text">
+          <!-- Contenedor para el texto principal del hero -->
+          
           <h1>Bienvenido a <span>GenWeb</span></h1>
+          <!-- Título principal con el nombre de la aplicación destacado en span -->
+          
           <p>Tu salud, nuestra prioridad. Ofrecemos servicios médicos de calidad y atención especializada las 24 horas del día.</p>
+          <!-- Descripción de la propuesta de valor de la plataforma -->
+          
           <!-- Botón "Conoce Más" que despliega el apartado de noticias RSS -->
           <button id="conoceMasBtn" class="btn-primary">Conoce Más</button>
+          <!-- Botón que activa la funcionalidad de mostrar noticias RSS -->
         </div>
+        
         <div class="hero-image">
+          <!-- Contenedor para la imagen principal del hero -->
           <img src="f1.png" alt="Hospitaria Hero Image">
+          <!-- Imagen representativa de la plataforma médica -->
         </div>
       </section>
 
       <!-- Sección de Noticias RSS (inicialmente oculta) -->
       <section id="newsSection" class="news-section" style="display:none;">
+        <!-- Sección oculta por defecto que se muestra al hacer clic en "Conoce Más" -->
+        
         <h2>Noticias de Biotecnología en México</h2>
+        <!-- Título de la sección de noticias -->
+        
         <div id="newsContainer"></div>
-      </section>
-
-      <!-- Servicios -->
+        <!-- Contenedor donde se cargarán dinámicamente las noticias del feed RSS -->
+      </section>      <!-- Servicios - Sección que muestra los servicios médicos disponibles -->
       <section id="Servicios" class="services">
+        <!-- Sección con ID "Servicios" para navegación por anclas -->
+        
         <h2>Nuestros Servicios</h2>
+        <!-- Título de la sección de servicios -->
+        
         <div class="service-cards">
+          <!-- Contenedor grid/flex para las tarjetas de servicios -->
+          
           <div class="card">
+            <!-- Primera tarjeta de servicio -->
             <img src="f2.png" alt="Servicio 1">
+            <!-- Imagen representativa del servicio de consulta general -->
             <h3>Consulta General</h3>
+            <!-- Título del servicio -->
             <p>Atención personalizada para cuidar de tu salud.</p>
+            <!-- Descripción del servicio -->
           </div>
+          
           <div class="card">
+            <!-- Segunda tarjeta de servicio -->
             <img src="f3.png" alt="Servicio 2">
+            <!-- Imagen representativa de especialidades médicas -->
             <h3>Especialidades</h3>
+            <!-- Título del servicio -->
             <p>Amplia gama de especialidades médicas a tu disposición.</p>
+            <!-- Descripción del servicio -->
           </div>
+          
           <div class="card">
+            <!-- Tercera tarjeta de servicio -->
             <img src="f4.png" alt="Servicio 3">
+            <!-- Imagen representativa del servicio de urgencias -->
             <h3>Urgencias</h3>
+            <!-- Título del servicio -->
             <p>Atención inmediata las 24 horas, todos los días.</p>
+            <!-- Descripción del servicio -->
           </div>
         </div>
-      </section>
-
-      <!-- Especialistas -->
+      </section>      <!-- Especialistas - Sección que muestra la galería de doctores disponibles -->
       <section id="Doctores" class="specialists doctors">
+        <!-- Sección con ID "Doctores" para navegación por anclas -->
+        <!-- Clases: specialists (estilo general) y doctors (estilo específico) -->
+        
         <h2>Nuestros Especialistas</h2>
+        <!-- Título de la sección de doctores especialistas -->
+        
         <div class="specialist-cards">
+          <!-- Contenedor grid/flex para las tarjetas de especialistas -->
+          
           <div class="card">
+            <!-- Primera tarjeta de especialista -->
             <div class="card-image">
+              <!-- Contenedor específico para la imagen del doctor -->
               <img src="doc1.png" alt="Doctor 1">
+              <!-- Imagen del Dr. Alonso Jimenez - Neurólogo -->
             </div>
             <h3>Dr. Alonso Jimenez</h3>
+            <!-- Nombre del especialista -->
             <p>Especialista en Neurología</p>
+            <!-- Especialidad médica del doctor -->
           </div>
+          
           <div class="card">
+            <!-- Segunda tarjeta de especialista -->
             <div class="card-image">
+              <!-- Contenedor específico para la imagen del doctor -->
               <img src="doc3.png" alt="Doctor 2">
+              <!-- Imagen de la Dra. Melissa Lara - Pediatra -->
             </div>
             <h3>Dra. Melissa Lara</h3>
+            <!-- Nombre del especialista -->
             <p>Especialista en Pediatría</p>
+            <!-- Especialidad médica del doctor -->
           </div>
+          
           <div class="card">
+            <!-- Tercera tarjeta de especialista -->
             <div class="card-image">
+              <!-- Contenedor específico para la imagen del doctor -->
               <img src="doc2.png" alt="Doctor 3">
+              <!-- Imagen del Dr. Diego Hernandez - Cardiólogo -->
             </div>
             <h3>Dr. Diego Hernandez</h3>
+            <!-- Nombre del especialista -->
             <p>Especialista en Cardiología</p>
+            <!-- Especialidad médica del doctor -->
           </div>
+          
           <div class="card">
+            <!-- Cuarta tarjeta de especialista -->
             <div class="card-image">
+              <!-- Contenedor específico para la imagen del doctor -->
               <img src="doc7.png" alt="Doctor 4">
+              <!-- Imagen de la Dra. Kelly Palomares - Dermatóloga -->
             </div>
             <h3>Dra. Kelly Palomares</h3>
+            <!-- Nombre del especialista -->
             <p>Especialista en Dermatología</p>
+            <!-- Especialidad médica del doctor -->
           </div>
+          
           <div class="card">
+            <!-- Quinta tarjeta de especialista -->
             <div class="card-image">
+              <!-- Contenedor específico para la imagen del doctor -->
               <img src="doc6.png" alt="Doctor 5">
+              <!-- Imagen del Dr. Mauricio Rocha - Infectólogo -->
             </div>
             <h3>Dr. Mauricio Rocha</h3>
+            <!-- Nombre del especialista -->
             <p>Especialista en Infectología</p>
+            <!-- Especialidad médica del doctor -->
           </div>
+          
           <div class="card">
+            <!-- Sexta tarjeta de especialista -->
             <div class="card-image">
+              <!-- Contenedor específico para la imagen del doctor -->
               <img src="doc5.png" alt="Doctor 6">
+              <!-- Imagen del Dr. Alexis Hernandez - Otorrinolaringólogo -->
             </div>
             <h3>Dr. Alexis Hernandez</h3>
+            <!-- Nombre del especialista -->
             <p>Especialista en Otorrinolaringología</p>
+            <!-- Especialidad médica del doctor -->
           </div>
+          
           <div class="card">
+            <!-- Séptima tarjeta de especialista -->
             <div class="card-image">
+              <!-- Contenedor específico para la imagen del doctor -->
               <img src="doc4.png" alt="Doctor 7">
+              <!-- Imagen del Dr. Gonzalo Mendoza - Anestesiólogo -->
             </div>
             <h3>Dr. Gonzalo Mendoza</h3>
+            <!-- Nombre del especialista -->
             <p>Especialista en Anestesiología</p>
+            <!-- Especialidad médica del doctor -->
           </div>
         </div>
-      </section>
-
-      <!-- Instalaciones -->
+      </section>      <!-- Instalaciones - Sección que muestra las instalaciones del hospital -->
       <section id="Instalaciones" class="facilities">
+        <!-- Sección con ID "Instalaciones" para navegación por anclas -->
+        <!-- Clase facilities para estilo específico de instalaciones -->
+        
         <h2>Nuestras Instalaciones</h2>
+        <!-- Título de la sección de instalaciones -->
+        
         <div class="facility-images">
+          <!-- Contenedor grid/flex para las imágenes de instalaciones -->
+          
           <img src="instalacion1.png" alt="Instalación 1">
+          <!-- Primera imagen de instalación - formato PNG -->
+          
           <img src="instalacion2.jpg" alt="Instalación 2">
+          <!-- Segunda imagen de instalación - formato JPG -->
+          
           <img src="instalacion3.webp" alt="Instalación 3">
+          <!-- Tercera imagen de instalación - formato WebP (optimizado) -->
         </div>
       </section>
 
-      <!-- Testimonios -->
+      <!-- Testimonios - Sección de opiniones de pacientes -->
       <section class="testimonials">
+        <!-- Sección de testimonios sin ID específico -->
+        <!-- Clase testimonials para estilo específico -->
+        
         <h2>Testimonios de Pacientes</h2>
+        <!-- Título de la sección de testimonios -->
+        
         <div class="testimonial-cards">
+          <!-- Contenedor grid/flex para las tarjetas de testimonios -->
+          
           <div class="card">
+            <!-- Primera tarjeta de testimonio -->
             <p>"El servicio en Hospitaria es excelente. Me sentí muy bien atendido en todo momento."</p>
+            <!-- Opinión del paciente entre comillas -->
             <h3>- Gloria Hernandez</h3>
+            <!-- Nombre del paciente que da el testimonio -->
           </div>
+          
           <div class="card">
+            <!-- Segunda tarjeta de testimonio -->
             <p>"Gracias a los especialistas de Hospitaria, ahora tengo una mejor calidad de vida."</p>
+            <!-- Opinión del paciente entre comillas -->
             <h3>- Andy Martinez</h3>
+            <!-- Nombre del paciente que da el testimonio -->
           </div>
+          
           <div class="card">
+            <!-- Tercera tarjeta de testimonio -->
             <p>"La atención de urgencias fue rápida y eficiente. Los recomiendo ampliamente."</p>
+            <!-- Opinión del paciente entre comillas -->
             <h3>- Juan Picone</h3>
+            <!-- Nombre del paciente que da el testimonio -->
           </div>
         </div>
       </section>
 
-      <!-- Contacto -->
+      <!-- Contacto - Formulario de contacto -->
       <section id="Contacto" class="contact">
+        <!-- Sección con ID "Contacto" para navegación por anclas -->
+        <!-- Clase contact para estilo específico del formulario -->
+        
         <h2>Contáctanos</h2>
+        <!-- Título de la sección de contacto -->
+        
         <form>
+          <!-- Formulario HTML estándar (no maneja envío por JavaScript en este archivo) -->
+          
           <input type="text" placeholder="Nombre" required>
+          <!-- Campo de texto para el nombre, requerido -->
+          
           <input type="email" placeholder="Correo Electrónico" required>
+          <!-- Campo de email con validación automática HTML5, requerido -->
+          
           <textarea placeholder="Mensaje" required></textarea>
+          <!-- Campo de área de texto para mensaje más largo, requerido -->
+          
           <button type="submit">Enviar</button>
+          <!-- Botón de envío del formulario -->
         </form>
       </section>
 
-      <!-- Footer -->
+      <!-- Footer - Pie de página con información legal -->
       <footer>
+        <!-- footer: elemento semántico HTML5 para el pie de página -->
+        
         <div class="footer-content">
+          <!-- Contenedor para el contenido del footer -->
+          
           <p>&copy; 2025 GenWeb. Todos los derechos reservados.</p>
+          <!-- Símbolo de copyright (&copy;) y año actual con derechos reservados -->
+          
           <nav>
+            <!-- nav: elemento semántico HTML5 para navegación del footer -->
+            
             <ul>
+              <!-- Lista no ordenada para enlaces legales -->
+              
               <li><a href="#">Política de Privacidad</a></li>
+              <!-- Enlace a política de privacidad (actualmente placeholder con #) -->
+              
               <li><a href="#">Términos y Condiciones</a></li>
+              <!-- Enlace a términos y condiciones (actualmente placeholder con #) -->
             </ul>
           </nav>
         </div>
-      </footer>
-
-    </section> <!-- Fin .content -->
+      </footer>    </section> <!-- Fin .content -->
   </div> <!-- Fin .main-content -->
 
-  <!-- Scripts -->
+  <!-- Scripts - Archivos JavaScript necesarios para la funcionalidad -->
   <script src="script.js"></script>
+  <!-- script.js: Contiene funcionalidades generales del sitio (sidebar, navegación) -->
+  
   <script src="app.js"></script>
+  <!-- app.js: Contiene funcionalidades específicas de la aplicación (autenticación, API calls) -->
+  
   <script>
+    /* Script embebido específico para la funcionalidad de noticias RSS */
+    
+    // Event listener para el botón "Conoce Más"
     document.getElementById("conoceMasBtn").addEventListener("click", () => {
+      // Obtiene referencia al elemento de la sección de noticias
       const newsSection = document.getElementById("newsSection");
+      
+      // Verifica si la sección está oculta (display: none o valor vacío por defecto)
       if (newsSection.style.display === "none" || newsSection.style.display === "") {
+        // Si está oculta, la muestra y carga las noticias
         newsSection.style.display = "block";
-        loadNews();
+        loadNews(); // Llama a la función para cargar noticias desde el backend
       } else {
+        // Si está visible, la oculta
         newsSection.style.display = "none";
       }
     });
   
+    // Función asíncrona para cargar noticias de biotecnología desde el backend
     async function loadNews() {
+      // Obtiene referencia al contenedor donde se mostrarán las noticias
       const newsContainer = document.getElementById("newsContainer");
+      
+      // Limpia el contenido previo del contenedor
       newsContainer.innerHTML = "";
   
       try {
-        // Llamamos a nuestro backend Node
+        // Realiza petición HTTP GET al endpoint de RSS del backend
         const response = await fetch("http://localhost:5000/rss-biotecnologia");
+        
+        // Verifica si la respuesta HTTP fue exitosa (status 200-299)
         if (!response.ok) {
           throw new Error("Respuesta no OK");
         }
-        // feed es un objeto con { title, items, etc. }
+        
+        // Convierte la respuesta a JSON
+        // feed es un objeto con { title, items, etc. } generado por rss-parser en el backend
         const feed = await response.json();
   
+        // Verifica si existen artículos en el feed
         if (feed.items && feed.items.length > 0) {
+          // Itera sobre cada artículo del feed RSS
           feed.items.forEach(item => {
+            // Crea un elemento div para cada noticia
             const newsItem = document.createElement("div");
-            newsItem.className = "news-item";
-            // Reemplaza item.contentSnippet, item.link, etc. según lo que devuelva rss-parser
+            newsItem.className = "news-item"; // Asigna clase CSS para estilo
+            
+            // Construye el HTML interno del elemento noticia
+            // Utiliza template literals para insertar datos dinámicos
             newsItem.innerHTML = `
               <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
               <p>${item.pubDate ? new Date(item.pubDate).toLocaleDateString() : ""}</p>
               <p>${item.contentSnippet || ""}</p>
             `;
+            /* 
+            - item.link: URL del artículo original (abre en nueva pestaña)
+            - item.title: Título del artículo
+            - item.pubDate: Fecha de publicación (formateada a fecha local si existe)
+            - item.contentSnippet: Resumen o descripción del artículo
+            */
+            
+            // Añade el elemento noticia al contenedor
             newsContainer.appendChild(newsItem);
           });
         } else {
+          // Si no hay artículos, muestra mensaje informativo
           newsContainer.innerHTML = "<p>No se encontraron noticias.</p>";
         }
       } catch (error) {
+        // Manejo de errores: log en consola y mensaje de error al usuario
         console.error("Error al cargar las noticias:", error);
         newsContainer.innerHTML = "<p>Error al cargar las noticias.</p>";
       }

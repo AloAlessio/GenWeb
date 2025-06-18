@@ -1,35 +1,45 @@
+// Importamos nodemailer: biblioteca de Node.js para envío de emails
+// Soporta múltiples proveedores: Gmail, Outlook, Yahoo, SMTP personalizado, etc.
 const nodemailer = require('nodemailer');
 
-// Configuración del transportador de email
+// Función para crear y configurar el transportador de email
+// El transportador es el objeto que se encarga de enviar los emails
 const createTransporter = () => {
+    // nodemailer.createTransporter() crea una instancia de transporte
     return nodemailer.createTransport({
-        // Configuración para Gmail (puedes cambiar según tu proveedor)
-        service: 'gmail',
+        // Configuración para Gmail (se puede cambiar por otros proveedores)
+        service: 'gmail',                    // Servicio de email (gmail, yahoo, outlook, etc.)
         auth: {
-            user: process.env.EMAIL_USER || 'tu-email@gmail.com',
-            pass: process.env.EMAIL_PASSWORD || 'tu-app-password'
+            // Datos de autenticación obtenidos de variables de entorno
+            // Si no están definidas, usa valores por defecto (para desarrollo)
+            user: process.env.EMAIL_USER || 'tu-email@gmail.com',       // Email del remitente
+            pass: process.env.EMAIL_PASSWORD || 'tu-app-password'       // Contraseña de aplicación (no la contraseña normal)
+            // IMPORTANTE: Para Gmail se debe usar "App Password", no la contraseña regular
         }
     });
 };
 
-// Función para enviar email de receta médica
+// Función principal para enviar emails de recetas médicas a pacientes
+// Recibe un objeto con todos los datos necesarios para generar la receta
 const enviarEmailReceta = async (datosReceta) => {
     try {
+        // Creamos el transportador usando la configuración definida arriba
         const transporter = createTransporter();
         
+        // Destructuramos los datos de la receta para facilitar su uso
+        // Extraemos cada campo del objeto datosReceta
         const { 
-            emailPaciente, 
-            nombrePaciente, 
-            nombreDoctor, 
-            medicamento, 
-            dosis, 
-            frecuencia, 
-            duracion, 
-            indicaciones,
-            fechaEmision 
-        } = datosReceta;
-
-        // Plantilla HTML para el email
+            emailPaciente,          // Email del destinatario (paciente)
+            nombrePaciente,         // Nombre completo del paciente
+            nombreDoctor,           // Nombre completo del doctor que emite la receta
+            medicamento,            // Nombre del medicamento recetado
+            dosis,                  // Cantidad y concentración del medicamento
+            frecuencia,             // Cada cuánto tiempo tomar el medicamento
+            duracion,               // Por cuánto tiempo debe tomarse
+            indicaciones,           // Instrucciones adicionales (opcional)
+            fechaEmision            // Fecha de emisión de la receta
+        } = datosReceta;        // Creamos la plantilla HTML para el email
+        // Esta plantilla incluye estilos CSS inline para compatibilidad con clientes de email
         const htmlTemplate = `
         <!DOCTYPE html>
         <html lang="es">
@@ -38,65 +48,68 @@ const enviarEmailReceta = async (datosReceta) => {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Receta Médica - GenWeb</title>
             <style>
+                /* Estilos CSS inline para máxima compatibilidad con clientes de email */
+                /* Los clientes de email (Gmail, Outlook) tienen soporte limitado de CSS */
+                
                 body {
-                    font-family: Arial, sans-serif;
-                    line-height: 1.6;
-                    color: #333;
-                    background-color: #f4f4f4;
-                    margin: 0;
-                    padding: 20px;
+                    font-family: Arial, sans-serif;    /* Fuente segura para emails */
+                    line-height: 1.6;                  /* Espaciado entre líneas para legibilidad */
+                    color: #333;                       /* Color de texto gris oscuro */
+                    background-color: #f4f4f4;        /* Fondo gris claro */
+                    margin: 0;                         /* Sin márgenes externos */
+                    padding: 20px;                     /* Espaciado interno */
                 }
                 .container {
-                    max-width: 600px;
-                    margin: 0 auto;
-                    background: white;
-                    border-radius: 10px;
-                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                    overflow: hidden;
+                    max-width: 600px;                  /* Ancho máximo recomendado para emails */
+                    margin: 0 auto;                    /* Centrar horizontalmente */
+                    background: white;                 /* Fondo blanco para el contenido */
+                    border-radius: 10px;               /* Bordes redondeados */
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);  /* Sombra sutil */
+                    overflow: hidden;                  /* Ocultar contenido que desborde */
                 }
                 .header {
-                    background: linear-gradient(135deg, #28a745, #20c997);
-                    color: white;
-                    padding: 30px;
-                    text-align: center;
+                    background: linear-gradient(135deg, #28a745, #20c997);  /* Gradiente verde médico */
+                    color: white;                      /* Texto blanco */
+                    padding: 30px;                     /* Espaciado interno */
+                    text-align: center;                /* Texto centrado */
                 }
                 .header h1 {
-                    margin: 0;
-                    font-size: 28px;
+                    margin: 0;                         /* Sin márgenes */
+                    font-size: 28px;                  /* Tamaño de fuente grande */
                 }
                 .header .subtitle {
-                    margin: 10px 0 0 0;
-                    font-size: 16px;
-                    opacity: 0.9;
+                    margin: 10px 0 0 0;               /* Solo margen superior */
+                    font-size: 16px;                  /* Tamaño de fuente mediano */
+                    opacity: 0.9;                     /* Ligeramente transparente */
                 }
                 .content {
-                    padding: 30px;
+                    padding: 30px;                     /* Espaciado interno generoso */
                 }
                 .patient-info {
-                    background: #f8f9fa;
-                    border-left: 4px solid #28a745;
-                    padding: 20px;
-                    margin-bottom: 25px;
-                    border-radius: 0 8px 8px 0;
+                    background: #f8f9fa;              /* Fondo gris muy claro */
+                    border-left: 4px solid #28a745;   /* Borde izquierdo verde */
+                    padding: 20px;                     /* Espaciado interno */
+                    margin-bottom: 25px;               /* Espacio inferior */
+                    border-radius: 0 8px 8px 0;       /* Bordes redondeados solo en la derecha */
                 }
                 .prescription-details {
-                    background: #fff;
-                    border: 2px solid #e9ecef;
-                    border-radius: 8px;
-                    padding: 25px;
-                    margin-bottom: 25px;
+                    background: #fff;                  /* Fondo blanco */
+                    border: 2px solid #e9ecef;        /* Borde gris claro */
+                    border-radius: 8px;               /* Bordes redondeados */
+                    padding: 25px;                     /* Espaciado interno */
+                    margin-bottom: 25px;               /* Espacio inferior */
                 }
                 .detail-row {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-bottom: 15px;
-                    padding-bottom: 10px;
-                    border-bottom: 1px solid #eee;
+                    display: flex;                     /* Layout flexbox */
+                    justify-content: space-between;   /* Distribuir espacio entre elementos */
+                    margin-bottom: 15px;               /* Espacio inferior */
+                    padding-bottom: 10px;              /* Espaciado inferior */
+                    border-bottom: 1px solid #eee;    /* Línea separadora sutil */
                 }
                 .detail-label {
-                    font-weight: bold;
-                    color: #495057;
-                    flex: 1;
+                    font-weight: bold;                 /* Texto en negrita */
+                    color: #495057;                    /* Color gris oscuro */
+                    flex: 1;                          /* Tomar espacio disponible */
                 }
                 .detail-value {
                     flex: 2;
@@ -269,18 +282,17 @@ const enviarEmailReceta = async (datosReceta) => {
             </div>
         </body>
         </html>
-        `;
-
-        // Configuración del email
+        `;        // Configuración del email que se va a enviar
         const mailOptions = {
+            // Configuración del remitente (quien envía el email)
             from: {
-                name: 'GenWeb - Sistema Médico',
-                address: process.env.EMAIL_USER || 'noreply@genweb.com'
+                name: 'GenWeb - Sistema Médico',                      // Nombre que aparece como remitente
+                address: process.env.EMAIL_USER || 'noreply@genweb.com'  // Email del remitente
             },
-            to: emailPaciente,
-            subject: `🏥 Receta Médica - ${medicamento} | GenWeb`,
-            html: htmlTemplate,
-            text: `
+            to: emailPaciente,                                        // Email del destinatario (paciente)
+            subject: `🏥 Receta Médica - ${medicamento} | GenWeb`,    // Asunto del email con emoji y medicamento
+            html: htmlTemplate,                                       // Contenido HTML del email (plantilla creada arriba)
+            text: `                                                   /* Versión de texto plano como alternativa */
 RECETA MÉDICA - GENWEB
 
 Paciente: ${nombrePaciente}
@@ -305,40 +317,58 @@ GenWeb - Sistema de Gestión Médica
             `
         };
 
-        // Enviar el email
+        // Enviamos el email usando el transportador configurado
+        // sendMail() es asíncrono y retorna información sobre el envío
         const result = await transporter.sendMail(mailOptions);
         
+        // Registramos el éxito en la consola para debugging
         console.log('✅ Email de receta enviado exitosamente:', result.messageId);
+        
+        // Retornamos objeto con información de éxito
         return {
-            success: true,
-            messageId: result.messageId,
-            message: 'Email enviado exitosamente'
+            success: true,                              // Indica que el envío fue exitoso
+            messageId: result.messageId,                // ID único del mensaje (útil para rastreo)
+            message: 'Email enviado exitosamente'       // Mensaje descriptivo
         };
 
     } catch (error) {
+        // Si hay algún error durante el proceso, lo capturamos aquí
         console.error('❌ Error al enviar email de receta:', error);
+        
+        // Retornamos objeto con información del error
         return {
-            success: false,
-            error: error.message,
-            message: 'Error al enviar el email'
+            success: false,                             // Indica que el envío falló
+            error: error.message,                       // Mensaje técnico del error
+            message: 'Error al enviar el email'        // Mensaje descriptivo para el usuario
         };
     }
 };
 
-// Función para verificar configuración de email
+// Función para verificar que la configuración de email está correcta
+// Esta función es útil para diagnóstico y testing del servicio
 const verificarConfiguracion = async () => {
     try {
+        // Creamos un transportador con la configuración actual
         const transporter = createTransporter();
+        
+        // verify() comprueba la conectividad con el servidor de email
+        // Verifica credenciales y configuración sin enviar emails
         await transporter.verify();
+        
+        // Si llegamos aquí, la configuración es correcta
         console.log('✅ Configuración de email verificada');
-        return true;
+        return true;    // Retorna true si la configuración es válida
+        
     } catch (error) {
+        // Si hay algún problema con la configuración
         console.error('❌ Error en configuración de email:', error.message);
-        return false;
+        return false;   // Retorna false si hay problemas de configuración
     }
 };
 
+// Exportamos las funciones para que puedan ser usadas en otros archivos
+// module.exports permite que otros archivos importen estas funciones
 module.exports = {
-    enviarEmailReceta,
-    verificarConfiguracion
+    enviarEmailReceta,          // Función principal para enviar emails de recetas
+    verificarConfiguracion      // Función para verificar configuración de email
 };

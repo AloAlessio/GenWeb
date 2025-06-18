@@ -1,52 +1,73 @@
-// 📌 Configuración de la URL base del backend
+// 📌 Configuración global de la aplicación frontend
+// Define la URL base del servidor backend para todas las peticiones API
 const API_URL = "http://localhost:5000/api";
 
-// 🟢 FUNCIÓN PARA VERIFICAR SI EL USUARIO ESTÁ AUTENTICADO
+// 🟢 FUNCIÓN PARA VERIFICAR AUTENTICACIÓN DEL USUARIO
+// Comprueba si existe un token JWT válido en el localStorage del navegador
 function checkSession() {
+    // localStorage.getItem() obtiene datos almacenados localmente en el navegador
+    // Si no existe el token, retorna null, por lo que !== null devuelve false
     return localStorage.getItem('token') !== null;
 }
 
-// 🟢 FUNCIÓN PARA CERRAR SESIÓN
+// 🟢 FUNCIÓN PARA CERRAR SESIÓN DEL USUARIO
+// Elimina los datos de sesión almacenados y redirige al login
 function logout() {
+    // Eliminamos el token JWT del almacenamiento local
     localStorage.removeItem('token');
+    // Eliminamos también los datos del usuario almacenados
     localStorage.removeItem('user');
+    // Redirigimos al usuario a la página de login
     window.location.href = 'login.html';
 }
 
-// 🟢 FUNCIÓN PARA REDIRIGIR A CITAS O LOGIN SEGÚN SESIÓN (BOTÓN "AGENDAR CITA")
+// 🟢 FUNCIÓN PARA MANEJAR EL BOTÓN "AGENDAR CITA"
+// Verifica autenticación antes de permitir agendar citas
 function handleAgendarCita() {
+    // Si el usuario está autenticado (tiene token válido)
     if (checkSession()) {
+        // Redirigir a la página de citas
         window.location.href = "citas.html";
     } else {
+        // Si no está autenticado, mostrar alerta y redirigir al login
         alert("Debes iniciar sesión para agendar una cita.");
         window.location.href = "login.html";
     }
 }
 
-// 🟢 ASIGNAR EVENTO AL BOTÓN DE "AGENDAR CITA"
+// 🟢 INICIALIZACIÓN PRINCIPAL CUANDO SE CARGA EL DOM
+// Event listener que se ejecuta cuando todo el HTML ha sido completamente cargado
 document.addEventListener('DOMContentLoaded', () => {
     console.log("✅ DOM completamente cargado");
     
+    // Buscar y configurar el botón "Agendar Cita" en la página principal
     const btnAgendarCita = document.getElementById("btnAgendarCita");
     if (btnAgendarCita) {
+        // Asignar evento click al botón usando la función handleAgendarCita
         btnAgendarCita.addEventListener("click", handleAgendarCita);
     }
 
-    // Verificar si estamos en login.html y asignar eventos
+    // Verificar si estamos en la página de login (login.html)
+    // Detectamos la página por la presencia del formulario de login
     if (document.getElementById('loginForm')) {
         console.log("🟢 Página de login detectada.");
+        // Asignar eventos a los formularios de login y registro
         document.getElementById('loginForm').addEventListener("submit", handleLogin);
         document.getElementById('registerForm').addEventListener("submit", handleRegister);
+        // Mostrar por defecto el formulario de login
         showLogin();
     }
 
-    // Verificar si estamos en citas.html
+    // Verificar si estamos en la página de búsqueda de citas (citas.html)
+    // Detectamos la página por la presencia del contenedor de resultados
     if (document.getElementById('results')) {
         console.log("🟢 Página de citas detectada.");
+        // Cargar la lista de doctores disponibles
         loadDoctors();
     }
 
-    // Verificar si estamos en citas_forms.html
+    // Verificar si estamos en la página de formulario de citas (citas_forms.html)
+    // Detectamos la página por la presencia del formulario de cita
     if (document.getElementById('appointmentForm')) {
         console.log("🟢 Página de formulario de citas detectada.");
         document.getElementById('appointmentForm').addEventListener("submit", guardarCita);

@@ -1,26 +1,48 @@
+// Importamos Express para el sistema de rutas
 const express = require('express');
+// Creamos router para agrupar todas las rutas relacionadas con citas
 const router = express.Router();
+// Importamos el controlador de citas con todas sus funciones
 const citaController = require('../controllers/citaController');
 
-// Crear cita (POST /api/citas)
+// Ruta POST para crear una nueva cita médica
+// POST /api/citas
+// Recibe datos del paciente, doctor, fecha, hora, etc. en el cuerpo de la petición
 router.post('/', citaController.crearCita);
 
-// Listar todas las citas (GET /api/citas)
+// Ruta GET para obtener todas las citas (con filtros opcionales)
+// GET /api/citas
+// GET /api/citas?fecha=2025-06-17 (filtrar por fecha)
+// GET /api/citas?modalidad=Virtual (filtrar por modalidad)
+// Los filtros se envían como query parameters
 router.get('/', citaController.getAllCitas);
 
-// Obtener una cita por id (GET /api/citas/:id)
+// Ruta GET para obtener una cita específica por su ID
+// GET /api/citas/123 (donde 123 es el ID de la cita)
+// :id es un parámetro dinámico que se extrae con req.params.id
 router.get('/:id', citaController.getCitaById);
 
-// Actualizar una cita (PUT /api/citas/:id)
+// Ruta PUT para actualizar completamente una cita existente
+// PUT /api/citas/123
+// PUT se usa para actualizaciones completas del recurso
+// Recibe todos los datos de la cita en el cuerpo de la petición
 router.put('/:id', citaController.updateCita);
 
-// Confirmar una cita (PATCH /api/citas/:id/confirmar)
+// Ruta PATCH para confirmar una cita (actualización parcial de estado)
+// PATCH /api/citas/123/confirmar
+// PATCH se usa para actualizaciones parciales
+// Cambia solo el campo 'estado' a 'confirmada'
 router.patch('/:id/confirmar', citaController.confirmarCita);
 
-// Cancelar una cita (PATCH /api/citas/:id/cancelar)
+// Ruta PATCH para cancelar una cita (actualización parcial de estado)
+// PATCH /api/citas/123/cancelar
+// Cambia solo el campo 'estado' a 'cancelada'
 router.patch('/:id/cancelar', citaController.cancelarCita);
 
-// Eliminar una cita (DELETE /api/citas/:id)
+// Ruta DELETE para eliminar permanentemente una cita
+// DELETE /api/citas/123
+// Elimina completamente el registro de la base de datos
 router.delete('/:id', citaController.deleteCita);
 
+// Exportamos el router para usar en server.js
 module.exports = router;

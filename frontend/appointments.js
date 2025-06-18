@@ -1,6 +1,18 @@
-// Mapeo de IDs de doctores a nombres
+// appointments.js - Script principal para la gestión de citas médicas
+// Funcionalidades: CRUD de citas, filtros, calendario, recetas médicas
+
+// ===== FUNCIONES UTILITARIAS =====
+
+/**
+ * Mapeo de IDs de doctores a nombres completos
+ * Permite convertir IDs numéricos o strings de doctores a nombres legibles
+ * @param {string|number} doctorId - ID del doctor (puede ser numérico o string)
+ * @returns {string} - Nombre completo del doctor
+ */
 function obtenerNombreDoctor(doctorId) {
+    // Objeto que mapea diferentes formatos de ID a nombres de doctores
     const doctores = {
+        // IDs numéricos para compatibilidad con base de datos
         0: "Dr. Gonzalo Mendoza",
         1: "Dr. Alonso Jimenez", 
         2: "Dra. Melissa Lara",
@@ -8,6 +20,7 @@ function obtenerNombreDoctor(doctorId) {
         4: "Dra. Kelly Palomares", 
         5: "Dr. Mauricio Rocha",
         6: "Dr. Alexis Hernandez",
+        // IDs de string para compatibilidad con formularios
         "Dr. Alonso Jimenez": "Dr. Alonso Jimenez",
         "Dra. Melissa Lara": "Dra. Melissa Lara",
         "Dr. Diego Hernandez": "Dr. Diego Hernandez", 
@@ -17,85 +30,118 @@ function obtenerNombreDoctor(doctorId) {
         "Dr. Gonzalo Mendoza": "Dr. Gonzalo Mendoza"
     };
     
+    // Retorna el nombre del doctor si existe, sino retorna un mensaje con el ID
     return doctores[doctorId] || `Doctor ID: ${doctorId}`;
 }
 
-// Función para cargar y renderizar las citas
+// ===== GESTIÓN DE CITAS =====
+
+/**
+ * Función principal para cargar y renderizar las citas médicas
+ * Aplica filtros opcionales y muestra las citas en un carrusel interactivo
+ * @param {Object} filtros - Objeto con filtros opcionales (fecha, tipo)
+ */
 async function loadCitas(filtros = {}) {
     try {
-        console.log('loadCitas llamada con filtros:', filtros); // Debug
+        // Log para depuración de filtros aplicados
+        console.log('loadCitas llamada con filtros:', filtros);
         
+        // Construcción de la URL base para la API de citas
         let url = `${window.API_URL}/citas`;
-        const params = new URLSearchParams();
+        const params = new URLSearchParams(); // Objeto para manejar parámetros de consulta
 
+        // Aplicar filtro por fecha si está presente
         if (filtros.fecha) {
             console.log('Agregando filtro fecha:', filtros.fecha);
             params.append('fecha', filtros.fecha);
         }
+        
+        // Aplicar filtro por tipo/modalidad si está presente y no está vacío
         if (filtros.tipo && filtros.tipo !== "") {
             console.log('Agregando filtro tipo:', filtros.tipo);
             params.append('modalidad', filtros.tipo);
         }
 
+        // Agregar parámetros a la URL si existen filtros
         if (params.toString()) {
             url += `?${params.toString()}`;
         }
 
-        console.log('URL de búsqueda:', url, 'Filtros:', filtros); // Para depuración
+        // Log de la URL final para depuración
+        console.log('URL de búsqueda:', url, 'Filtros:', filtros);
 
+        // Realizar petición HTTP GET al backend
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`Error en la respuesta del servidor: ${response.status}`);
         }
 
+        // Parsear respuesta JSON
         const citas = await response.json();
         if (!Array.isArray(citas)) {
             throw new Error('La respuesta del servidor no es un array de citas.');
         }
 
+        // Obtener referencia al contenedor de las citas
         const citasList = document.getElementById("citasList");
-        citasList.innerHTML = "";
+        citasList.innerHTML = ""; // Limpiar contenido previo
 
+        // Mostrar mensaje si no hay citas
         if (citas.length === 0) {
             citasList.innerHTML = "<p class='no-results'>No hay citas registradas.</p>";
             return;
         }
 
-        // Crear contenedor del carrusel
+        // ===== CONSTRUCCIÓN DEL CARRUSEL =====
+        
+        // Crear contenedor principal del carrusel
         const carouselContainer = document.createElement("div");
         carouselContainer.className = "carousel-container";
 
-        // Crear wrapper para las tarjetas
+        // Crear wrapper/contenedor deslizable para las tarjetas
         const carouselWrapper = document.createElement("div");
         carouselWrapper.className = "carousel-wrapper";
 
-        // Agregar botones de navegación
+        // Crear botón de navegación anterior (izquierda)
         const prevButton = document.createElement("button");
         prevButton.innerHTML = "<i class='fas fa-chevron-left'></i>";
         prevButton.className = "carousel-button prev";
 
+        // Crear botón de navegación siguiente (derecha)
         const nextButton = document.createElement("button");
         nextButton.innerHTML = "<i class='fas fa-chevron-right'></i>";
-        nextButton.className = "carousel-button next";        citas.forEach(async cita => {
+        nextButton.className = "carousel-button next";        // ===== GENERACIÓN DE TARJETAS DE CITAS =====
+        
+        // Iterar sobre cada cita y crear su tarjeta correspondiente
+        citas.forEach(async cita => {
+            // Crear elemento div para la tarjeta de la cita
             const card = document.createElement("div");
             card.className = "carousel-card";
             
-            // Determinar el color del badge según el estado
+            // ===== DETERMINACIÓN DEL ESTADO DE LA CITA =====
+            
+            // Determinar el color y texto del badge según el estado de la cita
             let estadoBadge = '';
             switch(cita.estado) {
                 case 'confirmada':
+                    // Badge verde para citas confirmadas
                     estadoBadge = '<span class="estado-badge estado-confirmada">Confirmada</span>';
                     break;
                 case 'cancelada':
+                    // Badge rojo para citas canceladas
                     estadoBadge = '<span class="estado-badge estado-cancelada">Cancelada</span>';
                     break;
                 default:
+                    // Badge amarillo para citas pendientes (estado por defecto)
                     estadoBadge = '<span class="estado-badge estado-pendiente">Pendiente</span>';
             }
             
-            // Botones de acción según el estado
+            // ===== BOTONES DE ACCIÓN SEGÚN ESTADO =====
+            
+            // Generar botones de acción basados en el estado actual de la cita
             let botonesAccion = '';
             if (cita.estado === 'pendiente') {
+                // Solo mostrar botones de confirmar/cancelar si la cita está pendiente
                 botonesAccion = `
                     <button class="btn-confirmar" onclick="confirmarCita(${cita.id})">
                         <i class="fa fa-check"></i> Confirmar
@@ -106,19 +152,24 @@ async function loadCitas(filtros = {}) {
                 `;
             }
 
-            // Verificar si existe receta para esta cita
+            // ===== VERIFICACIÓN Y BOTÓN DE RECETAS =====
+            
+            // Verificar si ya existe una receta para esta cita
             let botonReceta = '';
             try {
+                // Consultar al backend si existe receta para la cita actual
                 const responseReceta = await fetch(`${window.API_URL}/recetas/existe/${cita.id}`);
                 const dataReceta = await responseReceta.json();
                 
                 if (dataReceta.existe) {
+                    // Si existe receta, mostrar botón para verla
                     botonReceta = `
                         <button class="btn-ver-receta" onclick="verReceta(${cita.id})">
                             <i class="fa fa-eye"></i> Ver Receta
                         </button>
                     `;
                 } else {
+                    // Si no existe receta, mostrar botón para crearla
                     botonReceta = `
                         <button class="btn-recetar" onclick="abrirModalReceta(${cita.id}, '${cita.nombre}', '${cita.doctorId}')">
                             <i class="fa fa-prescription-bottle-medical"></i> Recetar
@@ -127,7 +178,7 @@ async function loadCitas(filtros = {}) {
                 }
             } catch (error) {
                 console.error('Error al verificar receta:', error);
-                // Si hay error, mostrar botón de recetar por defecto
+                // Si hay error al verificar, mostrar botón de recetar por defecto
                 botonReceta = `
                     <button class="btn-recetar" onclick="abrirModalReceta(${cita.id}, '${cita.nombre}', '${cita.doctorId}')">
                         <i class="fa fa-prescription-bottle-medical"></i> Recetar
@@ -135,11 +186,14 @@ async function loadCitas(filtros = {}) {
                 `;
             }
 
+            // ===== CONSTRUCCIÓN DEL HTML DE LA TARJETA =====
+            
             card.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                     <h3 style="margin: 0; color: #2C3E50;">${cita.nombre}</h3>
                     ${estadoBadge}
-                </div>                <p><i class="fa fa-envelope" style="color: #1e90ff; margin-right: 8px;"></i>${cita.correo}</p>
+                </div>
+                <p><i class="fa fa-envelope" style="color: #1e90ff; margin-right: 8px;"></i>${cita.correo}</p>
                 <p><i class="fa fa-phone" style="color: #1e90ff; margin-right: 8px;"></i>${cita.telefono}</p>
                 <p><i class="fa fa-user-md" style="color: #1e90ff; margin-right: 8px;"></i>${obtenerNombreDoctor(cita.doctorId)}</p>
                 <p><i class="fa fa-stethoscope" style="color: #1e90ff; margin-right: 8px;"></i>${cita.especialidad}</p>
@@ -158,49 +212,76 @@ async function loadCitas(filtros = {}) {
                     </button>
                 </div>
             `;
+            /* Explicación de los elementos de la tarjeta:
+             * - Encabezado: nombre del paciente y badge de estado
+             * - Información de contacto: correo y teléfono con iconos
+             * - Información médica: doctor, especialidad, modalidad
+             * - Información temporal: fecha y hora
+             * - Notas: se muestran solo si existen
+             * - Botones de acción: confirmar/cancelar (solo pendientes), editar, recetar, eliminar
+             * - JSON.stringify().replace() escapa las comillas para evitar errores en onclick
+             */
+            
+            // Agregar la tarjeta al wrapper del carrusel
             carouselWrapper.appendChild(card);
-        });
+        });        // ===== ENSAMBLAJE DEL CARRUSEL =====
+        
+        // Agregar elementos al DOM en el orden correcto
+        carouselContainer.appendChild(prevButton);    // Botón anterior a la izquierda
+        carouselContainer.appendChild(carouselWrapper); // Contenedor deslizable en el centro
+        carouselContainer.appendChild(nextButton);     // Botón siguiente a la derecha
+        citasList.appendChild(carouselContainer);      // Agregar todo al contenedor principal
 
-        // Agregar elementos al DOM
-        carouselContainer.appendChild(prevButton);
-        carouselContainer.appendChild(carouselWrapper);
-        carouselContainer.appendChild(nextButton);
-        citasList.appendChild(carouselContainer);
-
-        // Configurar navegación simplificada
+        // ===== CONFIGURACIÓN DE NAVEGACIÓN DEL CARRUSEL =====
+        
+        // Event listener para el botón de navegación anterior (izquierda)
         prevButton.addEventListener('click', () => {
             carouselWrapper.scrollBy({
-                left: -320, // Ancho de una tarjeta
-                behavior: 'smooth'
+                left: -320, // Desplazamiento hacia la izquierda (320px = ancho de una tarjeta)
+                behavior: 'smooth' // Animación suave del desplazamiento
             });
         });
 
+        // Event listener para el botón de navegación siguiente (derecha)
         nextButton.addEventListener('click', () => {
             carouselWrapper.scrollBy({
-                left: 320, // Ancho de una tarjeta
-                behavior: 'smooth'
+                left: 320, // Desplazamiento hacia la derecha (320px = ancho de una tarjeta)
+                behavior: 'smooth' // Animación suave del desplazamiento
             });
         });
 
-        // Actualizar estado de botones según el scroll
+        // ===== GESTIÓN DEL ESTADO DE BOTONES DE NAVEGACIÓN =====
+        
+        /**
+         * Función para actualizar la visibilidad/estado de los botones de navegación
+         * Los botones se desactivan cuando se llega al inicio o final del carrusel
+         */
         function updateButtonStates() {
+            // Posición actual del scroll (0 = inicio)
             const scrollLeft = carouselWrapper.scrollLeft;
+            // Máximo scroll posible (ancho total - ancho visible)
             const maxScroll = carouselWrapper.scrollWidth - carouselWrapper.clientWidth;
             
+            // Desactivar botón anterior si está al inicio
             prevButton.style.opacity = scrollLeft <= 0 ? "0.5" : "1";
             prevButton.style.pointerEvents = scrollLeft <= 0 ? "none" : "auto";
             
+            // Desactivar botón siguiente si está al final
             nextButton.style.opacity = scrollLeft >= maxScroll ? "0.5" : "1";
             nextButton.style.pointerEvents = scrollLeft >= maxScroll ? "none" : "auto";
         }
 
-        // Escuchar cambios de scroll
+        // Escuchar eventos de scroll para actualizar estado de botones
         carouselWrapper.addEventListener('scroll', updateButtonStates);
         
-        // Inicializar estado de botones
+        // Inicializar estado de botones después de que se renderice el carrusel
         setTimeout(updateButtonStates, 100);
+        
     } catch (error) {
+        // ===== MANEJO DE ERRORES =====
+        
         console.error("Error al cargar las citas:", error);
+        // Mostrar alerta de error al usuario usando SweetAlert2
         Swal.fire({
             title: "Error",
             text: "No se pudieron cargar las citas. Intenta más tarde.",
@@ -210,37 +291,60 @@ async function loadCitas(filtros = {}) {
     }
 }
 
-// Abrir el modal y cargar los datos de la cita seleccionada
+// ===== MODAL DE EDICIÓN DE CITAS =====
+
+/**
+ * Abrir el modal de edición y cargar los datos de la cita seleccionada
+ * Puede recibir un objeto cita completo o solo un ID para buscar la cita
+ * @param {Object|number} citaOrId - Objeto cita completo o ID de la cita
+ */
 async function openEditModal(citaOrId) {
     try {
         let cita;
 
+        // Determinar si se recibió un objeto cita o un ID
         if (typeof citaOrId === 'object') {
-            // Si se pasa un objeto cita directamente
-            cita = citaOrId;        } else {
-            // Si se pasa un id, buscar la cita desde el backend
+            // Si se pasa un objeto cita directamente, usarlo
+            cita = citaOrId;
+        } else {
+            // Si se pasa un ID, hacer petición al backend para obtener la cita
             const response = await fetch(`${window.API_URL}/citas/${citaOrId}`);
             cita = await response.json();
         }
 
+        // ===== LLENAR CAMPOS DEL FORMULARIO DE EDICIÓN =====
+        
+        // Campos ocultos para identificación
         document.getElementById("editCitaId").value = cita.id;
+        document.getElementById("editEstado").value = cita.estado || 'pendiente';
+        
+        // Campos de información del paciente
         document.getElementById("editNombre").value = cita.nombre;
         document.getElementById("editCorreo").value = cita.correo;
         document.getElementById("editTelefono").value = cita.telefono;
+        
+        // Campos de información médica
         document.getElementById("editDoctorId").value = cita.doctorId;
         document.getElementById("editEspecialidad").value = cita.especialidad;
         document.getElementById("editModalidad").value = cita.modalidad;
+        
+        // Campos de fecha y hora
         document.getElementById("editFecha").value = cita.fecha;
         document.getElementById("editHora").value = cita.hora;
+        
+        // Campo de notas (opcional)
         document.getElementById("editNotas").value = cita.notas || "";
         
-        // Actualizar el estado en el modal
+        // ===== ACTUALIZACIÓN DEL ESTADO EN EL MODAL =====
+        
+        // Obtener estado actual de la cita
         const estado = cita.estado || 'pendiente';
-        document.getElementById("editEstado").value = estado;
         
         // Actualizar badge de estado en el modal
         const estadoBadgeModal = document.getElementById("estadoBadgeModal");
         estadoBadgeModal.className = `estado-badge estado-${estado}`;
+        
+        // Actualizar texto del badge según el estado
         switch(estado) {
             case 'confirmada':
                 estadoBadgeModal.textContent = 'CONFIRMADA';
@@ -252,21 +356,28 @@ async function openEditModal(citaOrId) {
                 estadoBadgeModal.textContent = 'PENDIENTE';
         }
         
-        // Mostrar/ocultar botones de acción según el estado
+        // ===== MOSTRAR/OCULTAR BOTONES SEGÚN ESTADO =====
+        
+        // Obtener referencias a los botones de acción del modal
         const btnConfirmarModal = document.getElementById("btnConfirmarModal");
         const btnCancelarModal = document.getElementById("btnCancelarModal");
         
+        // Solo mostrar botones de confirmar/cancelar si la cita está pendiente
         if (estado === 'pendiente') {
             btnConfirmarModal.style.display = 'inline-block';
             btnCancelarModal.style.display = 'inline-block';
         } else {
+            // Ocultar botones si la cita ya está confirmada o cancelada
             btnConfirmarModal.style.display = 'none';
             btnCancelarModal.style.display = 'none';
         }
 
+        // Mostrar el modal
         document.getElementById("citaModal").style.display = "flex";
+        
     } catch (error) {
         console.error("Error al obtener la cita:", error);
+        // Mostrar alerta de error al usuario
         Swal.fire({
             title: "Error",
             text: "No se pudieron cargar los datos de la cita.",
@@ -276,7 +387,9 @@ async function openEditModal(citaOrId) {
     }
 }
 
-// Cerrar modal al hacer clic en la "X"
+// ===== EVENT LISTENERS DEL MODAL =====
+
+// Event listener para cerrar modal al hacer clic en la "X"
 const closeModalBtn = document.querySelector(".modal .close");
 if (closeModalBtn) {
     closeModalBtn.addEventListener("click", () => {
@@ -284,70 +397,90 @@ if (closeModalBtn) {
     });
 }
 
-// Event listeners para botones del modal
+// Event listeners para botones del modal - Se ejecutan cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", function() {
-    // Botón confirmar del modal
+    // ===== BOTÓN CONFIRMAR DEL MODAL =====
     const btnConfirmarModal = document.getElementById("btnConfirmarModal");
     if (btnConfirmarModal) {
         btnConfirmarModal.addEventListener("click", () => {
+            // Obtener ID de la cita desde el campo oculto
             const citaId = document.getElementById("editCitaId").value;
+            // Llamar función de confirmación específica del modal
             confirmarCitaDesdeModal(citaId);
         });
     }
     
-    // Botón cancelar del modal
+    // ===== BOTÓN CANCELAR DEL MODAL =====
     const btnCancelarModal = document.getElementById("btnCancelarModal");
     if (btnCancelarModal) {
         btnCancelarModal.addEventListener("click", () => {
+            // Obtener ID de la cita desde el campo oculto
             const citaId = document.getElementById("editCitaId").value;
+            // Llamar función de cancelación específica del modal
             cancelarCitaDesdeModal(citaId);
         });
     }
 });
 
-// Función para confirmar cita desde el modal
+// ===== FUNCIONES DE CAMBIO DE ESTADO DE CITAS =====
+
+/**
+ * Función para confirmar una cita desde el modal de edición
+ * Realiza petición PATCH al backend para cambiar estado a 'confirmada'
+ * @param {number} id - ID de la cita a confirmar
+ */
 async function confirmarCitaDesdeModal(id) {
     try {
+        // Logs para depuración del proceso de confirmación
         console.log('Intentando confirmar cita con ID:', id);
         console.log('URL:', `${window.API_URL}/citas/${id}/confirmar`);
         
+        // Realizar petición PATCH al endpoint de confirmación
         const response = await fetch(`${window.API_URL}/citas/${id}/confirmar`, {
-            method: "PATCH",
+            method: "PATCH", // Método HTTP para actualización parcial
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json' // Especificar tipo de contenido JSON
             }
         });
         
+        // Logs adicionales para depuración de la respuesta
         console.log('Response status:', response.status);
         console.log('Response headers:', response.headers);
         
+        // Verificar si la respuesta fue exitosa
         if (!response.ok) {
             const errorText = await response.text();
             console.error('Error response:', errorText);
             throw new Error(`HTTP ${response.status}: ${errorText}`);
         }
         
+        // Parsear respuesta JSON
         const data = await response.json();
         console.log('Success data:', data);
         
+        // Mostrar alerta de éxito al usuario
         Swal.fire({
             title: "¡Confirmada!",
             text: data.message || "La cita ha sido confirmada exitosamente.",
             icon: "success",
             confirmButtonText: "Aceptar"
         }).then(() => {
-            // Cerrar modal
+            // Acciones después de confirmar la alerta
+            
+            // Cerrar el modal de edición
             document.getElementById("citaModal").style.display = "none";
+            
             // Recargar las citas para mostrar el estado actualizado
             loadCitas();
             
-            // También actualizar el calendario si está disponible
+            // También actualizar el calendario si está disponible y tiene la función
             if (window.calendar && typeof window.calendar.refetchEvents === 'function') {
                 console.log('Refreshing calendar events from modal...');
                 window.calendar.refetchEvents();
             }
         });
     } catch (error) {
+        // Manejo de errores durante la confirmación
         console.error("Error al confirmar la cita:", error);
         Swal.fire({
             title: "Error",
@@ -358,47 +491,61 @@ async function confirmarCitaDesdeModal(id) {
     }
 }
 
-// Función para cancelar cita desde el modal
+/**
+ * Función para cancelar una cita desde el modal de edición
+ * Muestra confirmación al usuario antes de proceder con la cancelación
+ * @param {number} id - ID de la cita a cancelar
+ */
 async function cancelarCitaDesdeModal(id) {
+    // Mostrar diálogo de confirmación antes de proceder
     Swal.fire({
         title: "¿Cancelar cita?",
         text: "¿Estás seguro de que quieres cancelar esta cita?",
         icon: "warning",
-        showCancelButton: true,
+        showCancelButton: true, // Mostrar botón de cancelar
         confirmButtonText: "Sí, cancelar",
         cancelButtonText: "No, mantener"
     }).then(async (result) => {
+        // Proceder solo si el usuario confirmó la acción
         if (result.isConfirmed) {
             try {
+                // Logs para depuración del proceso de cancelación
                 console.log('Intentando cancelar cita con ID:', id);
                 console.log('URL:', `${window.API_URL}/citas/${id}/cancelar`);
                 
+                // Realizar petición PATCH al endpoint de cancelación
                 const response = await fetch(`${window.API_URL}/citas/${id}/cancelar`, {
-                    method: "PATCH",
+                    method: "PATCH", // Método HTTP para actualización parcial
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json' // Especificar tipo de contenido JSON
                     }
                 });
                 
                 console.log('Response status:', response.status);
                 
+                // Verificar si la respuesta fue exitosa
                 if (!response.ok) {
                     const errorText = await response.text();
                     console.error('Error response:', errorText);
                     throw new Error(`HTTP ${response.status}: ${errorText}`);
                 }
                 
+                // Parsear respuesta JSON
                 const data = await response.json();
                 console.log('Success data:', data);
                 
+                // Mostrar alerta de éxito al usuario
                 Swal.fire({
                     title: "¡Cancelada!",
                     text: data.message || "La cita ha sido cancelada.",
                     icon: "success",
                     confirmButtonText: "Aceptar"
                 }).then(() => {
-                    // Cerrar modal
+                    // Acciones después de cancelar la cita
+                    
+                    // Cerrar el modal de edición
                     document.getElementById("citaModal").style.display = "none";
+                    
                     // Recargar las citas para mostrar el estado actualizado
                     loadCitas();
                     
@@ -409,6 +556,7 @@ async function cancelarCitaDesdeModal(id) {
                     }
                 });
             } catch (error) {
+                // Manejo de errores durante la cancelación
                 console.error("Error al cancelar la cita:", error);
                 Swal.fire({
                     title: "Error",
