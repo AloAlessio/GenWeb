@@ -4,7 +4,8 @@ const express = require('express');
 const router = express.Router();
 // Importamos el controlador completo de doctores
 // Esto nos da acceso a todas las funciones: getAllDoctors, filterDoctors, etc.
-const doctorController = require('../controllers/doctorController'); // ✅ Asegurar que esta línea esté presente
+const doctorController = require('../controllers/doctorController');
+ // ✅ Asegurar que esta línea esté presente
 
 // Ruta GET para obtener todos los doctores
 // GET /api/doctors/ (el prefijo /api/doctors se define en server.js)

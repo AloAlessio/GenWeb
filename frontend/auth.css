@@ -1,0 +1,159 @@
+/* auth.css - Estilos específicos para la página de autenticación */
+
+/* Estilos para la barra de fortaleza de contraseña */
+.password-strength-meter {
+    height: 4px;
+    background-color: #ddd;
+    border-radius: 2px;
+    margin-top: 5px;
+    transition: all 0.3s ease;
+}
+
+.password-strength-meter::before {
+    content: '';
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.strength-weak::before {
+    width: 33.33%;
+    background: linear-gradient(to right, #ff4444, #ff6b6b);
+}
+
+.strength-medium::before {
+    width: 66.66%;
+    background: linear-gradient(to right, #ffa000, #ffca28);
+}
+
+.strength-strong::before {
+    width: 100%;
+    background: linear-gradient(to right, #00c851, #007e33);
+}
+
+.password-requirements {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.requirement {
+    display: flex;
+    align-items: center;
+    margin: 2px 0;
+}
+
+.requirement::before {
+    content: '×';
+    color: #ff4444;
+    margin-right: 5px;
+}
+
+.requirement.valid::before {
+    content: '✓';
+    color: #00c851;
+}
+
+/* Media Query para tablets y pantallas de tamaño medio (768px y menos) */
+@media (max-width: 768px) {
+    .auth-container {
+        /* Reduce márgenes y padding para pantallas más pequeñas */
+        margin: 20px auto;
+        padding: 20px;
+        /* Limita el ancho máximo al 95% del viewport */
+        max-width: 95%;
+        /* Reduce el radio de borde para mejor apariencia en móviles */
+        border-radius: 8px;
+    }
+    
+    .auth-header .logo-img {
+        /* Reduce el tamaño del logo en tablets */
+        width: 100px;
+    }
+    
+    .tabs {
+        /* Reduce el margen inferior de las pestañas */
+        margin-bottom: 15px;
+    }
+    
+    .tab {
+        /* Ajusta padding y tamaño de fuente de las pestañas */
+        padding: 12px 0;
+        font-size: 14px;
+    }
+    
+    .form h2 {
+        /* Reduce el tamaño del título del formulario */
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .form-group {
+        /* Reduce el espaciado entre grupos de formulario */
+        margin-bottom: 12px;
+    }
+    
+    .form-group label {
+        /* Ajusta el tamaño de fuente y margen de las etiquetas */
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+    
+    .form-group input {
+        /* Aumenta el padding para mejor usabilidad táctil */
+        padding: 12px;
+        /* Font-size 16px evita el zoom automático en iOS */
+        font-size: 16px;
+    }
+    
+    .btn-primary {
+        /* Botón a ancho completo en móviles */
+        width: 100%;
+        padding: 15px;
+        font-size: 16px;
+    }
+    
+    .form-links {
+        /* Centra los enlaces del formulario */
+        text-align: center;
+        margin-top: 15px;
+    }
+    
+    .form-links a {
+        /* Reduce el tamaño de fuente de los enlaces */
+        font-size: 14px;
+    }
+}
+
+/* Media Query para dispositivos móviles pequeños (480px y menos) */
+@media (max-width: 480px) {
+    .auth-container {
+        /* Reduce aún más márgenes y padding para móviles pequeños */
+        margin: 10px auto;
+        padding: 15px;
+    }
+    
+    .auth-header .logo-img {
+        /* Logo más pequeño para móviles pequeños */
+        width: 80px;
+    }
+    
+    .form h2 {
+        /* Título aún más pequeño para móviles pequeños */
+        font-size: 18px;
+    }
+    
+    .form-group input {
+        /* Reduce padding y tamaño de fuente para pantallas muy pequeñas */
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    .btn-primary {
+        /* Ajusta el padding del botón principal */
+        padding: 12px;
+        font-size: 14px;
+    }
+}

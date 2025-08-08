@@ -36,6 +36,10 @@ app.use(cors());  // 🔹 Permitir solicitudes de otros orígenes
 // Configuramos middleware para parsear JSON en las peticiones
 app.use(express.json());  // 🔹 Permitir recibir JSON en req.body
 
+// Importar y aplicar protección contra inyecciones SQL
+const { sqlInjectionProtection } = require('./middleware/sqlInjectionMiddleware');
+app.use(sqlInjectionProtection);
+
 // 📌 Configuración de rutas de la API
 // Cada ruta tiene un prefijo que agrupa funcionalidades relacionadas
 app.use('/api/auth', authRoutes);      // /api/auth/* - Rutas de registro, login, usuarios

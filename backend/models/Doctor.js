@@ -7,25 +7,53 @@ const sequelize = require('../db'); // Asegúrate de que este sea el camino corr
 const Doctor = sequelize.define('Doctor', {
     // Campo nombre: almacena el nombre completo del doctor
     nombre: { 
-        type: DataTypes.STRING,         // Tipo: cadena de texto (VARCHAR)
-        allowNull: false                // Campo obligatorio (no puede ser NULL)
+        type: DataTypes.STRING,
+        allowNull: false
     },
     // Campo especialidad: almacena la especialidad médica del doctor
     especialidad: { 
-        type: DataTypes.STRING,         // Tipo: cadena de texto
-        allowNull: false                // Campo obligatorio
+        type: DataTypes.STRING,
+        allowNull: false
     },
     // Campo modalidad: indica si atiende presencial, virtual o ambos
     modalidad: { 
-        type: DataTypes.STRING,         // Tipo: cadena de texto
-        allowNull: false                // Campo obligatorio
-        // Valores esperados: "Presencial", "Virtual", "Ambos"
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    // Campo telefono: número de contacto del doctor
+    telefono: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    // Campo email: correo electrónico del doctor
+    email: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    // Campo horarios: horarios de atención
+    horarios: {
+        type: DataTypes.JSON,
+        allowNull: true
+    },
+    // Campo experiencia: años de experiencia
+    experiencia: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    // Campo costo: costo de la consulta
+    costo: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true
     },
     // Campo imagen: URL o ruta de la foto del doctor
     imagen: { 
-        type: DataTypes.STRING,         // Tipo: cadena de texto para almacenar URL
-        allowNull: true                 // Campo opcional (puede ser NULL)
-        // Almacena rutas como: "doc1.png", "images/doctor.jpg", etc.
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    // Campo activo: indica si el doctor está activo
+    activo: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
     }
 });
 // Nota: No se especifican opciones adicionales, por lo que:

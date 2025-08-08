@@ -30,11 +30,36 @@ const User = sequelize.define('User', {
     password: { 
         type: DataTypes.STRING,         // Tipo de dato: cadena de texto
         allowNull: false                // No puede ser NULL (campo obligatorio)
+    },
+    // Campos para seguridad y control de acceso
+    failedLoginAttempts: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+    },
+    isLocked: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
+    lockExpiry: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+    lastLogin: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+    passwordResetToken: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    passwordResetExpiry: {
+        type: DataTypes.DATE,
+        allowNull: true
     }
 }, {
     // Opciones de configuración del modelo:
     tableName: 'users',                 // Nombre específico de la tabla en la BD (por defecto sería 'Users')
-    timestamps: false                   // No crear campos automáticos createdAt y updatedAt
+    timestamps: true                    // Crear campos automáticos createdAt y updatedAt
 });
 
 // Exportamos el modelo para poder importarlo y usarlo en otros archivos

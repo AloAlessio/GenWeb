@@ -1,6 +1,11 @@
 // appointments.js - Script principal para la gestión de citas médicas
 // Funcionalidades: CRUD de citas, filtros, calendario, recetas médicas
 
+// Verificar autenticación al cargar la página
+document.addEventListener('DOMContentLoaded', () => {
+    requireAuth();
+});
+
 // ===== FUNCIONES UTILITARIAS =====
 
 /**
@@ -77,9 +82,10 @@ async function loadCitas(filtros = {}) {
         }
 
         // Parsear respuesta JSON
-        const citas = await response.json();
+        const data = await response.json();
+        const citas = data.citas || []; // Extraer el array de citas de la respuesta
         if (!Array.isArray(citas)) {
-            throw new Error('La respuesta del servidor no es un array de citas.');
+            throw new Error('La respuesta del servidor no contiene un array de citas válido.');
         }
 
         // Obtener referencia al contenedor de las citas

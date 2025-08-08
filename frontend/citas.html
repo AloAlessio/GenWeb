@@ -124,16 +124,20 @@
     </div>
 
     <!-- Contenedor donde se mostrarán los doctores -->
-    <div id="results" class="doctor-list"></div>
+    <div class="search-results"></div>
 </div>
 
+<!-- Font Awesome para iconos -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="app.js"></script>
 <script src="citas.js"></script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("buscarBtn").addEventListener("click", filtrarResultados);
+        const buscarBtn = document.getElementById("buscarBtn");
+        if (buscarBtn) {
+            buscarBtn.addEventListener("click", aplicarFiltros);
+        }
     });
 </script>
 

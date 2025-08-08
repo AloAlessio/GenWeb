@@ -34,6 +34,15 @@ Sistema integral de gestión médica con funcionalidades avanzadas para hospital
 - **Roles diferenciados** (Admin, Doctor, Paciente)
 - **Sesiones seguras** con JWT
 - **Validación de datos** en frontend y backend
+- **Protección contra SQL Injection**
+  - Detección y bloqueo de patrones maliciosos
+  - Sanitización automática de inputs
+  - Logging detallado de intentos
+- **Control de intentos de login**
+  - Límite de 5 intentos fallidos
+  - Bloqueo temporal de 1 minuto
+  - Seguimiento de intentos en base de datos
+  - Registro de última sesión exitosa
 
 ## 🚀 Tecnologías Utilizadas
 
@@ -145,8 +154,11 @@ EMAIL_PASSWORD=tu-app-password
 ### 5. Inicializar Sistema
 
 ```bash
-# Migrar base de datos
+# Migrar base de datos principal
 node migrate.js
+
+# Migrar campos de seguridad
+node addSecurityFields.js
 
 # Insertar datos iniciales
 node insertDoctors.js
@@ -154,6 +166,8 @@ node insertDoctors.js
 # Iniciar servidor
 npm start
 ```
+
+**Ver estructura de seguridad**: [SECURITY_SCHEMA.md](SECURITY_SCHEMA.md)
 
 ### 6. Acceder al Sistema
 

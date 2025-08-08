@@ -6,16 +6,21 @@ const nodemailer = require('nodemailer');
 // El transportador es el objeto que se encarga de enviar los emails
 const createTransporter = () => {
     // nodemailer.createTransporter() crea una instancia de transporte
+    console.log('Configurando transportador de email con:', {
+        user: process.env.EMAIL_USER,
+        // No mostramos la contraseña por seguridad
+        hasPassword: !!process.env.EMAIL_PASSWORD
+    });
+
     return nodemailer.createTransport({
-        // Configuración para Gmail (se puede cambiar por otros proveedores)
-        service: 'gmail',                    // Servicio de email (gmail, yahoo, outlook, etc.)
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true, // use SSL
         auth: {
-            // Datos de autenticación obtenidos de variables de entorno
-            // Si no están definidas, usa valores por defecto (para desarrollo)
-            user: process.env.EMAIL_USER || 'tu-email@gmail.com',       // Email del remitente
-            pass: process.env.EMAIL_PASSWORD || 'tu-app-password'       // Contraseña de aplicación (no la contraseña normal)
-            // IMPORTANTE: Para Gmail se debe usar "App Password", no la contraseña regular
-        }
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD
+        },
+        debug: true // Habilitar logs de debug
     });
 };
 
@@ -332,14 +337,27 @@ GenWeb - Sistema de Gestión Médica
         };
 
     } catch (error) {
-        // Si hay algún error durante el proceso, lo capturamos aquí
-        console.error('❌ Error al enviar email de receta:', error);
+        // Log detallado del error
+        console.error('❌ Error detallado al enviar email:', {
+            mensaje: error.message,
+            codigo: error.code,
+            respuesta: error.response,
+            comando: error.command,
+            credenciales: {
+                usuario: process.env.EMAIL_USER,
+                tienePassword: !!process.env.EMAIL_PASSWORD
+            }
+        });
         
         // Retornamos objeto con información del error
         return {
-            success: false,                             // Indica que el envío falló
-            error: error.message,                       // Mensaje técnico del error
-            message: 'Error al enviar el email'        // Mensaje descriptivo para el usuario
+            success: false,
+            error: error.message,
+            details: {
+                code: error.code,
+                response: error.response
+            },
+            message: 'Error al enviar el email. Por favor, verifica la configuración del servidor de correo.'
         };
     }
 };

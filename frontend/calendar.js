@@ -65,7 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 // Realizar petición GET al backend para obtener todas las citas
                 const res = await fetch(`${API_URL}/citas`);
-                const citas = await res.json();
+                const data = await res.json();
+                const citas = data.citas || []; // Extraer el array de citas de la respuesta
                 
                 // Transformar citas del backend en eventos de FullCalendar
                 const events = citas.map(cita => ({

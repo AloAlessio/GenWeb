@@ -17,114 +17,20 @@
     <link rel="stylesheet" href="styles.css">
     <!-- Enlace a la hoja de estilos principal del sitio -->
     
+    <link rel="stylesheet" href="auth.css">
+    <!-- Estilos específicos para la página de autenticación -->
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- CDN de SweetAlert2 para mostrar alertas elegantes y personalizadas -->
     
-    <style>
-        /* Estilos CSS embebidos específicos para la página de login */
-        
-        /* Media Query para tablets y pantallas de tamaño medio (768px y menos) */
-        @media (max-width: 768px) {
-            .auth-container {
-                /* Reduce márgenes y padding para pantallas más pequeñas */
-                margin: 20px auto;
-                padding: 20px;
-                /* Limita el ancho máximo al 95% del viewport */
-                max-width: 95%;
-                /* Reduce el radio de borde para mejor apariencia en móviles */
-                border-radius: 8px;
-            }
-            
-            .auth-header .logo-img {
-                /* Reduce el tamaño del logo en tablets */
-                width: 100px;
-            }
-            
-            .tabs {
-                /* Reduce el margen inferior de las pestañas */
-                margin-bottom: 15px;
-            }
-            
-            .tab {
-                /* Ajusta padding y tamaño de fuente de las pestañas */
-                padding: 12px 0;
-                font-size: 14px;
-            }
-            
-            .form h2 {
-                /* Reduce el tamaño del título del formulario */
-                font-size: 20px;
-                margin-bottom: 15px;
-            }
-            
-            .form-group {
-                /* Reduce el espaciado entre grupos de formulario */
-                margin-bottom: 12px;
-            }
-            
-            .form-group label {
-                /* Ajusta el tamaño de fuente y margen de las etiquetas */
-                font-size: 14px;
-                margin-bottom: 6px;
-            }
-            
-            .form-group input {
-                /* Aumenta el padding para mejor usabilidad táctil */
-                padding: 12px;
-                /* Font-size 16px evita el zoom automático en iOS */
-                font-size: 16px;
-            }
-            
-            .btn-primary {
-                /* Botón a ancho completo en móviles */
-                width: 100%;
-                padding: 15px;
-                font-size: 16px;
-            }
-            
-            .form-links {
-                /* Centra los enlaces del formulario */
-                text-align: center;
-                margin-top: 15px;
-            }
-            
-            .form-links a {
-                /* Reduce el tamaño de fuente de los enlaces */
-                font-size: 14px;
-            }
-        }
-        
-        /* Media Query para dispositivos móviles pequeños (480px y menos) */
-        @media (max-width: 480px) {
-            .auth-container {
-                /* Reduce aún más márgenes y padding para móviles pequeños */
-                margin: 10px auto;
-                padding: 15px;
-            }
-            
-            .auth-header .logo-img {
-                /* Logo más pequeño para móviles pequeños */
-                width: 80px;
-            }
-            
-            .form h2 {
-                /* Título aún más pequeño para móviles pequeños */
-                font-size: 18px;
-            }
-            
-            .form-group input {
-                /* Reduce padding y tamaño de fuente para pantallas muy pequeñas */
-                padding: 10px;
-                font-size: 14px;
-            }
-            
-            .btn-primary {
-                /* Ajusta el padding del botón principal */
-                padding: 12px;
-                font-size: 14px;
-            }
-        }
-    </style>
+    <script src="config.js"></script>
+    <!-- Configuración global de la aplicación -->
+    
+    <script src="auth.js"></script>
+    <!-- Utilidades de autenticación -->
+    
+    <script src="login.js"></script>
+    <!-- Script de manejo de login -->
 </head>
 <body>
     <!-- Cuerpo de la página de autenticación -->
@@ -244,9 +150,21 @@
                     <label for="registerPassword">Contraseña</label>
                     <!-- Etiqueta descriptiva del campo de contraseña -->
                     
-                    <input type="password" id="registerPassword" name="registerPassword" placeholder="********" required />
+                    <input type="password" id="registerPassword" name="registerPassword" placeholder="********" required minlength="8" />
                     <!-- Campo de contraseña para el registro -->
                     <!-- required: campo obligatorio para crear cuenta -->
+                    
+                    <!-- Barra de fortaleza de contraseña -->
+                    <div class="password-strength-meter"></div>
+                    
+                    <!-- Requisitos de contraseña -->
+                    <div class="password-requirements">
+                        <div class="requirement" data-requirement="length">Al menos 8 caracteres</div>
+                        <div class="requirement" data-requirement="lowercase">Al menos una letra minúscula</div>
+                        <div class="requirement" data-requirement="uppercase">Al menos una letra mayúscula</div>
+                        <div class="requirement" data-requirement="number">Al menos un número</div>
+                        <div class="requirement" data-requirement="special">Al menos un carácter especial</div>
+                    </div>
                 </div>
                 
                 <div class="form-group">

@@ -5,17 +5,19 @@ const express = require('express');
 const router = express.Router();
 // Importamos las funciones controladoras desde authController
 // Destructuring para extraer solo las funciones que necesitamos
-const { register, login, users } = require('../controllers/authController'); // Se importa correctamente la función users
+const { register, login, users } = require('../controllers/authController');
+const { loginAttemptsMiddleware } = require('../middleware/securityMiddleware');
+const { sqlInjectionProtection } = require('../middleware/sqlInjectionMiddleware');
 
 // Definimos ruta POST para registro de usuarios
 // POST /api/auth/register (el prefijo /api/auth se define en server.js)
 // Cuando llegue una petición POST a esta ruta, ejecutará la función register del controlador
-router.post('/register', register);
+router.post('/register', sqlInjectionProtection, register);
 
 // Definimos ruta POST para inicio de sesión
 // POST /api/auth/login
 // Maneja la autenticación y generación de tokens JWT
-router.post('/login', login);
+router.post('/login', sqlInjectionProtection, loginAttemptsMiddleware, login);
 
 // Definimos ruta GET para obtener lista de usuarios
 // GET /api/auth/users
